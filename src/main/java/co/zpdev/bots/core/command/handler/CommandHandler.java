@@ -47,38 +47,13 @@ public class CommandHandler {
         if (event.getGuild() == null) return;
         if (!event.getMessage().getContentRaw().startsWith(prefix)) return;
 
-        String[] splitContent = event.getMessage().getContentRaw().replace(prefix, "").split(" ");
+        String[] splitContent = event.getMessage().getContentRaw().substring(prefix.length()).split(" ");
         if (!commands.containsKey(splitContent[0].toLowerCase())) return;
 
         DiscordCommand command = commands.get(splitContent[0].toLowerCase());
-        Command annotation = command.getCommandAnnotation();
-
-        if (event.getChannelType().equals(ChannelType.PRIVATE) && !annotation.directMessages()) return;
-        if (event.getChannelType().equals(ChannelType.TEXT) && !annotation.channelMessages()) return;
 
         async.submit(() -> invokeMethod(command, getParameters(splitContent, command, event.getMessage(),
                 event.getJDA())));
-    }
-
-    /**
-     * Registers the specified command.
-     *
-     * @param command The command to register.
-     */
-    public void registerCommand(Object command) {
-        for (Method method : command.getClass().getMethods()) {
-            Command annotation = method.getAnnotation(Command.class);
-            if (annotation == null) continue;
-
-            if (annotation.aliases().length == 0) {
-                throw new IllegalArgumentException("No aliases have been defined!");
-            }
-
-            DiscordCommand simpleCommand = new DiscordCommand(annotation, method, command);
-            for (String alias : annotation.aliases()) {
-                commands.put(alias.toLowerCase(), simpleCommand);
-            }
-        }
     }
 
     private void registerCommands(String packageName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {

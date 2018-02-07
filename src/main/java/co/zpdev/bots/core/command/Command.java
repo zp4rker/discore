@@ -11,12 +11,8 @@ public @interface Command {
 
     String[] aliases();
 
-    String description() default "";
+    //String description() default "";
 
-    String usage() default "";
-
-    boolean directMessages() default false;
-
-    boolean channelMessages() default true;
+    //String usage() default "";
 
 }
