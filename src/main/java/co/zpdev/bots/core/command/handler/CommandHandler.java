@@ -1,15 +1,19 @@
 package co.zpdev.bots.core.command.handler;
 
+import co.zpdev.bots.core.command.Command;
 import co.zpdev.bots.core.exception.ExceptionHandler;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import org.reflections.Reflections;
+import org.reflections.scanners.SubTypesScanner;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The command handler class.
@@ -21,11 +25,16 @@ public class CommandHandler {
     private final ExecutorService async;
 
     private final String prefix;
-    private final HashMap<String, Command> commands = new HashMap<>();
+    private final HashMap<String, DiscordCommand> commands = new HashMap<>();
 
-    public CommandHandler(String prefix, ExecutorService async) {
+    public CommandHandler(String prefix, String packageName) {
         this.prefix = prefix;
-        this.async = async;
+        this.async = Executors.newCachedThreadPool();
+        try {
+            registerCommands(packageName);
+        } catch (Exception e) {
+            System.out.println("Error registering commands!");
+        }
     }
 
     /**
@@ -41,8 +50,8 @@ public class CommandHandler {
         String[] splitContent = event.getMessage().getContentRaw().replace(prefix, "").split(" ");
         if (!commands.containsKey(splitContent[0].toLowerCase())) return;
 
-        Command command = commands.get(splitContent[0].toLowerCase());
-        co.zpdev.bots.core.command.Command annotation = command.getCommandAnnotation();
+        DiscordCommand command = commands.get(splitContent[0].toLowerCase());
+        Command annotation = command.getCommandAnnotation();
 
         if (event.getChannelType().equals(ChannelType.PRIVATE) && !annotation.directMessages()) return;
         if (event.getChannelType().equals(ChannelType.TEXT) && !annotation.channelMessages()) return;
@@ -58,21 +67,41 @@ public class CommandHandler {
      */
     public void registerCommand(Object command) {
         for (Method method : command.getClass().getMethods()) {
-            co.zpdev.bots.core.command.Command annotation = method.getAnnotation(co.zpdev.bots.core.command.Command.class);
+            Command annotation = method.getAnnotation(Command.class);
             if (annotation == null) continue;
 
             if (annotation.aliases().length == 0) {
                 throw new IllegalArgumentException("No aliases have been defined!");
             }
 
-            Command simpleCommand = new Command(annotation, method, command);
+            DiscordCommand simpleCommand = new DiscordCommand(annotation, method, command);
             for (String alias : annotation.aliases()) {
                 commands.put(alias.toLowerCase(), simpleCommand);
             }
         }
     }
 
-    private Object[] getParameters(String[] splitMessage, Command command, Message message, JDA jda) {
+    private void registerCommands(String packageName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
+        for (String className : reflections.getAllTypes()) {
+            Class c = Class.forName(className);
+            for (Method method : c.getMethods()) {
+                co.zpdev.bots.core.command.Command annotation = method.getAnnotation(co.zpdev.bots.core.command.Command.class);
+                if (annotation == null) continue;
+
+                if (annotation.aliases().length == 0) {
+                    throw new IllegalArgumentException("No aliases have been defined!");
+                }
+
+                DiscordCommand command = new DiscordCommand(annotation, method, c.newInstance());
+                for (String alias : annotation.aliases()) {
+                    commands.put(alias.toLowerCase(), command);
+                }
+            }
+        }
+    }
+
+    private Object[] getParameters(String[] splitMessage, DiscordCommand command, Message message, JDA jda) {
         String[] args = Arrays.copyOfRange(splitMessage, 1, splitMessage.length);
         Class<?>[] parameterTypes = command.getMethod().getParameterTypes();
         final Object[] parameters = new Object[parameterTypes.length];
@@ -102,8 +131,6 @@ public class CommandHandler {
                 if (!message.getChannelType().equals(ChannelType.TEXT)) {
                     parameters[i] = message.getGuild();
                 }
-            } else if (type == Object[].class) {
-                parameters[i] = getObjectsFromString(jda, args);
             } else {
                 parameters[i] = null;
             }
@@ -111,37 +138,7 @@ public class CommandHandler {
         return parameters;
     }
 
-    private Object[] getObjectsFromString(JDA jda, String[] args) {
-        Object[] objects = new Object[args.length];
-        for (int i = 0; i < args.length; i++) {
-            objects[i] = getObjectFromString(jda, args[i]);
-        }
-        return objects;
-    }
-
-    private Object getObjectFromString(JDA jda, String arg) {
-        try {
-            return Integer.valueOf(arg);
-        } catch (NumberFormatException e) {
-        }
-        if (arg.matches("<@([0-9]*)>")) {
-            String id = arg.substring(2, arg.length() - 1);
-            User user = jda.getUserById(id);
-            if (user != null) {
-                return user;
-            }
-        }
-        if (arg.matches("<#([0-9]*)>")) {
-            String id = arg.substring(2, arg.length() - 1);
-            Channel channel = jda.getTextChannelById(id);
-            if (channel != null) {
-                return channel;
-            }
-        }
-        return arg;
-    }
-
-    private void invokeMethod(Command command, Object[] paramaters) {
+    private void invokeMethod(DiscordCommand command, Object[] paramaters) {
         Method m = command.getMethod();
         try {
             m.invoke(command.getExecutor(), paramaters);
@@ -150,23 +147,23 @@ public class CommandHandler {
         }
     }
 
-    public HashMap<String, Command> getCommands() {
+    public HashMap<String, DiscordCommand> getCommands() {
         return commands;
     }
 
-    public class Command {
+    public class DiscordCommand {
 
         private final co.zpdev.bots.core.command.Command annotation;
         private final Method method;
         private final Object executor;
 
-        Command(co.zpdev.bots.core.command.Command annotation, Method method, Object executor) {
+        DiscordCommand(co.zpdev.bots.core.command.Command annotation, Method method, Object executor) {
             this.annotation = annotation;
             this.method = method;
             this.executor = executor;
         }
 
-        co.zpdev.bots.core.command.Command getCommandAnnotation() {
+        Command getCommandAnnotation() {
             return annotation;
         }
 

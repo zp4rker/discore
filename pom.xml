@@ -26,7 +26,12 @@
         <dependency>
             <groupId>com.kcthota</groupId>
             <artifactId>emoji4j</artifactId>
-            <version>5.0</version>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 
