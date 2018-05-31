@@ -6,7 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * @author ZP4RKER
+ * The command @interface.
+ *
+ * @author zpdev
+ * @version 0.9_BETA
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {

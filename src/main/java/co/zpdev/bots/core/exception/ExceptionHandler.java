@@ -8,7 +8,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * @author ZP4RKER
+ * The exception handler.
+ *
+ * @author zpdev
+ * @version 0.9_BETA
+ * @deprecated until future update.
  */
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 

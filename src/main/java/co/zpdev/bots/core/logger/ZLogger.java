@@ -5,7 +5,11 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
 
 /**
- * @author ZP4RKER
+ * The logger.
+ *
+ * @author zpdev
+ * @version 0.9_BETA
+ * @deprecated until future update.
  */
 public class ZLogger {
 

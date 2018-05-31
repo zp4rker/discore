@@ -3,7 +3,10 @@ package co.zpdev.bots.core.logger;
 import java.util.logging.Level;
 
 /**
- * @author ZP4RKER
+ * The custom level type for ZLogger.
+ *
+ * @author zpdev
+ * @deprecated until future update.
  */
 class CustomLevel extends Level {
 

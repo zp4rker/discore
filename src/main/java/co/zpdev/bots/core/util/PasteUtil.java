@@ -10,7 +10,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- * @author ZP4RKER
+ * A utility for pasting a string to hastebin and getting a link in return.
+ *
+ * @author zpdev
+ * @version 0.9_BETA
+ * @deprecated until future update.
  */
 public class PasteUtil {
 

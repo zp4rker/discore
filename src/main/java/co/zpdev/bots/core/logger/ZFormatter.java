@@ -5,6 +5,12 @@ import java.util.Date;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * The date/time formatter for ZLogger.
+ *
+ * @author zpdev
+ * @deprecated until future update.
+ */
 public class ZFormatter extends SimpleFormatter {
 
     @Override

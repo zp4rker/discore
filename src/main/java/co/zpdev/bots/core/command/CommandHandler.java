@@ -1,7 +1,5 @@
-package co.zpdev.bots.core.command.handler;
+package co.zpdev.bots.core.command;
 
-import co.zpdev.bots.core.command.Command;
-import co.zpdev.bots.core.exception.ExceptionHandler;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
@@ -16,16 +14,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * The command handler class.
+ * The command handler.
  *
- * @author ZP4RKER
+ * @author zpdev
  */
 public class CommandHandler {
     
     private final ExecutorService async;
 
     private final String prefix;
-    private final HashMap<String, DiscordCommand> commands = new HashMap<>();
+    private final HashMap<String, ChatCommand> commands = new HashMap<>();
 
     public CommandHandler(String prefix, String packageName) {
         this.prefix = prefix;
@@ -50,7 +48,7 @@ public class CommandHandler {
         String[] splitContent = event.getMessage().getContentRaw().substring(prefix.length()).split(" ");
         if (!commands.containsKey(splitContent[0].toLowerCase())) return;
 
-        DiscordCommand command = commands.get(splitContent[0].toLowerCase());
+        ChatCommand command = commands.get(splitContent[0].toLowerCase());
 
         async.submit(() -> invokeMethod(command, getParameters(splitContent, command, event.getMessage(),
                 event.getJDA())));
@@ -68,7 +66,7 @@ public class CommandHandler {
                     throw new IllegalArgumentException("No aliases have been defined!");
                 }
 
-                DiscordCommand command = new DiscordCommand(annotation, method, c.newInstance());
+                ChatCommand command = new ChatCommand(/*annotation,*/ method, c.newInstance());
                 for (String alias : annotation.aliases()) {
                     commands.put(alias.toLowerCase(), command);
                 }
@@ -76,7 +74,7 @@ public class CommandHandler {
         }
     }
 
-    private Object[] getParameters(String[] splitMessage, DiscordCommand command, Message message, JDA jda) {
+    private Object[] getParameters(String[] splitMessage, ChatCommand command, Message message, JDA jda) {
         String[] args = Arrays.copyOfRange(splitMessage, 1, splitMessage.length);
         Class<?>[] parameterTypes = command.getMethod().getParameterTypes();
         final Object[] parameters = new Object[parameterTypes.length];
@@ -113,34 +111,34 @@ public class CommandHandler {
         return parameters;
     }
 
-    private void invokeMethod(DiscordCommand command, Object[] paramaters) {
+    private void invokeMethod(ChatCommand command, Object[] paramaters) {
         Method m = command.getMethod();
         try {
             m.invoke(command.getExecutor(), paramaters);
         } catch (Exception e) {
-            ExceptionHandler.handleException("invoking method [command handler]", e);
+            e.printStackTrace();
         }
     }
 
-    public HashMap<String, DiscordCommand> getCommands() {
+    public HashMap<String, ChatCommand> getCommands() {
         return commands;
     }
 
-    public class DiscordCommand {
+    public class ChatCommand {
 
-        private final co.zpdev.bots.core.command.Command annotation;
+        /*private final co.zpdev.bots.core.command.Command annotation;*/
         private final Method method;
         private final Object executor;
 
-        DiscordCommand(co.zpdev.bots.core.command.Command annotation, Method method, Object executor) {
-            this.annotation = annotation;
+        ChatCommand(/*co.zpdev.bots.core.command.Command annotation,*/ Method method, Object executor) {
+            /*this.annotation = annotation;*/
             this.method = method;
             this.executor = executor;
         }
 
-        Command getCommandAnnotation() {
+        /*Command getCommandAnnotation() {
             return annotation;
-        }
+        }*/
 
         Method getMethod() {
             return method;
