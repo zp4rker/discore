@@ -1,4 +1,4 @@
-package co.zpdev.bots.core.command;
+package co.zpdev.core.discord.command;
 
 import net.dv8tion.jda.core.Permission;
 

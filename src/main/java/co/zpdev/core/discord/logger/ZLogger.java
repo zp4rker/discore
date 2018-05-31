@@ -1,4 +1,4 @@
-package co.zpdev.bots.core.logger;
+package co.zpdev.core.discord.logger;
 
 
 import java.util.logging.ConsoleHandler;

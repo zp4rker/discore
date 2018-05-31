@@ -1,4 +1,4 @@
-package co.zpdev.bots.core.command;
+package co.zpdev.core.discord.command;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.*;
@@ -59,7 +59,7 @@ public class CommandHandler {
         for (String className : reflections.getAllTypes()) {
             Class c = Class.forName(className);
             for (Method method : c.getMethods()) {
-                co.zpdev.bots.core.command.Command annotation = method.getAnnotation(co.zpdev.bots.core.command.Command.class);
+                Command annotation = method.getAnnotation(Command.class);
                 if (annotation == null) continue;
 
                 if (annotation.aliases().length == 0) {
@@ -126,11 +126,11 @@ public class CommandHandler {
 
     public class ChatCommand {
 
-        /*private final co.zpdev.bots.core.command.Command annotation;*/
+        /*private final Command annotation;*/
         private final Method method;
         private final Object executor;
 
-        ChatCommand(/*co.zpdev.bots.core.command.Command annotation,*/ Method method, Object executor) {
+        ChatCommand(/*Command annotation,*/ Method method, Object executor) {
             /*this.annotation = annotation;*/
             this.method = method;
             this.executor = executor;

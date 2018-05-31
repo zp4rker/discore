@@ -1,6 +1,6 @@
-package co.zpdev.bots.core.util;
+package co.zpdev.core.discord.util;
 
-import co.zpdev.bots.core.logger.ZLogger;
+import co.zpdev.core.discord.logger.ZLogger;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;

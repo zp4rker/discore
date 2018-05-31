@@ -1,7 +1,7 @@
-package co.zpdev.bots.core.exception;
+package co.zpdev.core.discord.exception;
 
-import co.zpdev.bots.core.logger.ZLogger;
-import co.zpdev.bots.core.util.PasteUtil;
+import co.zpdev.core.discord.logger.ZLogger;
+import co.zpdev.core.discord.util.PasteUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
