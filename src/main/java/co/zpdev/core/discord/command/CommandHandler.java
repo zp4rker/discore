@@ -16,7 +16,10 @@ import java.util.concurrent.Executors;
 /**
  * The command handler.
  *
+ * TODO: Make cleaner and more efficient
+ *
  * @author zpdev
+ * @version 0.8_BETA
  */
 public class CommandHandler {
     
