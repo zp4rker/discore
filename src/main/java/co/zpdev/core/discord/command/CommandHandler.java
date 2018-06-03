@@ -1,41 +1,84 @@
 package co.zpdev.core.discord.command;
 
-import net.dv8tion.jda.core.JDA;
+import co.zpdev.core.discord.exception.ExceptionHandler;
+import emoji4j.EmojiUtils;
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.SubscribeEvent;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * The command handler.
  *
- * TODO: Make cleaner and more efficient
- *
  * @author zpdev
- * @version 0.8_BETA
+ * @version 0.9_BETA
  */
 public class CommandHandler {
     
     private final ExecutorService async;
-
     private final String prefix;
-    private final HashMap<String, ChatCommand> commands = new HashMap<>();
+    private final Map<String, ChatCommand> commands = new HashMap<>();
+    private MessageEmbed permError;
+    private final Consumer<TextChannel> errFunc;
 
+    /**
+     * Constructor
+     *
+     * @param prefix command prefix
+     * @param packageName package which commands are located in
+     */
     public CommandHandler(String prefix, String packageName) {
         this.prefix = prefix;
         this.async = Executors.newCachedThreadPool();
+
+        permError = new EmbedBuilder()
+                .setTitle("No Permission")
+                .setDescription("You don't have the permissions required to perform this action!")
+                .setColor(new Color(240, 71, 71)).build();
+
+        errFunc = t -> t.sendMessage(permError).queue(m -> new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                m.delete().queue();
+            }
+        }, 15000));
+
         try {
             registerCommands(packageName);
         } catch (Exception e) {
-            System.out.println("Error registering commands!");
+            ExceptionHandler.handleException("registering commands in package", e);
         }
+    }
+
+    /**
+     * Sets the permission error embed.
+     *
+     * @param embed embed to set to
+     */
+    public void setPermError(MessageEmbed embed) {
+        permError = embed;
+    }
+
+    /**
+     * Gets all commands mapped by alias.
+     *
+     * @return the commands map
+     */
+    public Map<String, ChatCommand> getCommands() {
+        return commands;
     }
 
     /**
@@ -48,16 +91,35 @@ public class CommandHandler {
         if (event.getGuild() == null) return;
         if (!event.getMessage().getContentRaw().startsWith(prefix)) return;
 
-        String[] splitContent = event.getMessage().getContentRaw().substring(prefix.length()).split(" ");
-        if (!commands.containsKey(splitContent[0].toLowerCase())) return;
+        String content = EmojiUtils.shortCodify(event.getMessage().getContentRaw().substring(prefix.length()));
+        String[] splitContent = content.split(" ");
+        if (commands.keySet().stream().noneMatch(content.toLowerCase()::startsWith)) return;
 
-        ChatCommand command = commands.get(splitContent[0].toLowerCase());
+        ChatCommand command = commands.entrySet().stream()
+                .filter(entry -> content.toLowerCase().startsWith(entry.getKey()))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList()).get(0);
 
-        async.submit(() -> invokeMethod(command, getParameters(splitContent, command, event.getMessage(),
-                event.getJDA())));
+        if (command.info.permission() != Permission.MESSAGE_READ) {
+            List<Permission> perms = Arrays.asList(command.info.permission(), Permission.ADMINISTRATOR);
+            perms.retainAll(event.getMember().getPermissions());
+            if (perms.size() < 1) {
+                errFunc.accept(event.getTextChannel());
+                return;
+            }
+        }
+        if (command.info.autodelete())
+
+        async.submit(() -> execute(command, getParameters(splitContent, command, event.getMessage())));
     }
 
-    private void registerCommands(String packageName) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    /**
+     * Registers the commands located in the specified package.
+     *
+     * @param packageName package to search
+     * @throws ClassNotFoundException when a class can't be found
+     */
+    private void registerCommands(String packageName) throws ClassNotFoundException {
         Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
         for (String className : reflections.getAllTypes()) {
             Class c = Class.forName(className);
@@ -69,7 +131,7 @@ public class CommandHandler {
                     throw new IllegalArgumentException("No aliases have been defined!");
                 }
 
-                ChatCommand command = new ChatCommand(/*annotation,*/ method, c.newInstance());
+                ChatCommand command = new ChatCommand(annotation, method);
                 for (String alias : annotation.aliases()) {
                     commands.put(alias.toLowerCase(), command);
                 }
@@ -77,78 +139,53 @@ public class CommandHandler {
         }
     }
 
-    private Object[] getParameters(String[] splitMessage, ChatCommand command, Message message, JDA jda) {
+    /**
+     * Fetches paramaters for the command method.
+     *
+     * @param splitMessage the message content split by " "
+     * @param command the command data
+     * @param message the message
+     * @return the fetched paramaters
+     */
+    private Object[] getParameters(String[] splitMessage, ChatCommand command, Message message) {
         String[] args = Arrays.copyOfRange(splitMessage, 1, splitMessage.length);
-        Class<?>[] parameterTypes = command.getMethod().getParameterTypes();
-        final Object[] parameters = new Object[parameterTypes.length];
-        int stringCounter = 0;
+        Class<?>[] parameterTypes = command.method.getParameterTypes();
+        Object[] parameters = new Object[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> type = parameterTypes[i];
-            if (type == String.class) {
-                if (stringCounter++ == 0) {
-                } else {
-                    if (args.length + 2 > stringCounter) {
-                        parameters[i] = args[stringCounter - 2];
-                    }
-                }
-            } else if (type == String[].class) {
-                parameters[i] = args;
-            } else if (type == Message.class) {
-                parameters[i] = message;
-            } else if (type == JDA.class) {
-                parameters[i] = jda;
-            } else if (type == TextChannel.class) {
-                parameters[i] = message.getTextChannel();
-            } else if (type == User.class) {
-                parameters[i] = message.getAuthor();
-            } else if (type == MessageChannel.class) {
-                parameters[i] = message.getChannel();
-            } else if (type == Guild.class) {
-                if (!message.getChannelType().equals(ChannelType.TEXT)) {
-                    parameters[i] = message.getGuild();
-                }
-            } else {
-                parameters[i] = null;
-            }
+
+            if (type == Message.class) parameters[i] = message;
+            else if (type == String[].class) parameters[i] = args;
+            else if (type == Member.class) parameters[i] = message.getMember();
+            else if (type == TextChannel.class) parameters[i] = message.getTextChannel();
+            else if (type == Guild.class) parameters[i] = message.getGuild();
+            else parameters[i] = null;
         }
         return parameters;
     }
 
-    private void invokeMethod(ChatCommand command, Object[] paramaters) {
-        Method m = command.getMethod();
+    /**
+     * Executes the command method.
+     *
+     * @param command the command to run
+     * @param paramaters the paramaters the command method needs
+     */
+    private void execute(ChatCommand command, Object[] paramaters) {
         try {
-            m.invoke(command.getExecutor(), paramaters);
-        } catch (Exception e) {
-            e.printStackTrace();
+            command.method.invoke(command.getClass().newInstance(), paramaters);
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+            ExceptionHandler.handleException("executing a command", e);
         }
-    }
-
-    public HashMap<String, ChatCommand> getCommands() {
-        return commands;
     }
 
     public class ChatCommand {
 
-        /*private final Command annotation;*/
+        private final Command info;
         private final Method method;
-        private final Object executor;
 
-        ChatCommand(/*Command annotation,*/ Method method, Object executor) {
-            /*this.annotation = annotation;*/
+        ChatCommand(Command annotation, Method method) {
+            this.info = annotation;
             this.method = method;
-            this.executor = executor;
-        }
-
-        /*Command getCommandAnnotation() {
-            return annotation;
-        }*/
-
-        Method getMethod() {
-            return method;
-        }
-
-        Object getExecutor() {
-            return executor;
         }
 
     }

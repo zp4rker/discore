@@ -67,7 +67,7 @@ public class JSONUtil {
                 sb.append((char) c);
             }
             data = sb.toString();
-        } catch (Exception e) {
+        } catch (IOException e) {
             ExceptionHandler.handleException("Reading file", e);
         }
         return data.isEmpty() ? new JSONObject() : new JSONObject(data);
@@ -88,7 +88,7 @@ public class JSONUtil {
             wr.write(data.toString(2));
             wr.flush();
             wr.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             ExceptionHandler.handleException("Writing file", e);
         }
     }
