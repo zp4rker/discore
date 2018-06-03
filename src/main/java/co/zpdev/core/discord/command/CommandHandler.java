@@ -45,7 +45,7 @@ public class CommandHandler {
         this.async = Executors.newCachedThreadPool();
 
         permError = new EmbedBuilder()
-                .setTitle("No Permission")
+                .setTitle("Invalid Permissions")
                 .setDescription("You don't have the permissions required to perform this action!")
                 .setColor(new Color(240, 71, 71)).build();
 
@@ -100,15 +100,14 @@ public class CommandHandler {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList()).get(0);
 
+        if (command.info.autodelete()) event.getMessage().delete().queue();
         if (command.info.permission() != Permission.MESSAGE_READ) {
             List<Permission> perms = Arrays.asList(command.info.permission(), Permission.ADMINISTRATOR);
-            perms.retainAll(event.getMember().getPermissions());
-            if (perms.size() < 1) {
+            if (event.getMember().getPermissions().stream().noneMatch(perms::contains)) {
                 errFunc.accept(event.getTextChannel());
                 return;
             }
         }
-        if (command.info.autodelete())
 
         async.submit(() -> execute(command, getParameters(splitContent, command, event.getMessage())));
     }
@@ -172,7 +171,7 @@ public class CommandHandler {
      */
     private void execute(ChatCommand command, Object[] paramaters) {
         try {
-            command.method.invoke(command.getClass().newInstance(), paramaters);
+            command.method.invoke(command.method.getDeclaringClass().newInstance(), paramaters);
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
             ExceptionHandler.handleException("executing a command", e);
         }
