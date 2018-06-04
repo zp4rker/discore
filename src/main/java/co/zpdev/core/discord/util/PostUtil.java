@@ -14,7 +14,6 @@ import java.net.URL;
  * Util for posting a string to hastebin/pushbullet and getting a link in return.
  *
  * @author zpdev
- * @version 1.0
  */
 public class PostUtil {
 

@@ -9,7 +9,6 @@ import java.lang.annotation.RetentionPolicy;
  * The command @interface.
  *
  * @author zpdev
- * @version 1.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
@@ -21,6 +20,8 @@ public @interface Command {
     String usage() default "";
 
     Permission permission() default Permission.MESSAGE_READ;
+
+    long role() default 0;
 
     boolean autodelete() default false;
 

@@ -6,7 +6,7 @@
 
     <groupId>co.zpdev.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
 
     <repositories>
         <repository>

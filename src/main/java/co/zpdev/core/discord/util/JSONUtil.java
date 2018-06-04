@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
  * Util for reading and writing JSON files, both from file and URL.
  *
  * @author ZP4RKER
- * @version 1.0
  */
 public class JSONUtil {
 

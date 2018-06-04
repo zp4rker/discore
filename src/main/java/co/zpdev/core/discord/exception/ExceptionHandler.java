@@ -10,7 +10,6 @@ import java.io.Writer;
  * Uncaught and caught exception handler.
  *
  * @author zpdev
- * @version 1.0
  */
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 

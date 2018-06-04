@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
  * The command handler.
  *
  * @author zpdev
- * @version 0.9_BETA
  */
 public class CommandHandler {
     
@@ -104,6 +103,12 @@ public class CommandHandler {
         if (command.info.permission() != Permission.MESSAGE_READ) {
             List<Permission> perms = Arrays.asList(command.info.permission(), Permission.ADMINISTRATOR);
             if (event.getMember().getPermissions().stream().noneMatch(perms::contains)) {
+                errFunc.accept(event.getTextChannel());
+                return;
+            }
+        }
+        if (command.info.role() > 0) {
+            if (!event.getMember().isOwner() && event.getMember().getRoles().stream().noneMatch(r -> r.getIdLong() == command.info.role())) {
                 errFunc.accept(event.getTextChannel());
                 return;
             }
