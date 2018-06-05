@@ -6,7 +6,7 @@
 
     <groupId>co.zpdev.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
 
     <repositories>
         <repository>
@@ -23,6 +23,7 @@
             <artifactId>JDA</artifactId>
             <version>3.6.0_370</version>
         </dependency>
+        <!-- Emoji4J -->
         <dependency>
             <groupId>com.kcthota</groupId>
             <artifactId>emoji4j</artifactId>
@@ -32,6 +33,12 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
+        </dependency>
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
 
