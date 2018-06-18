@@ -59,6 +59,8 @@ public class JSONUtil {
     public static JSONObject fromFile(File file) {
         String data = "";
         try {
+            if (!file.exists()) file.createNewFile();
+
             FileReader rd = new FileReader(file);
             StringBuilder sb = new StringBuilder();
             int c;
