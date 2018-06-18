@@ -59,6 +59,7 @@ public class JSONUtil {
     public static JSONObject fromFile(File file) {
         String data = "";
         try {
+            if (file.getParent() != null) if (!file.getParentFile().exists()) file.getParentFile().mkdir();
             if (!file.exists()) file.createNewFile();
 
             FileReader rd = new FileReader(file);
@@ -82,7 +83,7 @@ public class JSONUtil {
      */
     public static void toFile(JSONObject data, File file) {
         try {
-            if (!file.getParentFile().exists()) file.getParentFile().mkdir();
+            if (file.getParent() != null) if (!file.getParentFile().exists()) file.getParentFile().mkdir();
             if (!file.exists()) file.createNewFile();
 
             BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
