@@ -26,9 +26,10 @@ public class Config {
     public Config(String file) throws URISyntaxException {
         File dir = new File(Config.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
         this.file = new File(dir, file);
+        reload();
     }
 
-    public void reload() {
+    private void reload() {
         try {
             FileReader rd = new FileReader(file);
             int c; StringBuilder sb = new StringBuilder();
