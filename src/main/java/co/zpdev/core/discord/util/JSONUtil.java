@@ -44,7 +44,7 @@ public class JSONUtil {
                     data = sb.toString().replaceAll("\\\\([\"/])", "$1");
             }
         } catch (IOException e) {
-            ExceptionHandler.handleException("Reading file", e);
+            ExceptionHandler.handleException("reading json from url", e);
         }
 
         return data.isEmpty() ? new JSONObject() : new JSONObject(data);
@@ -70,7 +70,7 @@ public class JSONUtil {
             }
             data = sb.toString();
         } catch (IOException e) {
-            ExceptionHandler.handleException("Reading file", e);
+            ExceptionHandler.handleException("reading json from file", e);
         }
         return data.isEmpty() ? new JSONObject() : new JSONObject(data);
     }
@@ -91,7 +91,7 @@ public class JSONUtil {
             wr.flush();
             wr.close();
         } catch (IOException e) {
-            ExceptionHandler.handleException("Writing file", e);
+            ExceptionHandler.handleException("writing json to file", e);
         }
     }
 

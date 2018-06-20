@@ -44,7 +44,7 @@ public class PostUtil {
             BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
             result = "https://hastebin.com/" + new JSONObject(rd.readLine()).getString("key");
         } catch (IOException e) {
-            ExceptionHandler.handleException("Pasting to hastebin", e);
+            ExceptionHandler.handleException("pasting to hastebin", e);
         } finally {
             if (con != null) con.disconnect();
         }
