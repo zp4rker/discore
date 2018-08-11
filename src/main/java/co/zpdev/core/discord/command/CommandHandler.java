@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * The command handler.
@@ -169,7 +170,9 @@ public class CommandHandler {
                 if (annotation == null) continue;
 
                 if (annotation.aliases().length == 0) {
-                    throw new IllegalArgumentException("No aliases have been defined!");
+                    throw new IllegalArgumentException("No aliases have been defined for " + className + "!");
+                } else if (Stream.of(annotation.aliases()).anyMatch(s -> s.contains(" "))) {
+                    throw new IllegalArgumentException("Spaces are not allowed in command aliases!");
                 }
 
                 ChatCommand command = new ChatCommand(annotation, method);
