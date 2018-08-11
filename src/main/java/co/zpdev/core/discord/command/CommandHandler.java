@@ -42,6 +42,8 @@ public class CommandHandler {
      * @param packageName package which commands are located in
      */
     public CommandHandler(String prefix, String packageName) {
+        if (prefix.contains(" ")) throw new IllegalStateException("Spaces are not allowed in prefixes!");
+
         this.prefix = prefix;
         this.async = Executors.newCachedThreadPool();
 
