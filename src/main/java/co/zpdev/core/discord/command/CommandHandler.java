@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class CommandHandler {
     private final String prefix;
     private final Map<String, ChatCommand> commands = new HashMap<>();
     private MessageEmbed permError;
-    private final Consumer<TextChannel> errFunc;
+    private final BiConsumer<TextChannel, MessageEmbed> errFunc;
 
     /**
      * Constructor
@@ -48,7 +49,7 @@ public class CommandHandler {
                 .setDescription("You don't have the permissions required to perform this action!")
                 .setColor(new Color(240, 71, 71)).build();
 
-        errFunc = t -> t.sendMessage(permError).queue(m -> new Timer().schedule(new TimerTask() {
+        errFunc = (t, e) -> t.sendMessage(e).queue(m -> new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 m.delete().queue();
@@ -99,20 +100,56 @@ public class CommandHandler {
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList()).get(0);
 
-        if (command.info.autodelete()) event.getMessage().delete().queue();
+        // Permission-based checks
         if (command.info.permission() != Permission.MESSAGE_READ) {
             List<Permission> perms = Arrays.asList(command.info.permission(), Permission.ADMINISTRATOR);
             if (event.getMember().getPermissions().stream().noneMatch(perms::contains)) {
-                errFunc.accept(event.getTextChannel());
+                errFunc.accept(event.getTextChannel(), permError);
                 return;
             }
-        }
-        if (command.info.role() > 0) {
+        } else if (command.info.role() > 0) {
             if (!event.getMember().isOwner() && event.getMember().getRoles().stream().noneMatch(r -> r.getIdLong() == command.info.role())) {
-                errFunc.accept(event.getTextChannel());
+                errFunc.accept(event.getTextChannel(), permError);
                 return;
             }
         }
+
+        // Argument-based checks
+        String[] args = Arrays.copyOfRange(splitContent, 1, splitContent.length);
+        MessageEmbed argError = new EmbedBuilder()
+        .setTitle("Invalid Arguments")
+        .setDescription("Invalid arguments! Correct usage: `" + command.info.usage() + "`")
+        .setColor(new Color(240, 71, 71)).build();
+
+        if (command.info.args() > 0) {
+            if (args.length != command.info.args()) {
+                errFunc.accept(event.getTextChannel(), argError);
+                return;
+            }
+        } else if (command.info.minArgs() > 0) {
+            if (args.length < command.info.minArgs()) {
+                errFunc.accept(event.getTextChannel(), argError);
+                return;
+            }
+        } else if (command.info.mentionedMembers() > 0) {
+            if (event.getMessage().getMentionedMembers().size() != command.info.mentionedMembers()) {
+                errFunc.accept(event.getTextChannel(), argError);
+                return;
+            }
+        } else if (command.info.mentionedChannels() > 0) {
+            if (event.getMessage().getMentionedChannels().size() != command.info.mentionedChannels()) {
+                errFunc.accept(event.getTextChannel(), argError);
+                return;
+            }
+        } else if (command.info.mentionedRoles() > 0) {
+            if (event.getMessage().getMentionedRoles().size() != command.info.mentionedRoles()) {
+                errFunc.accept(event.getTextChannel(), argError);
+                return;
+            }
+        }
+
+
+        if (command.info.autodelete()) event.getMessage().delete().queue();
 
         async.submit(() -> execute(command, getParameters(splitContent, command, event.getMessage())));
     }

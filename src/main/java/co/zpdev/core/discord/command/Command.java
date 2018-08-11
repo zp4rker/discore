@@ -14,17 +14,20 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Command {
 
     String[] aliases();
-
-    String description() default "";
-
+    //String description() default "";
     String usage() default "";
 
     Permission permission() default Permission.MESSAGE_READ;
-
     long role() default 0;
+
+    int args() default 0;
+    int minArgs() default 0;
+    int mentionedMembers() default 0;
+    int mentionedChannels() default 0;
+    int mentionedRoles() default 0;
 
     boolean autodelete() default false;
 
-    boolean hidden() default false;
+    //boolean hidden() default false;
 
 }
