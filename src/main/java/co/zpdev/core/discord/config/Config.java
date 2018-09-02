@@ -1,4 +1,4 @@
-package co.zpdev.core.discord.util;
+package co.zpdev.core.discord.config;
 
 import co.zpdev.core.discord.exception.ExceptionHandler;
 import org.json.JSONObject;
