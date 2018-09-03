@@ -41,7 +41,7 @@ public class JSONUtil {
                         sb.append(line).append("\n");
                     }
                     br.close();
-                    data = sb.toString().replaceAll("\\\\([\"/])", "$1");
+                    data = sb.toString();
             }
         } catch (IOException e) {
             ExceptionHandler.handleException("reading json from url", e);
