@@ -40,7 +40,7 @@ public class TimeUtil {
             m = minutes > 0 ? minutes + "m " : "";
             s = seconds > 0 ? seconds + "s" : "";
         } else {
-            d = days > 0 ? days + (days == 1 ? " day" : "days") : "";
+            d = days > 0 ? days + (days == 1 ? " day" : " days") : "";
             h = hours > 0 ? hours + (hours == 1 ? " hour" : " hours") : "";
             m = minutes > 0 ? minutes + (minutes == 1 ? " minute" : " minutes") : "";
             s = seconds > 0 ? seconds + (seconds == 1 ? " second" : " seconds") : "";
