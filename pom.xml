@@ -6,7 +6,7 @@
 
     <groupId>co.zpdev.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.3.4</version>
+    <version>1.4.0</version>
 
     <repositories>
         <repository>
@@ -45,6 +45,12 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>LATEST</version>
+        </dependency>
+        <!-- MySQL -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
         </dependency>
     </dependencies>
 
