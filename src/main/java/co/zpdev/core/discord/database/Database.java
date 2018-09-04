@@ -24,7 +24,7 @@ public class Database {
     public void openConnection() throws SQLException {
         if (con != null) return;
         if (username != null) con = DriverManager.getConnection("jdbc:mysql://" + host, username, password);
-        else con = DriverManager.getConnection("jdbc:mysql://" + host);
+        else con = DriverManager.getConnection("jdbc:sqlite://" + host);
     }
 
     public void closeConnection() {
