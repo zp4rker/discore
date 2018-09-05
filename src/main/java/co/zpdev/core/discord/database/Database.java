@@ -1,7 +1,6 @@
 package co.zpdev.core.discord.database;
 
 import co.zpdev.core.discord.exception.ExceptionHandler;
-import org.sqlite.JDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,8 +23,8 @@ public class Database {
 
     public void openConnection() throws SQLException {
         if (con != null) return;
-        if (username != null) con = DriverManager.getConnection(com.mysql.jdbc.Driver.DEBUG ? "" : "jdbc:mysql://" + host, username, password);
-        else con = DriverManager.getConnection(JDBC.PREFIX + host);
+        if (username != null) con = DriverManager.getConnection("jdbc:mysql://" + host, username, password);
+        else con = DriverManager.getConnection("jdbc:sqlite:" + host);
     }
 
     public void closeConnection() {
