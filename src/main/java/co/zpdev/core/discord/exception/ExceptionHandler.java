@@ -13,7 +13,7 @@ import java.io.Writer;
  */
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private static String token = "", name = "";
+    private static String name = "";
 
     /**
      * Initialises the handler.
@@ -22,7 +22,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
      * @param name the instance name to use
      */
     public static void init(String token, String name) {
-        ExceptionHandler.token = token;
+        PostUtil.init(token);
         ExceptionHandler.name = name;
     }
 
@@ -38,12 +38,12 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
      * @param e the error it threw
      */
     public static void handleException(String issue, Throwable e) {
-        if (token.isEmpty()) {
+        try {
+            String paste = PostUtil.paste(getStackTrace(e));
+            PostUtil.push(name, "Encountered an exception when " + issue + ".\n" + paste);
+        } catch (IllegalStateException ex) {
             e.printStackTrace();
-            return;
         }
-        String paste = PostUtil.paste(getStackTrace(e));
-        PostUtil.push(token, name, "Encountered an exception when " + issue + ".\n" + paste);
     }
 
     /**

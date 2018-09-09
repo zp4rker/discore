@@ -17,6 +17,12 @@ import java.net.URL;
  */
 public class PostUtil {
 
+    private static String token = "";
+
+    public static void init(String token) {
+        PostUtil.token = token;
+    }
+
     /**
      * Pastes a provided string to hastebin and returns the URL.
      *
@@ -52,7 +58,9 @@ public class PostUtil {
         return result;
     }
 
-    public static void push(String token, String title, String body) {
+    public static void push(String title, String body) {
+        if (token.isEmpty()) throw new IllegalStateException("Token not set!");
+
         HttpsURLConnection con = null;
 
         try {
