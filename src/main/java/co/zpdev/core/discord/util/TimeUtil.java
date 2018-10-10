@@ -42,8 +42,8 @@ public class TimeUtil {
         } else {
             d = days == 0 ? "" : days + (days == 1 ? " day " : " days ");
             h = hours == 0 ? "" : hours + (hours == 1 ? " hour " : " hours ");
-            m = minutes == 1 ? " minute " : " minutes ";
-            s = seconds == 1 ? " second " : " seconds ";
+            m = minutes + (minutes == 1 ? " minute " : " minutes ");
+            s = seconds + (seconds == 1 ? " second " : " seconds ");
         }
 
         return d + h + m + (!full ? "" : "and ") + s;
