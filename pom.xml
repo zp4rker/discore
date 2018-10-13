@@ -6,7 +6,7 @@
 
     <groupId>co.zpdev.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.4.8</version>
+    <version>1.4.9</version>
 
     <repositories>
         <repository>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.7.1_410</version>
+            <version>3.8.0_436</version>
         </dependency>
         <!-- Emoji4J -->
         <dependency>
