@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>co.zpdev.core</groupId>
+    <groupId>com.zp4rker.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.4.9</version>
+    <version>1.5.0</version>
 
     <repositories>
         <repository>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>3.8.0_436</version>
+            <version>3.8.1_448</version>
         </dependency>
         <!-- Emoji4J -->
         <dependency>

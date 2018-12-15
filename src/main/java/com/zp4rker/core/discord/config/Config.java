@@ -1,6 +1,6 @@
-package co.zpdev.core.discord.config;
+package com.zp4rker.core.discord.config;
 
-import co.zpdev.core.discord.exception.ExceptionHandler;
+import com.zp4rker.core.discord.exception.ExceptionHandler;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -29,6 +29,9 @@ public class Config {
         reload();
     }
 
+    /**
+     * Reloads the config file.
+     */
     private void reload() {
         try {
             FileReader rd = new FileReader(file);
@@ -44,6 +47,9 @@ public class Config {
         }
     }
 
+    /**
+     * Saves the config file.
+     */
     public void save() {
         try {
             FileWriter wr = new FileWriter(file);

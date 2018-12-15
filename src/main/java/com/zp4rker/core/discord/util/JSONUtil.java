@@ -1,6 +1,6 @@
-package co.zpdev.core.discord.util;
+package com.zp4rker.core.discord.util;
 
-import co.zpdev.core.discord.exception.ExceptionHandler;
+import com.zp4rker.core.discord.exception.ExceptionHandler;
 import org.json.JSONObject;
 
 import java.io.*;

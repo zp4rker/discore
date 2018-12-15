@@ -1,7 +1,9 @@
-package co.zpdev.core.discord.util;
+package com.zp4rker.core.discord.util;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 /**
  * Util for converting an instant to a readable string.
@@ -35,18 +37,19 @@ public class TimeUtil {
         String d, h, m, s;
 
         if (!full) {
-            d = days > 0 ? days + "d " : "";
-            h = hours > 0 ? hours + "h " : "";
-            m = minutes > 0 ? minutes + "m " : "";
+            d = days > 0 ? days + "d" : "";
+            h = hours > 0 ? hours + "h" : "";
+            m = minutes > 0 ? minutes + "m" : "";
             s = seconds > 0 ? seconds + "s" : "";
+            return d + m + h + s;
         } else {
-            d = days == 0 ? "" : days + (days == 1 ? " day " : " days ");
-            h = hours == 0 ? "" : hours + (hours == 1 ? " hour " : " hours ");
-            m = minutes + (minutes == 1 ? " minute " : " minutes ");
-            s = seconds + (seconds == 1 ? " second " : " seconds ");
+            d = days == 0 ? "" : days + (days == 1 ? " day" : " days");
+            h = hours == 0 ? "" : hours + (hours == 1 ? " hour" : " hours");
+            m = minutes == 0 ? "" : minutes + (minutes == 1 ? " minute" : " minutes");
+            s = seconds == 0 ? "" : seconds + (seconds == 1 ? " second" : " seconds");
+            String [] arr = Stream.of(d, h, m, s).filter(str -> !str.isEmpty()).toArray(String[]::new);
+            return String.join(", ", Arrays.copyOfRange(arr, 0, arr.length - 1)) + (arr.length < 2 ? "" : " and ") + arr[arr.length - 1];
         }
-
-        return d + h + m + (!full ? "" : "and ") + s;
     }
 
 }

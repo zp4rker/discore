@@ -1,6 +1,6 @@
-package co.zpdev.core.discord.util;
+package com.zp4rker.core.discord.util;
 
-import co.zpdev.core.discord.exception.ExceptionHandler;
+import com.zp4rker.core.discord.exception.ExceptionHandler;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -58,6 +58,12 @@ public class PostUtil {
         return result;
     }
 
+    /**
+     * Pushes a message to Pushbullet.
+     *
+     * @param title the title of the message
+     * @param body the body of the message
+     */
     public static void push(String title, String body) {
         if (token.isEmpty()) throw new IllegalStateException("Token not set!");
 

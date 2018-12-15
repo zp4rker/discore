@@ -1,6 +1,6 @@
-package co.zpdev.core.discord.command;
+package com.zp4rker.core.discord.command;
 
-import co.zpdev.core.discord.exception.ExceptionHandler;
+import com.zp4rker.core.discord.exception.ExceptionHandler;
 import emoji4j.EmojiUtils;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

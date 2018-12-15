@@ -1,6 +1,6 @@
-package co.zpdev.core.discord.exception;
+package com.zp4rker.core.discord.exception;
 
-import co.zpdev.core.discord.util.PostUtil;
+import com.zp4rker.core.discord.util.PostUtil;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
