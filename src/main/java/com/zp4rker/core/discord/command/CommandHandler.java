@@ -163,23 +163,34 @@ public class CommandHandler {
      * @throws ClassNotFoundException when a class can't be found
      */
     private void registerCommands(String packageName) throws ClassNotFoundException {
+        if (packageName == null) return;
+
         Reflections reflections = new Reflections(packageName, new SubTypesScanner(false));
         for (String className : reflections.getAllTypes()) {
             Class c = Class.forName(className);
-            for (Method method : c.getMethods()) {
-                Command annotation = method.getAnnotation(Command.class);
-                if (annotation == null) continue;
+            registerCommand(c);
+        }
+    }
 
-                if (annotation.aliases().length == 0) {
-                    throw new IllegalArgumentException("No aliases have been defined for " + className + "!");
-                } else if (Stream.of(annotation.aliases()).anyMatch(s -> s.contains(" "))) {
-                    throw new IllegalArgumentException("Spaces are not allowed in command aliases!");
-                }
+    /**
+     * Registers the command(s) located in the specified class
+     *
+     * @param c the class to search
+     */
+    public void registerCommand(Class c) {
+        for (Method method : c.getMethods()) {
+            Command annotation = method.getAnnotation(Command.class);
+            if (annotation == null) continue;
 
-                ChatCommand command = new ChatCommand(annotation, method);
-                for (String alias : annotation.aliases()) {
-                    commands.put(alias.toLowerCase(), command);
-                }
+            if (annotation.aliases().length == 0) {
+                throw new IllegalArgumentException("No aliases have been defined for " + c.getName() + "!");
+            } else if (Stream.of(annotation.aliases()).anyMatch(s -> s.contains(" "))) {
+                throw new IllegalArgumentException("Spaces are not allowed in command aliases!");
+            }
+
+            ChatCommand command = new ChatCommand(annotation, method);
+            for (String alias : annotation.aliases()) {
+                commands.put(alias.toLowerCase(), command);
             }
         }
     }
