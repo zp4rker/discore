@@ -2,11 +2,11 @@ package com.zp4rker.core.discord.command;
 
 import com.zp4rker.core.discord.exception.ExceptionHandler;
 import emoji4j.EmojiUtils;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.SubscribeEvent;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 

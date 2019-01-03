@@ -1,6 +1,6 @@
 package com.zp4rker.core.discord.command;
 
-import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.api.Permission;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
