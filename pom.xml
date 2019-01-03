@@ -6,7 +6,7 @@
 
     <groupId>com.zp4rker.core</groupId>
     <artifactId>discord-core</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
 
     <repositories>
         <repository>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.ALPHA.0_4</version>
+            <version>LATEST</version>
         </dependency>
         <!-- Emoji4J -->
         <dependency>

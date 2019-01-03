@@ -34,6 +34,8 @@ public class Config {
      */
     private void reload() {
         try {
+            if (!file.exists()) file.createNewFile();
+
             FileReader rd = new FileReader(file);
             int c; StringBuilder sb = new StringBuilder();
             while ((c = rd.read()) != -1) {
