@@ -6,45 +6,28 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.SubscribeEvent
-import org.reflections.Reflections
-import org.reflections.scanners.SubTypesScanner
-import java.awt.Color
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 import java.lang.reflect.Method
 import java.util.*
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import java.util.function.BiConsumer
-import kotlin.collections.HashMap
+import kotlin.concurrent.schedule
 
-class CommandHandler(private val prefix: String, packageName: String, var permErr: MessageEmbed) {
+class CommandHandler(private val prefix: String = "/") {
 
-    class ChatCommand (val info: Command, val method: Method)
+    private class ChatCommand(val info: Command, val method: Method)
 
-    private val async: ExecutorService
+    private val commands = mutableMapOf<String, ChatCommand>()
 
-    private val commands = HashMap<String, ChatCommand>()
+    private val async = Executors.newCachedThreadPool()
 
-    private val errFunc: BiConsumer<TextChannel, MessageEmbed>
-
-    init {
-        if (prefix.contains(" ")) throw IllegalStateException("No spaces allowed in prefixes!")
-
-        async = Executors.newCachedThreadPool()
-
-        permErr = EmbedBuilder()
-                .setTitle("Invalid Permissions")
-                .setDescription("You don't have the permissions required to perform this action!")
-                .setColor(Color(240, 71, 71)).build()
-
-        errFunc = BiConsumer { t, e ->  t.sendMessage(e).queue {Timer().schedule(object: TimerTask() {
-            override fun run() {
-                it.delete().queue()
+    fun registerCommands(vararg commands: Command) {
+        commands.forEach {
+            if (it.aliases.isEmpty()) throw IllegalArgumentException("No aliases found!")
+            it.javaClass.declaredMethods.find { c -> c.name == "handle" }?.let { method ->
+                this.commands[it.aliases[0]] = ChatCommand(it, method)
+            } ?: run {
+                throw IllegalArgumentException("No handle method found!")
             }
-        }, 1000)}}
-
-        registerCommands(packageName)
+        }
     }
 
     @SubscribeEvent
@@ -52,96 +35,91 @@ class CommandHandler(private val prefix: String, packageName: String, var permEr
         if (!e.message.contentRaw.startsWith(prefix)) return
 
         val content = EmojiUtils.shortCodify(e.message.contentRaw.substring(prefix.length))
-        if (commands.keys.none { it.startsWith(content) }) return
+        if (commands.none { content.startsWith(it.key) }) return
 
-        val cmd = commands.entries.filter { content.startsWith(it.key) }[0].value
-
-        if (cmd.info.permission != Permission.MESSAGE_READ) {
-            val perms = listOf(cmd.info.permission, Permission.ADMINISTRATOR)
+        val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return
+        if (command.info.permission != Permission.MESSAGE_READ) {
+            val perms = mutableListOf(command.info.permission, Permission.ADMINISTRATOR)
             if (e.member!!.permissions.none { perms.contains(it) }) {
-                errFunc.accept(e.channel, permErr)
+                sendPermissionError(e.channel)
                 return
             }
-        } else if (cmd.info.role > 0) {
-            val m = e.member
-            if (!m!!.isOwner && m.roles.none { it.idLong == cmd.info.role }) {
-                errFunc.accept(e.channel, permErr)
+        } else if (command.info.role > 0) {
+            if (!e.member!!.isOwner && e.member!!.roles.none { it.idLong == command.info.role }) {
+                sendPermissionError(e.channel)
                 return
             }
         }
 
-        val splitContent = content.split(" ").toTypedArray()
-        val args = splitContent.drop(1)
+        val args = content.split(" ").drop(1)
 
-        val argErr = EmbedBuilder()
-        .setTitle("Invalid Arguments")
-        .setDescription("Invalid arguments! Correct usage: `" + cmd.info.usage + "`")
-        .setColor(Color(240, 71, 71)).build()
-
-        if (cmd.info.args > 0 && args.size != cmd.info.args) {
-            errFunc.accept(e.channel, argErr)
+        if (command.info.args > 0 && command.info.args != args.size) {
+            sendArgumentError(e.channel, command)
             return
-        } else if (cmd.info.minArgs > 0 && args.size < cmd.info.minArgs) {
-            errFunc.accept(e.channel, argErr)
+        } else if (command.info.minArgs > 0 && command.info.minArgs > args.size) {
+            sendArgumentError(e.channel, command)
             return
-        } else if (cmd.info.mentionedMembers > 0 && e.message.mentionedMembers.size != cmd.info.mentionedMembers) {
-            errFunc.accept(e.channel, argErr)
+        } else if (command.info.mentionedMembers > 0 && command.info.mentionedMembers != e.message.mentionedMembers.size) {
+            sendArgumentError(e.channel, command)
             return
-        } else if (cmd.info.mentionedRoles > 0 && e.message.mentionedRoles.size != cmd.info.mentionedRoles) {
-            errFunc.accept(e.channel, argErr)
+        } else if (command.info.mentionedRoles > 0 && command.info.mentionedRoles != e.message.mentionedRoles.size) {
+            sendArgumentError(e.channel, command)
             return
-        } else if (cmd.info.mentionedChannels > 0 && e.message.mentionedChannels.size != cmd.info.mentionedChannels) {
-            errFunc.accept(e.channel, argErr)
+        } else if (command.info.mentionedChannels > 0 && command.info.mentionedChannels != e.message.mentionedChannels.size) {
+            sendArgumentError(e.channel, command)
             return
         }
 
-        if (cmd.info.autoDelete) e.message.delete().queue()
+        if (command.info.autoDelete) e.message.delete().queue()
 
-        async.submit { execute(cmd, getParams(splitContent, cmd, e.message)) }
+        async.submit { command.method.invoke(command.info, getParameters(command, e.message)) }
     }
 
-    private fun registerCommands(packageName: String) {
-        val reflections = Reflections(packageName, SubTypesScanner(false))
-        for (className in reflections.allTypes) {
-            registerCommand(Class.forName(className))
+    private fun sendArgumentError(channel: TextChannel, command: ChatCommand) {
+        val embed = EmbedBuilder().run {
+            setTitle("Invalid arguments")
+            setDescription("You didn't provide the correct arguments, please try again. Correct usage: ${command.info.usage}")
+            setColor(0x353940)
+            build()
         }
+
+        sendError(channel, embed)
     }
 
-    private fun registerCommand(c: Class<*>) {
-        for (method in c.methods) {
-            val info: Command? = method.getAnnotation(Command::class.java)
-
-            if (info?.aliases == null) {
-                throw IllegalArgumentException("No aliases have been defined for ${c.name}!")
-            } else if (info.aliases.any { it.contains(" ") }) {
-                throw IllegalArgumentException("Spaces are not allowed in aliases!")
-            }
-
-            val command = ChatCommand(info, method)
-            for (alias in info.aliases) commands[alias] = command
+    private fun sendPermissionError(channel: TextChannel) {
+        val embed = EmbedBuilder().run {
+            setTitle("Invalid permissions")
+            setDescription("Sorry, but you dont have permission to run that command.")
+            setColor(0x353940)
+            build()
         }
+
+        sendError(channel, embed)
     }
 
-    private fun getParams(splitMsg: Array<String>, cmd: ChatCommand, msg: Message): Array<Any?> {
-        val paramTypes = cmd.method.parameterTypes
-        val params = arrayOf<Any?>()
-
-        for ((index, param) in paramTypes.withIndex()) {
-            when (param) {
-                is Message -> params[index] = msg
-                is Member -> params[index] = msg.member!!
-                is TextChannel -> params[index] = msg.textChannel
-                is Guild -> params[index] = msg.guild
-                is Array<*> -> params[index] = splitMsg.drop(1)
-                else -> params[index] = null
+    private fun sendError(channel: TextChannel, embed: MessageEmbed) {
+        channel.sendMessage(embed).queue {
+            Timer().schedule(8000) {
+                it.delete().queue()
             }
         }
-
-        return params
     }
 
-    private fun execute(cmd: ChatCommand, params: Array<Any?>) {
-        cmd.method.invoke(cmd.method.declaringClass.newInstance(), params)
+    private fun getParameters(command: ChatCommand, message: Message): Array<Any?> {
+        val parameters = emptyArray<Any?>()
+
+        for ((index, parameter) in command.method.parameterTypes.withIndex()) {
+            when (parameter) {
+                is Message -> parameters[index] = message
+                is Member -> parameters[index] = message.member
+                is TextChannel -> parameters[index] = message.textChannel
+                is Guild -> parameters[index] = message.guild
+                is Array<*> -> parameters[index] = message.contentRaw.split(" ").drop(1)
+                else -> parameters[index] = null
+            }
+        }
+
+        return parameters
     }
 
 }

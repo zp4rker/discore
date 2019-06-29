@@ -2,11 +2,10 @@ package com.zp4rker.core.discord.command
 
 import net.dv8tion.jda.api.Permission
 
-annotation class Command (
+abstract class Command(
         val aliases: Array<String>,
-        val usage: String = "",
-        //val description: String = "",
-        //val hidden: Boolean = false,
+        val description: String = "",
+        val usage: String = aliases[0],
 
         val permission: Permission = Permission.MESSAGE_READ,
         val role: Long = 0,
