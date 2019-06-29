@@ -1,6 +1,9 @@
 package com.zp4rker.core.discord.command
 
 import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.TextChannel
 
 abstract class Command(
         val aliases: Array<String>,
@@ -17,4 +20,8 @@ abstract class Command(
         val mentionedChannels: Int = 0,
 
         val autoDelete: Boolean = false
-)
+) {
+
+    abstract fun handle(message: Message, channel: TextChannel, guild: Guild, args: List<String>)
+
+}
