@@ -5,12 +5,10 @@ import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import net.dv8tion.jda.api.entities.TextChannel
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent
 import net.dv8tion.jda.api.hooks.SubscribeEvent
-import java.util.*
 import java.util.concurrent.Executors
-import kotlin.concurrent.schedule
+import java.util.concurrent.TimeUnit
 
 class CommandHandler(private val prefix: String = "/") {
 
@@ -90,9 +88,7 @@ class CommandHandler(private val prefix: String = "/") {
 
     private fun sendError(message: Message, embed: MessageEmbed) {
         message.channel.sendMessage(embed).queue {
-            Timer().schedule(8000) {
-                message.textChannel.deleteMessages(mutableListOf(it, message)).queue()
-            }
+            message.textChannel.deleteMessages(mutableListOf(it, message)).queueAfter(8, TimeUnit.SECONDS)
         }
     }
 
