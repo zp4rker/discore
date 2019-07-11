@@ -9,7 +9,7 @@ fun MessageChannel.sendRawString(string: String) = sendMessage(convertEmotes(str
 
 fun Message.addRawReaction(string: String) = convertEmote(string, jda)?.let { addReaction(it) }!!
 
-private fun convertEmotes(string: String, jda: JDA): String {
+fun convertEmotes(string: String, jda: JDA): String {
     var content = string
     val regex = Regex(":[^:]*:")
     regex.findAll(string).forEach {
