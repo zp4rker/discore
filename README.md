@@ -1,11 +1,9 @@
-# core
+# discore
 
-Discord bot core made by zpdev.
+A discord bot core written in Kotlin.
 
 
 ### Current features
-- Command handler system
-- Pushbullet push support
-- Hastebin paste support
-- Exception handler (both caught and uncaught)
-- Read/write JSON util
+- Command handler
+- Config manager
+- Some extra JDA utilities

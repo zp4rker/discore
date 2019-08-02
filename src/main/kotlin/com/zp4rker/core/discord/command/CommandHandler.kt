@@ -1,6 +1,5 @@
 package com.zp4rker.core.discord.command
 
-import emoji4j.EmojiUtils
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
@@ -27,7 +26,7 @@ class CommandHandler(private val prefix: String = "/") {
     fun handle(e: GuildMessageReceivedEvent) {
         if (!e.message.contentRaw.startsWith(prefix)) return
 
-        val content = EmojiUtils.shortCodify(e.message.contentRaw.substring(prefix.length))
+        val content = e.message.contentRaw.substring(prefix.length)
         if (commands.none { content.startsWith(it.key) }) return
 
         val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return
@@ -93,7 +92,7 @@ class CommandHandler(private val prefix: String = "/") {
     }
 
     private fun execute(command: Command, message: Message) {
-        val content = EmojiUtils.shortCodify(message.contentRaw)
+        val content = message.contentRaw
         command.handle(message, message.textChannel, message.guild, content.split(" ").drop(1))
     }
 
