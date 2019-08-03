@@ -9,32 +9,35 @@ import net.dv8tion.jda.api.hooks.SubscribeEvent
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class CommandHandler(private val prefix: String = "/") {
+class CommandHandler(val prefix: String = "/", showHelp: Boolean = false, val commands: MutableMap<String, Command> = mutableMapOf()) {
 
-    private val commands = mutableMapOf<String, Command>()
+    init { if (showHelp) registerCommand(HelpCommand(this)) }
 
     private val async = Executors.newCachedThreadPool()
 
     fun registerCommands(vararg commands: Command) {
-        commands.forEach {
-            if (it.aliases.isEmpty()) throw IllegalArgumentException("No aliases found!")
-            else this.commands[it.aliases[0]] = it
-        }
+        commands.forEach { registerCommand(it) }
+    }
+
+    private fun registerCommand(command: Command) {
+        commands[command.aliases[0]] = command
     }
 
     @SubscribeEvent
     fun handle(e: GuildMessageReceivedEvent) {
+        val member = e.member ?: return
+
         if (!e.message.contentRaw.startsWith(prefix)) return
 
         val content = e.message.contentRaw.substring(prefix.length)
         if (commands.none { content.startsWith(it.key) }) return
 
         val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return
-        if (!e.member!!.hasPermission(command.permission)) {
+        if (!member.hasPermission(command.permission)) {
             sendPermissionError(e.message)
             return
-        } else if (command.role > 0) {
-            if (!e.member!!.hasPermission(Permission.ADMINISTRATOR) && e.member!!.roles.none { it.idLong == command.role }) {
+        } else if (command.roles.isNotEmpty()) {
+            if (!member.hasPermission(Permission.ADMINISTRATOR) && member.roles.none { command.roles.contains(it.idLong) }) {
                 sendPermissionError(e.message)
                 return
             }

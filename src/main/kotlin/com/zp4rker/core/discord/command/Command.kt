@@ -9,9 +9,10 @@ abstract class Command(
         val aliases: Array<String>,
         val description: String = "",
         val usage: String = aliases[0],
+        val hidden: Boolean = false,
 
         val permission: Permission = Permission.MESSAGE_READ,
-        val role: Long = 0,
+        val roles: Array<Long> = emptyArray(),
 
         val args: Int = 0,
         val minArgs: Int = 0,
