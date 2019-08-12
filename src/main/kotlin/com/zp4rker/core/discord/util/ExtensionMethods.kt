@@ -5,14 +5,14 @@ import net.dv8tion.jda.api.entities.Emote
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageChannel
 
-fun MessageChannel.sendRawString(string: String) = sendMessage(convertEmotes(string, jda))
+fun MessageChannel.sendRawString(string: String) = sendMessage(string.emotify(jda))
 
 fun Message.addRawReaction(string: String) = convertEmote(string, jda)?.let { addReaction(it) }!!
 
-fun convertEmotes(string: String, jda: JDA): String {
-    var content = string
+fun String.emotify(jda: JDA): String {
+    var content = this
     val regex = Regex(":[^:]*:")
-    regex.findAll(string).forEach {
+    regex.findAll(content).forEach {
         convertEmote(it.value, jda)?.let { e -> content = content.replace(it.value, e.asMention) }
     }
     return content
