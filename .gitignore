@@ -1,5 +1,10 @@
 .DS_Store
 .idea/
-out/
 *.iml
 target/
+build/
+gradle.properties
+.gradle/
+gradle/
+gradlew.*
+gradlew

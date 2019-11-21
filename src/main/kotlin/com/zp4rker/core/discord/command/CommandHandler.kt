@@ -33,7 +33,7 @@ class CommandHandler(val prefix: String = "/", showHelp: Boolean = true, val com
         if (commands.none { content.startsWith(it.key) }) return
 
         val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return
-        if (!member.hasPermission(command.permission)) {
+        if (command.permission != Permission.MESSAGE_READ && !member.hasPermission(command.permission)) {
             sendPermissionError(e.message)
             return
         } else if (command.roles.isNotEmpty()) {
