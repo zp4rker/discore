@@ -11,11 +11,29 @@ class Config(content: String, private val file: File): JSONObject(content) {
 
     companion object {
         fun load(filename: String, sameDir: Boolean = false): Config {
-            val dir = File(Config::class.java.protectionDomain.codeSource.location.toURI()).parentFile
-            val file = if (sameDir) File(dir, filename) else File(filename)
+            val file = getFile(filename, sameDir)
+            return load(file)
+        }
+
+        fun loadOrDefault(filename: String, sameDir: Boolean = false, default: JSONObject): Config {
+            val file = getFile(filename, sameDir)
+
+            if (file.exists()) return load(file)
+
+            file.createNewFile()
+            file.writeText(default.toString(2))
+            return load(file)
+        }
+
+        private fun load(file: File): Config {
             val content = file.readText()
 
             return if (content.isEmpty()) Config("{}", file) else Config(content, file)
+        }
+
+        private fun getFile(filename: String, sameDir: Boolean = false): File {
+            val dir = File(Config::class.java.protectionDomain.codeSource.location.toURI()).parentFile
+            return if (sameDir) File(dir, filename) else File(filename)
         }
     }
 
