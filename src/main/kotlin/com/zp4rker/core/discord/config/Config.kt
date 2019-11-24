@@ -15,13 +15,13 @@ class Config(content: String, private val file: File): JSONObject(content) {
             return load(file)
         }
 
-        fun loadOrDefault(filename: String, sameDir: Boolean = false, default: JSONObject): Config {
+        fun loadOrDefault(filename: String, sameDir: Boolean = false, default: String = filename): Config {
             val file = getFile(filename, sameDir)
 
             if (file.exists()) return load(file)
 
             file.createNewFile()
-            file.writeText(default.toString(2))
+            file.writeText(readDefaultFromResource(default))
             return load(file)
         }
 
@@ -35,6 +35,8 @@ class Config(content: String, private val file: File): JSONObject(content) {
             val dir = File(Config::class.java.protectionDomain.codeSource.location.toURI()).parentFile
             return if (sameDir) File(dir, filename) else File(filename)
         }
+
+        private fun readDefaultFromResource(filename: String) = object {}.javaClass.getResource("/$filename").readText()
     }
 
 }
