@@ -3,19 +3,19 @@ package com.zp4rker.core.discord.config
 import org.json.JSONObject
 import java.io.File
 
-class Config(content: String, private val file: File): JSONObject(content) {
+class JsonFile(content: String, private val file: File): JSONObject(content) {
 
     fun save() {
         file.writeText(this.toString(2))
     }
 
     companion object {
-        fun load(filename: String, sameDir: Boolean = false): Config {
+        fun load(filename: String, sameDir: Boolean = false): JsonFile {
             val file = getFile(filename, sameDir)
             return load(file)
         }
 
-        fun loadOrDefault(filename: String, sameDir: Boolean = false, default: String = filename): Config {
+        fun loadOrDefault(filename: String, sameDir: Boolean = false, default: String = filename): JsonFile {
             val file = getFile(filename, sameDir)
 
             if (file.exists()) return load(file)
@@ -25,14 +25,14 @@ class Config(content: String, private val file: File): JSONObject(content) {
             return load(file)
         }
 
-        private fun load(file: File): Config {
+        private fun load(file: File): JsonFile {
             val content = file.readText()
 
-            return if (content.isEmpty()) Config("{}", file) else Config(content, file)
+            return if (content.isEmpty()) JsonFile("{}", file) else JsonFile(content, file)
         }
 
         private fun getFile(filename: String, sameDir: Boolean = false): File {
-            val dir = File(Config::class.java.protectionDomain.codeSource.location.toURI()).parentFile
+            val dir = File(JsonFile::class.java.protectionDomain.codeSource.location.toURI()).parentFile
             return if (sameDir) File(dir, filename) else File(filename)
         }
 
