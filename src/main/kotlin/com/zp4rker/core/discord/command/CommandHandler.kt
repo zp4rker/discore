@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.hooks.SubscribeEvent
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class CommandHandler(val prefix: String = "/", showHelp: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf()) {
+class CommandHandler(val prefix: String = "/", showHelp: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf(), val usesCustomPermissions: Boolean = false) {
 
     init { if (showHelp) registerCommand(HelpCommand(this)) }
 

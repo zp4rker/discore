@@ -10,6 +10,7 @@ abstract class Command(
         val description: String = "",
         val usage: String = aliases[0],
         val hidden: Boolean = false,
+        val customPermission: String = "",
 
         val permission: Permission = Permission.MESSAGE_READ,
         val roles: Array<Long> = emptyArray(),
