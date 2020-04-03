@@ -1,4 +1,4 @@
-package com.zp4rker.core.discord.util
+package com.zp4rker.discore.util
 
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Emote

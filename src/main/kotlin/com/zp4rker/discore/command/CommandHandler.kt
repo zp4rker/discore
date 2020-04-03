@@ -1,4 +1,4 @@
-package com.zp4rker.core.discord.command
+package com.zp4rker.discore.command
 
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission

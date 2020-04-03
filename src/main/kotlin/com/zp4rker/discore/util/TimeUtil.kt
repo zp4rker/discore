@@ -1,4 +1,4 @@
-package com.zp4rker.core.discord.util
+package com.zp4rker.discore.util
 
 import java.time.Instant
 import java.util.concurrent.TimeUnit

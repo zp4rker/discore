@@ -1,12 +1,12 @@
-package com.zp4rker.core.discord.config
+package com.zp4rker.discore.config
 
 import org.json.JSONObject
 import java.io.File
 
-class JsonFile(content: String, private val file: File): JSONObject(content) {
+class JsonFile(content: String, private val file: File? = null): JSONObject(content) {
 
     fun save() {
-        file.writeText(this.toString(2))
+        file?.writeText(this.toString(2))
     }
 
     companion object {
@@ -25,7 +25,7 @@ class JsonFile(content: String, private val file: File): JSONObject(content) {
             return load(file)
         }
 
-        private fun load(file: File): JsonFile {
+        fun load(file: File): JsonFile {
             val content = file.readText()
 
             return if (content.isEmpty()) JsonFile("{}", file) else JsonFile(content, file)
