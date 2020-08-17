@@ -30,6 +30,11 @@
             <scope>compile</scope>
         </dependency>
         <!-- toml -->
+        <dependency>
+            <groupId>org.tomlj</groupId>
+            <artifactId>tomlj</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!-- json -->
         <dependency>
             <groupId>org.json</groupId>
@@ -95,6 +100,11 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.zp4rker.discore.Main</mainClass>
+                                </manifest>
+                            </archive>
                         </configuration>
                     </execution>
                 </executions>
