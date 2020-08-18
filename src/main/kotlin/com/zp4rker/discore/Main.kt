@@ -9,7 +9,7 @@ class Main {
 
     companion object {
         @JvmStatic fun main(args: Array<String>) {
-            logger.info("this is the first line")
+            logger.info("Setting up...")
         }
     }
 

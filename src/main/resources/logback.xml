@@ -1,19 +1,20 @@
 <configuration>
     <contextName>discore</contextName>
 
-    <conversionRule conversionWord="lm" converterClass="com.zp4rker.discore.LogConverter" />
+    <conversionRule conversionWord="lm" converterClass="logback.LogConverter" />
+    <turboFilter class="logback.LogInterceptor" />
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/latest.log</file>
         <append>false</append>
         <encoder>
-            <pattern>[%d{HH:mm:ss}] [%thread/%level]: %lm%n</pattern>
+            <pattern>[%d{HH:mm:ss}] %-5lm%n</pattern>
         </encoder>
     </appender>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%d{HH:mm:ss}] [%thread/%level]: %lm%n</pattern>
+            <pattern>[%d{HH:mm:ss}] %-5lm%n</pattern>
         </encoder>
     </appender>
 

@@ -8,3 +8,4 @@ gradle.properties
 gradle/
 gradlew.*
 gradlew
+logs/
