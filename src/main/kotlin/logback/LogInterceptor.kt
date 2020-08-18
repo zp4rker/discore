@@ -19,7 +19,7 @@ class LogInterceptor : TurboFilter() {
                 Level.WARN -> objects?.let { newLogger.warn(msg, it) } ?: t?.let { newLogger.warn(msg, it) } ?: newLogger.warn(msg)
                 //Level.TRACE -> objects?.let { newLogger.trace(msg, it) } ?: t?.let { newLogger.trace(msg, it) } ?: newLogger.trace(msg)
             }
-            return FilterReply.DENY
+            if (level != Level.TRACE && level != Level.DEBUG) return FilterReply.DENY
         }
         return FilterReply.ACCEPT
     }

@@ -7,9 +7,9 @@ class LogConverter : MessageConverter() {
 
     override fun convert(event: ILoggingEvent): String {
         return if (event.loggerName == "Discore") {
-            "[${event.level.levelStr}]\t\t${super.convert(event)}"
+            "[${event.level.levelStr}] [MAIN] \t${super.convert(event)}"
         } else {
-            "[${event.loggerName}/${event.level.levelStr}]\t${super.convert(event)}"
+            "[${event.level.levelStr}] [${event.loggerName}] \t${super.convert(event)}"
         }
     }
 
