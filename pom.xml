@@ -9,7 +9,7 @@
     <version>3.1.8</version>
 
     <properties>
-        <kotlin.version>1.3.72</kotlin.version>
+        <kotlin.version>1.4.0</kotlin.version>
         <github.global.server>github</github.global.server>
     </properties>
 
@@ -40,7 +40,7 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20190722</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <!-- jda -->
         <dependency>
@@ -58,6 +58,32 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- jline -->
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-terminal</artifactId>
+            <version>3.16.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-reader</artifactId>
+            <version>3.16.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-terminal-jansi</artifactId>
+            <version>3.16.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- jansi -->
+        <dependency>
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.18</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

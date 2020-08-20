@@ -10,7 +10,7 @@
         <file>logs/latest.log</file>
         <append>false</append>
         <encoder>
-            <pattern>[%d{HH:mm:ss}] %-5lm%n</pattern>
+            <pattern>[%d{HH:mm:ss} %level]: %-5lm%n</pattern>
         </encoder>
     </appender>
 
@@ -18,7 +18,7 @@
         <filter class="logback.DenyLog" />
 
         <encoder>
-            <pattern>[%d{HH:mm:ss}] %-5lm%n</pattern>
+            <pattern>[%d{HH:mm:ss} %level]: %-5lm%n</pattern>
         </encoder>
     </appender>
 
@@ -26,7 +26,7 @@
         <file>logs/debug.log</file>
         <append>false</append>
         <encoder>
-            <pattern>[%d{HH:mm:ss}] %-5lm%n</pattern>
+            <pattern>[%d{HH:mm:ss} %level]: %-5lm%n</pattern>
         </encoder>
     </appender>
 
