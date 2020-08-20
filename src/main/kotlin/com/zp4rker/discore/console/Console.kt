@@ -1,10 +1,16 @@
 package com.zp4rker.discore.console
 
+import com.zp4rker.discore.console.default.StopCommand
 import com.zp4rker.discore.logger
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 
 object Console : Thread() {
+
+    init {
+        // default commands
+        ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye")
+    }
 
     private var isRunning = false
     private val reader = LineReaderBuilder.builder().appName("Discore").terminal(TerminalBuilder.terminal()).build()
