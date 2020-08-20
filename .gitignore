@@ -1,3 +1,4 @@
+# global #
 .DS_Store
 .idea/
 *.iml
@@ -8,4 +9,7 @@ gradle.properties
 gradle/
 gradlew.*
 gradlew
+
+# project #
 logs/
+config.toml
