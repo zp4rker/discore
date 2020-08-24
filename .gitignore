@@ -11,8 +11,8 @@ gradlew.*
 gradlew
 
 # project #
-logs/
-bot.cfg
-whitelist.txt
-banned_servers.txt
-banned_users.txt
+/logs/
+/bot.cfg
+/whitelist.txt
+/banned_servers.txt
+/banned_users.txt
