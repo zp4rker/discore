@@ -12,4 +12,7 @@ gradlew
 
 # project #
 logs/
-config.toml
+bot.cfg
+whitelist.txt
+banned_servers.txt
+banned_users.txt

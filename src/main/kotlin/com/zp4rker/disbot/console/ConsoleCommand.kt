@@ -1,4 +1,4 @@
-package com.zp4rker.discore.console
+package com.zp4rker.disbot.console
 
 interface ConsoleCommand {
 

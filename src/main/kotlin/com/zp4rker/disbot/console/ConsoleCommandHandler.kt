@@ -1,6 +1,6 @@
-package com.zp4rker.discore.console
+package com.zp4rker.disbot.console
 
-import com.zp4rker.discore.logger
+import com.zp4rker.disbot.logger
 
 object ConsoleCommandHandler {
 

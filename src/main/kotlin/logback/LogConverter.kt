@@ -6,7 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 class LogConverter : MessageConverter() {
 
     override fun convert(event: ILoggingEvent): String {
-        return if (event.loggerName == "Discore") {
+        return if (event.loggerName == "Disbot") {
             super.convert(event)
         } else {
             "[${event.loggerName}] ${super.convert(event)}"

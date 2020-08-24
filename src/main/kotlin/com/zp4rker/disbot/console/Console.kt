@@ -1,7 +1,7 @@
-package com.zp4rker.discore.console
+package com.zp4rker.disbot.console
 
-import com.zp4rker.discore.console.default.StopCommand
-import com.zp4rker.discore.logger
+import com.zp4rker.disbot.console.default.StopCommand
+import com.zp4rker.disbot.logger
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 
@@ -10,10 +10,18 @@ object Console : Thread() {
     init {
         // default commands
         ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye")
+
+        // error handler
+        setDefaultUncaughtExceptionHandler { _, exception ->
+            logger.error("Encountered an exception!", exception)
+        }
+
+        // shutdown hook
+
     }
 
     private var isRunning = false
-    private val reader = LineReaderBuilder.builder().appName("Discore").terminal(TerminalBuilder.terminal()).build()
+    private val reader = LineReaderBuilder.builder().appName("Disbot").terminal(TerminalBuilder.terminal()).build()
 
     override fun run() {
         var command: String? = reader.readLine()?.toLowerCase()
@@ -31,6 +39,10 @@ object Console : Thread() {
 
     fun shutdown() {
         isRunning = false
+
+        logger.info("Stopping now...")
+        // run stop code
+        logger.info("Goodbye!")
     }
 
 }

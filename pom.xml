@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.zp4rker</groupId>
-    <artifactId>discore</artifactId>
-    <version>3.1.8</version>
+    <artifactId>disbot</artifactId>
+    <version>1.0.0-DEV</version>
 
     <properties>
         <kotlin.version>1.4.0</kotlin.version>
@@ -128,7 +128,8 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.zp4rker.discore.Main</mainClass>
+                                    <mainClass>com.zp4rker.disbot.Main</mainClass>
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                                 </manifest>
                             </archive>
                         </configuration>
