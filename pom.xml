@@ -31,9 +31,10 @@
         </dependency>
         <!-- toml -->
         <dependency>
-            <groupId>org.tomlj</groupId>
-            <artifactId>tomlj</artifactId>
-            <version>1.0.0</version>
+            <groupId>com.github.jezza</groupId>
+            <artifactId>toml</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
         </dependency>
         <!-- json -->
         <dependency>

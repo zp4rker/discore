@@ -1,6 +1,6 @@
 package com.zp4rker.disbot
 
-import com.zp4rker.disbot.config.Configuration
+import com.zp4rker.disbot.config.TomlFile
 import com.zp4rker.disbot.console.Console
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -16,9 +16,6 @@ class Main {
             logger.info("Starting Disbot v${inst.javaClass.`package`.implementationVersion} by zp4rker...")
 
             logger.info("Setting up...")
-
-            val cfg = Configuration("bot.cfg")
-            logger.info("${cfg.toml.size()}")
 
             logger.info("Setup complete!")
         }
