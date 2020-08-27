@@ -1,6 +1,5 @@
 package com.zp4rker.disbot
 
-import com.zp4rker.disbot.config.TomlFile
 import com.zp4rker.disbot.console.Console
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
