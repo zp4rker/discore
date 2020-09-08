@@ -7,6 +7,11 @@ import ch.qos.logback.core.spi.FilterReply
 import org.slf4j.LoggerFactory
 import org.slf4j.Marker
 
+/**
+ * @author zp4rker
+ *
+ * Relog class name logger logs.
+ */
 class LogInterceptor : TurboFilter() {
 
     override fun decide(marker: Marker?, logger: Logger, level: Level, msg: String, objects: Array<Any>?, t: Throwable?): FilterReply {

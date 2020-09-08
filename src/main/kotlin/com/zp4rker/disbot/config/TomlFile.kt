@@ -9,6 +9,11 @@ import java.lang.StringBuilder
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalQueries
 
+/**
+ * @author zp4rker
+ *
+ * Class for handling TOML (*.toml) files.
+ */
 class TomlFile {
 
     private val toml: TomlTable

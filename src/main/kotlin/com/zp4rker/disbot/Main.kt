@@ -7,6 +7,11 @@ import java.io.File
 
 val logger: Logger = LoggerFactory.getLogger("Disbot")
 
+/**
+ * @author zp4rker
+ *
+ * Bot main class.
+ */
 class Main {
 
     companion object {

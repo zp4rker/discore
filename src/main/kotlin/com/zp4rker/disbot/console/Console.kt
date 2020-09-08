@@ -5,11 +5,16 @@ import com.zp4rker.disbot.logger
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 
+/**
+ * @author zp4rker
+ *
+ * Thread for handling console commands.
+ */
 object Console : Thread() {
 
     init {
         // default commands
-        ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye")
+        ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye", "shutdown")
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->

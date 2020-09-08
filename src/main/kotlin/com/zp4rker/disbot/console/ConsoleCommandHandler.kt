@@ -2,6 +2,11 @@ package com.zp4rker.disbot.console
 
 import com.zp4rker.disbot.logger
 
+/**
+ * @author zp4rker
+ *
+ * Console command handler.
+ */
 object ConsoleCommandHandler {
 
     private val commands: MutableMap<String, ConsoleCommand> = mutableMapOf()
