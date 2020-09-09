@@ -1,7 +1,7 @@
 package com.zp4rker.disbot.console
 
+import com.zp4rker.disbot.Main
 import com.zp4rker.disbot.console.default.StopCommand
-import com.zp4rker.disbot.logger
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 
@@ -18,7 +18,7 @@ object Console : Thread() {
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
-            logger.error("Encountered an exception!", exception)
+            Main.logger.error("Encountered an exception!", exception)
         }
 
         // shutdown hook
@@ -31,7 +31,7 @@ object Console : Thread() {
     override fun run() {
         var command: String? = reader.readLine()?.toLowerCase()
         while (command != null && isRunning) {
-            if (!ConsoleCommandHandler.handleCommand(command)) logger.warn("Unkown command. Type \"help\" for help.")
+            if (!ConsoleCommandHandler.handleCommand(command)) Main.logger.warn("Unkown command. Type \"help\" for help.")
 
             if (isRunning) command = reader.readLine()?.toLowerCase()
         }
@@ -45,9 +45,9 @@ object Console : Thread() {
     fun shutdown() {
         isRunning = false
 
-        logger.info("Stopping now...")
+        Main.logger.info("Stopping now...")
         // run stop code
-        logger.info("Goodbye!")
+        Main.logger.info("Goodbye!")
     }
 
 }

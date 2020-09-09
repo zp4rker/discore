@@ -10,8 +10,13 @@ import java.io.File
 class TxtFile(filename: String) {
 
     private val file: File = File(filename)
+    val values: MutableList<String>
 
-    val values: MutableList<String> = file.readLines().toMutableList()
+    init {
+        if (!file.exists()) file.createNewFile()
+
+        values = file.readLines().toMutableList()
+    }
 
     fun save() {
         file.writeText(values.joinToString("\n"))

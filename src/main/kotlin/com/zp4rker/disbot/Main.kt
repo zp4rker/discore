@@ -5,8 +5,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
 
-val logger: Logger = LoggerFactory.getLogger("Disbot")
-
 /**
  * @author zp4rker
  *
@@ -15,24 +13,23 @@ val logger: Logger = LoggerFactory.getLogger("Disbot")
 class Main {
 
     companion object {
+        val logger: Logger = LoggerFactory.getLogger("Disbot")
+
         @JvmStatic fun main(args: Array<String>) {
             val inst = Main()
             logger.info("Starting Disbot v${inst.javaClass.`package`.implementationVersion} by zp4rker...")
 
             logger.info("Setting up...")
-
+            // add setup code here
+                // load modules
+                // connect to jda
+                // post jda-connect events
             logger.info("Setup complete!")
         }
     }
 
-    val whitelist = File("whitelist.txt")
-    val bannedServers = File("banned_servers.txt")
-    val bannedUsers = File("banned_users.txt")
-
     init {
         Console.start()
-
-        arrayOf(whitelist, bannedServers, bannedUsers).filter { !it.exists() }.forEach(File::createNewFile)
     }
 
 }
