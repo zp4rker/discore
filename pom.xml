@@ -9,7 +9,7 @@
     <version>1.0.0-DEV</version>
 
     <properties>
-        <kotlin.version>1.4.0</kotlin.version>
+        <kotlin.version>1.4.10</kotlin.version>
         <github.global.server>github</github.global.server>
     </properties>
 
@@ -93,6 +93,16 @@
         <finalName>${project.name}</finalName>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <defaultGoal>clean package</defaultGoal>
+
+        <resources>
+            <resource>
+                <directory>/src/main/resources</directory>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <includes> <include>**/*.*</include> </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>

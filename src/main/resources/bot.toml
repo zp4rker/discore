@@ -1,9 +1,5 @@
-hello = "this is gonna be removed anyways... or not, guess we'll see... yep still gonna use toml :D"
-
-[thisisaheaderig]
-andheresthevalue = 99956
-cool = "awesome"
-
-[thisisanotherheader]
-andnowforanarray = [1, 2, 3, 4, 5]
-2dimarray = [[1, 2], [3, 4], [5, 6]]
+name = "Disbot"
+token = "mytoken"
+prefix = "!"
+cacheEnabled = false
+activity = { type = "WATCHING", message = "Running Disbot v${project.version}", url = "" }
