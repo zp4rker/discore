@@ -90,11 +90,11 @@ class TomlFile {
         }
     }
 
-    operator fun get(key: String): Any? = toml[key]
+    fun <T> get(key: String): T? = toml[key] as T?
 
-    operator fun get(key: String, default: Any): Any = toml[key] ?: default
+    fun <T> get(key: String, default: T): T = get<T>(key) ?: default
 
-    operator fun set(key: String, value: Any) = toml.put(key, value)
+    operator fun set(key: String, value: Any): Any = toml.put(key, value)
 
     fun size() = toml.size()
 
