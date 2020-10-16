@@ -1,5 +1,6 @@
 package com.zp4rker.disbot.module
 
+import com.zp4rker.disbot.Main.Companion.jda
 import com.zp4rker.disbot.config.TomlFile
 
 /**
@@ -31,5 +32,7 @@ abstract class Module(private val specs: TomlFile) {
     internal fun disable() {
         onDisable().runCatching { isEnabled = false }
     }
+
+    fun registerEventHandler(vararg classes: Class<*>) = jda.addEventListener(classes)
 
 }
