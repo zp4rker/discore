@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 class CommandHandler(val prefix: String, helpCommand: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf()) {
 
     init {
-        // register help command
+        registerCommand(HelpCommand(this))
     }
 
     private val async = Executors.newCachedThreadPool()
