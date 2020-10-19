@@ -1,0 +1,5 @@
+name = "Disbot"
+token = "mytoken"
+prefix = "!"
+cacheEnabled = false
+activity = { type = "WATCHING", message = "Running Disbot v1.0", url = "" }

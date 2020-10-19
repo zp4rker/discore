@@ -3,7 +3,6 @@ package com.zp4rker.disbot
 import com.github.jezza.TomlTable
 import com.zp4rker.disbot.config.TomlFile
 import com.zp4rker.disbot.console.Console
-import com.zp4rker.disbot.module.ModuleLoader
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -12,7 +11,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.File
 
 /**
  * @author zp4rker
@@ -25,14 +23,12 @@ class Main {
         val logger: Logger = LoggerFactory.getLogger("Disbot")
         lateinit var jda: JDA
 
-        private val modLoader: ModuleLoader = ModuleLoader()
-        private val config = TomlFile("bot.toml", Main::class.java.getResource("/bot.toml").readText())
+        private val config = TomlFile("config.toml", Main::class.java.getResource("/config.toml").readText())
 
         @JvmStatic fun main(args: Array<String>) {
             logger.info("Starting Disbot v${Main().javaClass.`package`.implementationVersion} by zp4rker...")
 
             logger.info("Setting up...")
-            modLoader.loadModules() // load modules
             jda = buildJDA() // connect to jda
             // post jda-connect events
             logger.info("Setup complete!")

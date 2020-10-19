@@ -1,0 +1,16 @@
+name = "TestBot"
+version = "${project.version}"
+main = "com.zp4rker.testbot.Main"
+author = "zp4rker"
+
+[commands]
+    [commands.test]
+        aliases = [ "t", "tst" ]
+        usage = "%prefix%test"
+        description = "A simple test command."
+        permission = "MESSAGE_READ"
+
+    [commands.ping]
+        aliases = [ "png", "p" ]
+        usage = "%prefix%ping"
+        description = "Simple ping command"
