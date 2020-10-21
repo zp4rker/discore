@@ -1,9 +1,9 @@
 package com.zp4rker.disbot.console
 
-import com.zp4rker.disbot.Main
 import com.zp4rker.disbot.console.default.StopCommand
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
+import org.slf4j.LoggerFactory
 
 /**
  * @author zp4rker
@@ -12,13 +12,15 @@ import org.jline.terminal.TerminalBuilder
  */
 object Console : Thread() {
 
+    private val logger = LoggerFactory.getLogger("Disbot")
+
     init {
         // default commands
         ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye", "shutdown")
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
-            Main.logger.error("Encountered an exception!", exception)
+            logger.error("Encountered an exception!", exception)
         }
 
         // shutdown hook
@@ -31,7 +33,7 @@ object Console : Thread() {
     override fun run() {
         var command: String? = reader.readLine()?.toLowerCase()
         while (command != null && isRunning) {
-            if (!ConsoleCommandHandler.handleCommand(command)) Main.logger.warn("Unkown command. Type \"help\" for help.")
+            if (!ConsoleCommandHandler.handleCommand(command)) logger.warn("Unkown command. Type \"help\" for help.")
 
             if (isRunning) command = reader.readLine()?.toLowerCase()
         }
@@ -45,9 +47,9 @@ object Console : Thread() {
     fun shutdown() {
         isRunning = false
 
-        Main.logger.info("Stopping now...")
+        logger.info("Stopping now...")
         // run stop code
-        Main.logger.info("Goodbye!")
+        logger.info("Goodbye!")
     }
 
 }

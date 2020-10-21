@@ -5,17 +5,17 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import net.dv8tion.jda.api.hooks.SubscribeEvent
+import net.dv8tion.jda.api.hooks.ListenerAdapter
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
  * @author zp4rker
  */
-class CommandHandler(val prefix: String, helpCommand: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf()) {
+class CommandHandler(val prefix: String, helpCommand: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf()) : ListenerAdapter() {
 
     init {
-        registerCommand(HelpCommand(this))
+        if (helpCommand) registerCommand(HelpCommand(this))
     }
 
     private val async = Executors.newCachedThreadPool()
@@ -28,8 +28,7 @@ class CommandHandler(val prefix: String, helpCommand: Boolean = true, val comman
         commands[command.aliases[0]] = command
     }
 
-    @SubscribeEvent
-    fun handle(e: MessageReceivedEvent) {
+    override fun onMessageReceived(e: MessageReceivedEvent) {
         if (!e.isFromGuild) return // no need to handle DMs for now
 
         val member = e.member ?: return
