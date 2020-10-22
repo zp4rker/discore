@@ -1,7 +1,8 @@
 package com.zp4rker.disbot
 
 import com.zp4rker.disbot.command.CommandHandler
-import com.zp4rker.disbot.config.TomlFile
+import com.zp4rker.disbot.config.BotConfig
+import com.zp4rker.disbot.storage.TomlFile
 import com.zp4rker.disbot.console.Console
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
@@ -15,8 +16,8 @@ import org.slf4j.LoggerFactory
  */
 class Bot {
 
-    val config = TomlFile("config.toml", Bot::class.java.getResource("/config.toml").readText())
-    val cmdHandler: CommandHandler = CommandHandler(config.get("prefix"))
+    val config = BotConfig()
+    val cmdHandler: CommandHandler = CommandHandler(config.prefix)
     val logger: Logger
 
     val name: String
@@ -42,7 +43,7 @@ class Bot {
         val builder = BotBuilder()
         specs.invoke(builder)
 
-        JDABuilder.createDefault(config.get("token"), builder.intents).apply {
+        JDABuilder.createDefault(config.token, builder.intents).apply {
             setActivity(builder.activity)
 
             if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())

@@ -1,4 +1,4 @@
-package com.zp4rker.disbot.config
+package com.zp4rker.disbot.storage
 
 import com.github.jezza.Toml
 import com.github.jezza.TomlArray

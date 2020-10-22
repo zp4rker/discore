@@ -1,4 +1,4 @@
-package com.zp4rker.disbot.config
+package com.zp4rker.disbot.storage
 
 import java.io.File
 
