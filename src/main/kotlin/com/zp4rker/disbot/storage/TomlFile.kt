@@ -5,7 +5,6 @@ import com.github.jezza.TomlArray
 import com.github.jezza.TomlTable
 import java.io.File
 import java.io.InputStream
-import java.lang.StringBuilder
 import java.time.temporal.TemporalAccessor
 import java.time.temporal.TemporalQueries
 
@@ -16,9 +15,11 @@ import java.time.temporal.TemporalQueries
  */
 class TomlFile {
 
+    private val file: File?
     private val toml: TomlTable
 
     constructor(input: InputStream) {
+        file = null
         val string = input.reader().readText()
         toml = if (string.isEmpty()) TomlTable()
         else Toml.from(string.reader())
@@ -26,6 +27,7 @@ class TomlFile {
 
     constructor(fileName: String) {
         File(fileName).run {
+            file = this
             if (!exists()) createNewFile()
             toml = if (readText().isEmpty()) TomlTable()
             else Toml.from(inputStream())
@@ -34,16 +36,19 @@ class TomlFile {
 
     constructor(fileName: String, defaults: String) {
         File(fileName).run {
+            file = this
             if (!exists()) createNewFile()
             toml = if (readText().isEmpty()) Toml.from(defaults.reader())
             else Toml.from(inputStream())
         }
     }
 
-    fun write(file: File) {
-        if (!file.exists()) file.createNewFile()
-        val sb = StringBuilder().also { export(it, toml) }
-        file.writeText(sb.toString().trim())
+    fun save() {
+        if (file != null) {
+            if (!file.exists()) file.createNewFile()
+            val sb = StringBuilder().also { export(it, toml) }
+            file.writeText(sb.toString().trim())
+        }
     }
 
     private fun export(sb: StringBuilder, obj: Any) {

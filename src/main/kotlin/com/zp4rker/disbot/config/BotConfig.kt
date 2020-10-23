@@ -15,7 +15,7 @@ class BotConfig {
     init {
         val file = File("config.toml")
         if (file.readText().isBlank()) {
-            tomlFile.write(file)
+            tomlFile.save(file)
         }
     }
 
