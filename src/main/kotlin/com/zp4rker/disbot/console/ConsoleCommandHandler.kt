@@ -1,6 +1,6 @@
 package com.zp4rker.disbot.console
 
-import com.zp4rker.disbot.logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author zp4rker
@@ -8,6 +8,8 @@ import com.zp4rker.disbot.logger
  * Console command handler.
  */
 object ConsoleCommandHandler {
+
+    private val logger = LoggerFactory.getLogger("Disbot")
 
     private val commands: MutableMap<String, ConsoleCommand> = mutableMapOf()
 
