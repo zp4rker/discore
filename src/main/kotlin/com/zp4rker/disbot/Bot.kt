@@ -28,6 +28,7 @@ class Bot(name: String, prefix: String) {
 
             val bot = Bot(builder.name, builder.prefix)
             builder.commands.forEach(bot.cmdHandler::registerCommands)
+            if (builder.helpCommandEnabled) bot.cmdHandler.registerHelpCommand()
 
             Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
                 if (builder.activity != null) setActivity(builder.activity)
@@ -49,6 +50,7 @@ class Bot(name: String, prefix: String) {
         lateinit var prefix: String
 
         var commands: List<Command> = emptyList()
+        var helpCommandEnabled = true
 
         var activity: Activity? = null
         var intents: Int = GatewayIntent.DEFAULT

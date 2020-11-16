@@ -12,16 +12,16 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
-class CommandHandler(val prefix: String, helpCommand: Boolean = true, val commands: MutableMap<String, Command> = mutableMapOf()) : ListenerAdapter() {
-
-    init {
-        if (helpCommand) registerCommand(HelpCommand(this))
-    }
+class CommandHandler(val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) : ListenerAdapter() {
 
     private val async = Executors.newCachedThreadPool()
 
     fun registerCommands(vararg commands: Command) {
         commands.forEach { registerCommand(it) }
+    }
+
+    fun registerHelpCommand() {
+        registerCommand(HelpCommand(this))
     }
 
     private fun registerCommand(command: Command) {
