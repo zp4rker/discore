@@ -1,6 +1,7 @@
 package com.zp4rker.disbot.console
 
 import com.zp4rker.disbot.console.default.StopCommand
+import net.dv8tion.jda.api.JDA
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 import org.slf4j.LoggerFactory
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory
 object Console : Thread() {
 
     private val logger = LoggerFactory.getLogger("Disbot")
+    var jda: JDA? = null
 
     init {
         // default commands
@@ -48,7 +50,7 @@ object Console : Thread() {
         isRunning = false
 
         logger.info("Stopping now...")
-        // run stop code
+        jda?.shutdownNow()
         logger.info("Goodbye!")
     }
 

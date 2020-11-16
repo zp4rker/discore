@@ -50,7 +50,7 @@ class CommandHandler(val prefix: String, helpCommand: Boolean = true, val comman
             }
         }
 
-        val args = content.substring(label.length + 1).split(" ")
+        val args = content.substring(label.length).trimStart().split(" ").dropWhile { it == "" }
         if (command.maxArgs > 0 && command.maxArgs < args.size) {
             sendArgumentError(e.message, command)
             return

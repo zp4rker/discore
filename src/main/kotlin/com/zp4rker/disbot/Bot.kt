@@ -1,9 +1,9 @@
 package com.zp4rker.disbot
 
+import com.zp4rker.disbot.command.Command
 import com.zp4rker.disbot.command.CommandHandler
-import com.zp4rker.disbot.config.BotConfig
-import com.zp4rker.disbot.storage.TomlFile
 import com.zp4rker.disbot.console.Console
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -14,49 +14,44 @@ import org.slf4j.LoggerFactory
 /**
  * @author zp4rker
  */
-class Bot {
+class Bot(name: String, prefix: String) {
 
-    val config = BotConfig()
-    val cmdHandler: CommandHandler = CommandHandler(config.prefix)
-    val logger: Logger
+    private val cmdHandler: CommandHandler = CommandHandler(prefix)
+    val logger: Logger = LoggerFactory.getLogger(name)
 
-    val name: String
-    val version: String
-    val description: String?
-    val author: String?
+    companion object {
+        fun create(specs: BotBuilder.() -> Unit): Bot {
+            Console.start()
 
-    init {
-        val botInfo = TomlFile(Bot::class.java.getResourceAsStream("/bot.toml"))
+            val builder = BotBuilder()
+            specs.invoke(builder)
 
-        name = botInfo.get("name")
-        version = botInfo.get("version")
-        description = botInfo.get("description")
-        author = botInfo.get("author")
+            val bot = Bot(builder.name, builder.prefix)
+            builder.commands.forEach(bot.cmdHandler::registerCommands)
 
-        logger = LoggerFactory.getLogger(name)
-    }
+            Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
+                if (builder.activity != null) setActivity(builder.activity)
 
-    fun create(specs: BotBuilder.() -> Unit): Bot {
-        // setup phase - separate function?
-        Console.start()
+                if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
+                else disableCache(CacheFlag.values().toList())
 
-        val builder = BotBuilder()
-        specs.invoke(builder)
+                addEventListeners(bot.cmdHandler)
+            }.build().awaitStatus(JDA.Status.CONNECTED)
 
-        JDABuilder.createDefault(config.token, builder.intents).apply {
-            setActivity(builder.activity)
-
-            if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
-
-            addEventListeners(cmdHandler)
-        }.build()
-
-        return this
+            return bot
+        }
     }
 
     class BotBuilder {
-        var activity: Activity = Activity.playing("")
-        var intents: List<GatewayIntent> = GatewayIntent.values().toList()
+        var name: String = "Disbot"
+
+        lateinit var token: String
+        lateinit var prefix: String
+
+        var commands: List<Command> = emptyList()
+
+        var activity: Activity? = null
+        var intents: Int = GatewayIntent.DEFAULT
         var cacheEnabled = false
     }
 }
