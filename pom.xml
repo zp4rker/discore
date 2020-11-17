@@ -6,7 +6,7 @@
 
     <groupId>com.zp4rker</groupId>
     <artifactId>disbot</artifactId>
-    <version>1.1.5-release</version>
+    <version>1.1.6-release</version>
 
     <properties>
         <kotlin.version>1.4.10</kotlin.version>
@@ -137,6 +137,7 @@
                         </manifest>
                         <manifestEntries>
                             <JDA-Version>${jda.version}</JDA-Version>
+                            <Disbot-Version>${project.version}</Disbot-Version>
                         </manifestEntries>
                     </archive>
                 </configuration>
