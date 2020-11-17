@@ -3,17 +3,13 @@ package com.zp4rker.disbot
 import com.zp4rker.disbot.command.Command
 import com.zp4rker.disbot.command.CommandHandler
 import com.zp4rker.disbot.console.Console
-import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
-import net.dv8tion.jda.api.hooks.AnnotatedEventManager
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.JarURLConnection
-import java.net.URL
 
 /**
  * @author zp4rker
@@ -24,11 +20,14 @@ class Bot(builder: BotBuilder) {
     val logger: Logger = LoggerFactory.getLogger(builder.name)
 
     init {
-        globalLogger.info("=".repeat(30))
-        globalLogger.info("Starting ${builder.name} v${builder.version}")
-        globalLogger.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
-        globalLogger.info("Utilising JDA v${jdaVersion}")
-        globalLogger.info("=".repeat(30))
+        val disbotVersion = MANIFEST.getValue("Disbot-Version")
+        val jdaVersion = MANIFEST.getValue("JDA-Version")
+
+        LOGGER.info("=".repeat(30))
+        LOGGER.info("Starting ${builder.name} v${builder.version}")
+        LOGGER.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
+        LOGGER.info("Utilising JDA v${jdaVersion}")
+        LOGGER.info("=".repeat(30))
 
 
         Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {

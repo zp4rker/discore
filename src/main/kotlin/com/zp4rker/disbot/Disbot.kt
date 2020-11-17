@@ -4,16 +4,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.net.JarURLConnection
 import java.net.URL
+import java.util.jar.Attributes
 
 /**
  * @author zp4rker
  */
 
-val disbotVersion: String = Bot::class.java.`package`.implementationVersion
-val jdaVersion: String = run {
+val MANIFEST: Attributes = run {
     val url = Bot::class.java.protectionDomain.codeSource.location.let { URL("jar:${it.toExternalForm()}!/") }
     val juc = url.openConnection() as JarURLConnection
-    val mf = juc.mainAttributes
-    mf.getValue("JDA-Version")
+    juc.mainAttributes
 }
-val globalLogger: Logger = LoggerFactory.getLogger("Disbot")
+val LOGGER: Logger = LoggerFactory.getLogger("Disbot")
