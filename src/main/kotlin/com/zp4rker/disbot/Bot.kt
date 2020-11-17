@@ -3,6 +3,7 @@ package com.zp4rker.disbot
 import com.zp4rker.disbot.command.Command
 import com.zp4rker.disbot.command.CommandHandler
 import com.zp4rker.disbot.console.Console
+import com.zp4rker.disbot.extenstions.separator
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
@@ -23,11 +24,11 @@ class Bot(builder: BotBuilder) {
         val disbotVersion = MANIFEST.getValue("Disbot-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
-        LOGGER.info("=".repeat(30))
+        LOGGER.separator()
         LOGGER.info("Starting ${builder.name} v${builder.version}")
         LOGGER.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
         LOGGER.info("Utilising JDA v${jdaVersion}")
-        LOGGER.info("=".repeat(30))
+        LOGGER.separator()
 
 
         Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
