@@ -29,7 +29,7 @@ class Bot(builder: BotBuilder) {
             else disableCache(CacheFlag.values().toList())
 
             setEventManager(InterfacedEventManager())
-        }.build().awaitStatus(JDA.Status.CONNECTED)
+        }.build()
 
         cmdHandler = CommandHandler(this, builder.prefix)
 
