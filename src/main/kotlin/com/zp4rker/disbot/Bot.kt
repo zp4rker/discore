@@ -12,6 +12,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.JarURLConnection
+import java.net.URL
 
 /**
  * @author zp4rker
@@ -22,6 +24,13 @@ class Bot(builder: BotBuilder) {
     val logger: Logger = LoggerFactory.getLogger(builder.name)
 
     init {
+        globalLogger.info("=".repeat(30))
+        globalLogger.info("Starting ${builder.name} v${builder.version}")
+        globalLogger.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
+        globalLogger.info("Utilising JDA v${jdaVersion}")
+        globalLogger.info("=".repeat(30))
+
+
         Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
             if (builder.activity != null) setActivity(builder.activity)
 
@@ -49,6 +58,7 @@ class Bot(builder: BotBuilder) {
 
     class BotBuilder {
         var name: String = "Disbot"
+        var version: String = "1.0.0"
 
         lateinit var token: String
         lateinit var prefix: String

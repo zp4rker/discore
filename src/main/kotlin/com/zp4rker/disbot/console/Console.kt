@@ -1,10 +1,10 @@
 package com.zp4rker.disbot.console
 
 import com.zp4rker.disbot.console.default.StopCommand
+import com.zp4rker.disbot.globalLogger
 import net.dv8tion.jda.api.JDA
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
-import org.slf4j.LoggerFactory
 
 /**
  * @author zp4rker
@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory
  * Thread for handling console commands.
  */
 object Console : Thread() {
-
-    private val logger = LoggerFactory.getLogger("Disbot")
+    
     var jda: JDA? = null
 
     init {
@@ -22,11 +21,10 @@ object Console : Thread() {
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
-            logger.error("Encountered an exception!", exception)
+            globalLogger.error("Encountered an exception!", exception)
         }
 
         // shutdown hook
-
     }
 
     private var isRunning = false
@@ -35,7 +33,7 @@ object Console : Thread() {
     override fun run() {
         var command: String? = reader.readLine()?.toLowerCase()
         while (command != null && isRunning) {
-            if (!ConsoleCommandHandler.handleCommand(command)) logger.warn("Unkown command. Type \"help\" for help.")
+            if (!ConsoleCommandHandler.handleCommand(command)) globalLogger.warn("Unkown command. Type \"help\" for help.")
 
             if (isRunning) command = reader.readLine()?.toLowerCase()
         }
@@ -49,9 +47,9 @@ object Console : Thread() {
     fun shutdown() {
         isRunning = false
 
-        logger.info("Stopping now...")
+        globalLogger.info("Stopping now...")
         jda?.shutdownNow()
-        logger.info("Goodbye!")
+        globalLogger.info("Goodbye!")
     }
 
 }

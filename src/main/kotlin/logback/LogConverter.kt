@@ -1,5 +1,6 @@
 package logback
 
+import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.pattern.MessageConverter
 import ch.qos.logback.classic.spi.ILoggingEvent
 
@@ -11,10 +12,10 @@ import ch.qos.logback.classic.spi.ILoggingEvent
 class LogConverter : MessageConverter() {
 
     override fun convert(event: ILoggingEvent): String {
-        return if (event.loggerName == "Disbot") {
+        return if (event.level != Level.WARN && event.level != Level.ERROR) {
             super.convert(event)
         } else {
-            "[${event.loggerName}] ${super.convert(event)}"
+            "${event.level} ${super.convert(event)}"
         }
     }
 
