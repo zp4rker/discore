@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
-class CommandHandler(val bot: Bot, val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) {
+class CommandHandler(private val bot: Bot, val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) {
 
     private val async = Executors.newCachedThreadPool()
 
