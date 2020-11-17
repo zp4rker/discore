@@ -6,6 +6,7 @@ import com.zp4rker.disbot.console.Console
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
@@ -36,6 +37,7 @@ class Bot(name: String, prefix: String) {
                 if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
                 else disableCache(CacheFlag.values().toList())
 
+                setEventManager(AnnotatedEventManager())
                 addEventListeners(bot.cmdHandler)
             }.build().awaitStatus(JDA.Status.CONNECTED)
 
