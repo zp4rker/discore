@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager
+import net.dv8tion.jda.api.hooks.InterfacedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.slf4j.Logger
@@ -15,33 +16,34 @@ import org.slf4j.LoggerFactory
 /**
  * @author zp4rker
  */
-class Bot(name: String, prefix: String) {
+class Bot(builder: BotBuilder) {
 
-    private val cmdHandler: CommandHandler = CommandHandler(prefix)
-    val logger: Logger = LoggerFactory.getLogger(name)
+    private val cmdHandler: CommandHandler
+    val logger: Logger = LoggerFactory.getLogger(builder.name)
+
+    init {
+        Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
+            if (builder.activity != null) setActivity(builder.activity)
+
+            if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
+            else disableCache(CacheFlag.values().toList())
+
+            setEventManager(InterfacedEventManager())
+        }.build().awaitStatus(JDA.Status.CONNECTED)
+
+        cmdHandler = CommandHandler(this, builder.prefix)
+
+        builder.commands.forEach(cmdHandler::registerCommands)
+        if (builder.helpCommandEnabled) cmdHandler.registerHelpCommand()
+    }
 
     companion object {
         fun create(specs: BotBuilder.() -> Unit): Bot {
             Console.start()
 
-            val builder = BotBuilder()
-            specs.invoke(builder)
+            val builder = BotBuilder().also(specs)
 
-            val bot = Bot(builder.name, builder.prefix)
-            builder.commands.forEach(bot.cmdHandler::registerCommands)
-            if (builder.helpCommandEnabled) bot.cmdHandler.registerHelpCommand()
-
-            Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
-                if (builder.activity != null) setActivity(builder.activity)
-
-                if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
-                else disableCache(CacheFlag.values().toList())
-
-                setEventManager(AnnotatedEventManager())
-                addEventListeners(bot.cmdHandler)
-            }.build().awaitStatus(JDA.Status.CONNECTED)
-
-            return bot
+            return Bot(builder)
         }
     }
 
