@@ -1,7 +1,8 @@
 package com.zp4rker.disbot.command
 
+import com.zp4rker.disbot.API
 import com.zp4rker.disbot.Bot
-import com.zp4rker.disbot.extenstions.on
+import com.zp4rker.disbot.extenstions.event.on
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
@@ -30,49 +31,49 @@ class CommandHandler(private val bot: Bot, val prefix: String, val commands: Mut
     }
 
     init {
-        bot.on<MessageReceivedEvent> {
-            if (!isFromGuild) return@on // no need to handle DMs for now
+        API.on<MessageReceivedEvent> {
+            if (!it.isFromGuild) return@on // no need to handle DMs for now
 
-            val member = member ?: return@on
+            val member = it.member ?: return@on
 
-            if (!message.contentRaw.startsWith(prefix)) return@on
+            if (!it.message.contentRaw.startsWith(prefix)) return@on
 
-            val content = message.contentRaw.substring(prefix.length)
+            val content = it.message.contentRaw.substring(prefix.length)
             if (commands.none { content.startsWith(content) }) return@on
 
             val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return@on
             val label = command.aliases.find { content.startsWith(it) }!!
             if (command.permission != Permission.MESSAGE_READ && !member.hasPermission(command.permission)) {
-                sendPermissionError(message)
+                sendPermissionError(it.message)
                 return@on
             } else if (command.roles.isNotEmpty()) {
                 if (!member.hasPermission(Permission.ADMINISTRATOR) && member.roles.none { command.roles.contains(it.idLong) }) {
-                    sendPermissionError(message)
+                    sendPermissionError(it.message)
                     return@on
                 }
             }
 
             val args = content.substring(label.length).trimStart().split(" ").dropWhile { it == "" }
             if (command.maxArgs > 0 && command.maxArgs < args.size) {
-                sendArgumentError(message, command)
+                sendArgumentError(it.message, command)
                 return@on
             } else if (command.minArgs > 0 && command.minArgs > args.size) {
-                sendArgumentError(message, command)
+                sendArgumentError(it.message, command)
                 return@on
-            } else if (command.mentionedMembers > 0 && command.mentionedMembers != message.mentionedMembers.size) {
-                sendArgumentError(message, command)
+            } else if (command.mentionedMembers > 0 && command.mentionedMembers != it.message.mentionedMembers.size) {
+                sendArgumentError(it.message, command)
                 return@on
-            } else if (command.mentionedRoles > 0 && command.mentionedRoles != message.mentionedRoles.size) {
-                sendArgumentError(message, command)
+            } else if (command.mentionedRoles > 0 && command.mentionedRoles != it.message.mentionedRoles.size) {
+                sendArgumentError(it.message, command)
                 return@on
-            } else if (command.mentionedChannels > 0 && command.mentionedChannels != message.mentionedChannels.size) {
-                sendArgumentError(message, command)
+            } else if (command.mentionedChannels > 0 && command.mentionedChannels != it.message.mentionedChannels.size) {
+                sendArgumentError(it.message, command)
                 return@on
             }
 
-            if (command.autoDelete) message.delete().queue()
+            if (command.autoDelete) it.message.delete().queue()
 
-            async.submit { command.handle(args.toTypedArray(), message, message.textChannel) }
+            async.submit { command.handle(args.toTypedArray(), it.message, it.message.textChannel) }
         }
     }
 

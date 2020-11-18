@@ -1,5 +1,6 @@
 package com.zp4rker.disbot.console
 
+import com.zp4rker.disbot.API
 import com.zp4rker.disbot.console.default.StopCommand
 import com.zp4rker.disbot.LOGGER
 import net.dv8tion.jda.api.JDA
@@ -12,9 +13,6 @@ import org.jline.terminal.TerminalBuilder
  * Thread for handling console commands.
  */
 object Console : Thread() {
-    
-    var jda: JDA? = null
-
     init {
         // default commands
         ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye", "shutdown")
@@ -48,7 +46,7 @@ object Console : Thread() {
         isRunning = false
 
         LOGGER.info("Stopping now...")
-        jda?.shutdownNow()
+        API.shutdownNow()
         LOGGER.info("Goodbye!")
     }
 

@@ -31,7 +31,7 @@ class Bot(builder: BotBuilder) {
         LOGGER.separator()
 
 
-        Console.jda = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
+        API = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
             if (builder.activity != null) setActivity(builder.activity)
 
             if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
@@ -44,6 +44,10 @@ class Bot(builder: BotBuilder) {
 
         builder.commands.forEach(cmdHandler::registerCommands)
         if (builder.helpCommandEnabled) cmdHandler.registerHelpCommand()
+    }
+
+    fun addEventListener(listener: Any) {
+        API.addEventListener(listener)
     }
 
     companion object {
