@@ -1,11 +1,14 @@
 package com.zp4rker.disbot.extenstions.event
 
 import com.zp4rker.disbot.API
+import com.zp4rker.disbot.LOGGER
 import net.dv8tion.jda.api.entities.*
+import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.channel.text.GenericTextChannelEvent
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent
 import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
+import net.dv8tion.jda.api.events.message.guild.GenericGuildMessageEvent
 import net.dv8tion.jda.api.events.user.GenericUserEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import java.util.concurrent.TimeUnit
@@ -14,82 +17,73 @@ import java.util.concurrent.TimeUnit
  * @author zp4rker
  */
 
-/* User events */
-inline fun <reified T: GenericUserEvent> User.on(crossinline action: EventListener.(T) -> Unit) = API.on<T> {
-    if (it.user == this@on) action(it)
+inline fun <reified T: GenericEvent> ISnowflake.on(noinline action: EventListener.(T) -> Unit) = API.on<T> {
+    runAction(this@on, it, this, action)
 }
 
-inline fun <reified T: GenericUserEvent> User.expect(
+inline fun <reified T: GenericEvent> ISnowflake.expect(
         amount: Int = 1,
         crossinline predicate: (T) -> Boolean = { true },
         timeout: Long = 0,
         timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
         crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
+        noinline action: EventListener.(T) -> Unit
 ) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
-    if (it.user == this@expect) action(it)
+    runAction(this@expect, it, this, action)
 }
 
-/* Member events */
-inline fun <reified T: GenericGuildMemberEvent> Member.on(crossinline action: EventListener.(T) -> Unit) = API.on<T> {
-    if (it.member == this@on) action(it)
-}
+inline fun <reified T: GenericEvent> runAction(
+        entity: ISnowflake,
+        event: T,
+        eventListener: EventListener,
+        noinline action: EventListener.(T) -> Unit
+) {
+    when(entity) {
+        is User -> {
+            if (event is GenericUserEvent) {
+                if (event.user == entity) action(eventListener, event)
+            } else {
+                LOGGER.warn("Unrecognised event for entity type!")
+                eventListener.unregister()
+            }
+        }
 
-inline fun <reified T: GenericGuildMemberEvent> Member.expect(
-        amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
-        timeout: Long = 0,
-        timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
-        crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
-) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
-    if (it.member == this@expect) action(it)
-}
+        is Member -> {
+            if (event is GenericGuildMemberEvent) {
+                if (event.member == entity) action(eventListener, event)
+            } else {
+                LOGGER.warn("Unrecognised event for entity type!")
+                eventListener.unregister()
+            }
+        }
 
-/* Message events */
-inline fun <reified T: GenericMessageEvent> Message.on(crossinline action: EventListener.(T) -> Unit) = API.on<T> {
-    if (it.messageId == this@on.id) action(it)
-}
+        is Message -> {
+            if (event is GenericMessageEvent) {
+                if (event.messageId == entity.id) action(eventListener, event)
+            } else {
+                LOGGER.warn("Unrecognised event for entity type!")
+                eventListener.unregister()
+            }
+        }
 
-inline fun <reified T: GenericMessageEvent> Message.expect(
-        amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
-        timeout: Long = 0,
-        timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
-        crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
-) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
-    if (it.messageId == this@expect.id) action(it)
-}
+        is TextChannel -> {
+            if (event is GenericTextChannelEvent) {
+                if (event.channel == entity) action(eventListener, event)
+            } else if (event is GenericGuildMessageEvent) {
+                if (event.channel == entity) action(eventListener, event)
+            } else {
+                LOGGER.warn("Unrecognised event for entity type!")
+                eventListener.unregister()
+            }
+        }
 
-/* Text Channel events */
-inline fun <reified T: GenericTextChannelEvent> TextChannel.on(crossinline action: EventListener.(T) -> Unit) = API.on<T> {
-    if (it.channel == this@on) action(it)
-}
-
-inline fun <reified T: GenericTextChannelEvent> TextChannel.expect(
-        amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
-        timeout: Long = 0,
-        timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
-        crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
-) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
-    if (it.channel == this@expect) action(it)
-}
-
-/* Guild events */
-inline fun <reified T: GenericGuildEvent> Guild.on(crossinline action: EventListener.(T) -> Unit) = API.on<T> {
-    if (it.guild == this@on) action(it)
-}
-
-inline fun <reified T: GenericGuildEvent> Guild.expect(
-        amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
-        timeout: Long = 0,
-        timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
-        crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
-) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
-    if (it.guild == this@expect) action(it)
+        is Guild -> {
+            if (event is GenericGuildEvent) {
+                if (event.guild == entity) action(eventListener, event)
+            } else {
+                LOGGER.warn("Unrecognised event for entity type!")
+                eventListener.unregister()
+            }
+        }
+    }
 }

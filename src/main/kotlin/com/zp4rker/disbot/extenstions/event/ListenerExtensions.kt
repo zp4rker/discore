@@ -37,7 +37,7 @@ inline fun <reified T : GenericEvent> JDA.expect(
         timeout: Long = 0,
         timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
         crossinline timeoutAction: () -> Unit = {},
-        crossinline action: (T) -> Unit
+        crossinline action: EventListener.(T) -> Unit
 ): ExtendedListener<T> {
     var callCount = 0
     val listener = on<T> {
