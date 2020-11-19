@@ -29,6 +29,10 @@ inline fun <reified T : GenericEvent> JDA.on(crossinline action: EventListener.(
     addEventListener(it)
 }
 
+inline fun <reified T: GenericEvent> JDA.on(crossinline predicate: (T) -> Boolean, crossinline action: EventListener.(T) -> Unit) = on<T> {
+    if (predicate(it)) action(it)
+}
+
 val expectationPool: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
 
 inline fun <reified T : GenericEvent> JDA.expect(

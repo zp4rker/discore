@@ -21,6 +21,10 @@ inline fun <reified T: GenericEvent> ISnowflake.on(noinline action: EventListene
     runAction(this@on, it, this, action)
 }
 
+inline fun <reified T: GenericEvent> ISnowflake.on(crossinline predicate: (T) -> Boolean = { true }, noinline action: EventListener.(T) -> Unit) = API.on(predicate) {
+    runAction(this@on, it, this, action)
+}
+
 inline fun <reified T: GenericEvent> ISnowflake.expect(
         amount: Int = 1,
         crossinline predicate: (T) -> Boolean = { true },
