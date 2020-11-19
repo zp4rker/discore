@@ -18,4 +18,7 @@ val MANIFEST: Attributes = run {
     val juc = url.openConnection() as JarURLConnection
     juc.mainAttributes
 }
+
 val LOGGER: Logger = LoggerFactory.getLogger("Disbot")
+
+const val HIDDEN_EMBED_COLOUR = 0x002f3136

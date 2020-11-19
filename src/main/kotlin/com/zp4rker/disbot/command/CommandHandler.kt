@@ -2,6 +2,8 @@ package com.zp4rker.disbot.command
 
 import com.zp4rker.disbot.API
 import com.zp4rker.disbot.Bot
+import com.zp4rker.disbot.HIDDEN_EMBED_COLOUR
+import com.zp4rker.disbot.extenstions.embed
 import com.zp4rker.disbot.extenstions.event.on
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
@@ -78,22 +80,22 @@ class CommandHandler(private val bot: Bot, val prefix: String, val commands: Mut
     }
 
     private fun sendArgumentError(message: Message, command: Command) {
-        val embed = EmbedBuilder().run {
-            setTitle("Invalid arguments")
-            setDescription("You didn't provide the correct arguments, please try again. Correct usage: `${command.usage}`")
-            setColor(0x353940)
-            build()
+        val embed = embed {
+            title {
+                text = "Invalid arguments"
+            }
+            description = "You didn't provide the correct arguments, please try again. Correct usage: `${command.usage}`"
         }
 
         sendError(message, embed)
     }
 
     private fun sendPermissionError(message: Message) {
-        val embed = EmbedBuilder().run {
-            setTitle("Invalid permissions")
-            setDescription("Sorry, but you dont have permission to run that command.")
-            setColor(0x353940)
-            build()
+        val embed = embed {
+            title {
+                text = "Invalid permissions"
+                description = "Sorry, but you don't have permission to run that command."
+            }
         }
 
         sendError(message, embed)
