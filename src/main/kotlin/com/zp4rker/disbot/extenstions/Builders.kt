@@ -2,6 +2,8 @@ package com.zp4rker.disbot.extenstions
 
 import com.zp4rker.disbot.HIDDEN_EMBED_COLOUR
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.MessageEmbed
+import org.json.JSONObject
 import java.time.temporal.TemporalAccessor
 
 /**
@@ -125,3 +127,7 @@ fun embed(
     KEmbedBuilder(this).also(builder)
     build()
 }
+
+fun MessageEmbed.toJson() = JSONObject(toData().toString())
+
+fun MessageEmbed.toWebhookContent() = """{ "embeds": [${toJson()}] }"""
