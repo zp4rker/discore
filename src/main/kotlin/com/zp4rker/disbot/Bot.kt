@@ -6,72 +6,65 @@ import com.zp4rker.disbot.console.Console
 import com.zp4rker.disbot.extenstions.separator
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
  * @author zp4rker
  */
-class Bot(builder: BotBuilder) {
 
-    private val cmdHandler: CommandHandler
-    val logger: Logger = LoggerFactory.getLogger(builder.name)
+class Bot {
 
-    init {
+    var name: String = "Disbot"
+    var version: String = "1.0.0"
+
+    lateinit var token: String
+    lateinit var prefix: String
+
+    private val cmdHandler = CommandHandler(prefix)
+    var helpCommandEnabled = true
+
+    var activity: Activity? = null
+    var intents: Int = GatewayIntent.DEFAULT
+    var cacheEnabled = false
+
+    var quit: () -> Unit = {}
+
+    private val jdaBuilder = JDABuilder.createDefault(token, GatewayIntent.getIntents(intents))
+
+    fun build() {
         val disbotVersion = MANIFEST.getValue("Disbot-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
         LOGGER.separator()
-        LOGGER.info("Starting ${builder.name} v${builder.version}")
+        LOGGER.info("Starting $name v$version")
         LOGGER.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()
 
 
-        API = JDABuilder.createDefault(builder.token, GatewayIntent.getIntents(builder.intents)).apply {
-            if (builder.activity != null) setActivity(builder.activity)
+        API = jdaBuilder.apply {
+            if (activity != null) setActivity(activity)
 
-            if (builder.cacheEnabled) enableCache(CacheFlag.values().toList())
+            if (cacheEnabled) enableCache(CacheFlag.values().toList())
             else disableCache(CacheFlag.values().toList())
 
             setEventManager(InterfacedEventManager())
         }.build()
 
-        cmdHandler = CommandHandler(this, builder.prefix)
+        if (helpCommandEnabled) cmdHandler.registerHelpCommand()
 
-        builder.commands.forEach(cmdHandler::registerCommands)
-        if (builder.helpCommandEnabled) cmdHandler.registerHelpCommand()
+        NEWBOT = this
     }
 
-    fun addEventListener(listener: Any) {
-        API.addEventListener(listener)
-    }
+    fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)
+    fun addEventListeners(vararg listeners: EventListener) = jdaBuilder.addEventListeners(*listeners)
 
-    companion object {
-        fun create(specs: BotBuilder.() -> Unit): Bot {
-            Console.start()
+}
 
-            val builder = BotBuilder().also(specs)
-
-            return Bot(builder)
-        }
-    }
-
-    class BotBuilder {
-        var name: String = "Disbot"
-        var version: String = "1.0.0"
-
-        lateinit var token: String
-        lateinit var prefix: String
-
-        var commands: List<Command> = emptyList()
-        var helpCommandEnabled = true
-
-        var activity: Activity? = null
-        var intents: Int = GatewayIntent.DEFAULT
-        var cacheEnabled = false
-    }
+fun bot(builder: Bot.() -> Unit): Bot {
+    Console.start()
+    return Bot().also(builder).also { it.build() }
 }

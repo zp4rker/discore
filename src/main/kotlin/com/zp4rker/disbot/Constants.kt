@@ -12,13 +12,12 @@ import java.util.jar.Attributes
  */
 
 lateinit var API: JDA
+lateinit var NEWBOT: Bot
 
-val MANIFEST: Attributes = run {
-    val url = Bot::class.java.protectionDomain.codeSource.location.let { URL("jar:${it.toExternalForm()}!/") }
-    val juc = url.openConnection() as JarURLConnection
-    juc.mainAttributes
-}
+val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSource.location)
 
 val LOGGER: Logger = LoggerFactory.getLogger("Disbot")
 
 const val HIDDEN_EMBED_COLOUR = 0x002f3136
+
+fun getManifest(url: URL): Attributes = with(URL("jar:${url.toExternalForm()}!/").openConnection() as JarURLConnection) { mainAttributes }

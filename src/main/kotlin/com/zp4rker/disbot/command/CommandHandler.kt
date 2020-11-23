@@ -1,11 +1,8 @@
 package com.zp4rker.disbot.command
 
 import com.zp4rker.disbot.API
-import com.zp4rker.disbot.Bot
-import com.zp4rker.disbot.HIDDEN_EMBED_COLOUR
 import com.zp4rker.disbot.extenstions.embed
 import com.zp4rker.disbot.extenstions.event.on
-import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -16,7 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
-class CommandHandler(private val bot: Bot, val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) {
+class CommandHandler(val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) {
 
     private val async = Executors.newCachedThreadPool()
 

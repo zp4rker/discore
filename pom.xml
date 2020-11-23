@@ -6,11 +6,11 @@
 
     <groupId>com.zp4rker</groupId>
     <artifactId>disbot</artifactId>
-    <version>1.2.2-release</version>
+    <version>1.3.0-release</version>
 
     <properties>
         <kotlin.version>1.4.10</kotlin.version>
-        <jda.version>4.2.0_217</jda.version>
+        <jda.version>4.2.0_221</jda.version>
         <github.global.server>github</github.global.server>
     </properties>
 
