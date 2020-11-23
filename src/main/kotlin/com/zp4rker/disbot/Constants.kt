@@ -12,7 +12,7 @@ import java.util.jar.Attributes
  */
 
 lateinit var API: JDA
-lateinit var NEWBOT: Bot
+lateinit var BOT: Bot
 
 val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSource.location)
 

@@ -75,7 +75,7 @@ class Bot {
         if (helpCommandEnabled) cmdHandler.registerHelpCommand()
         cmdHandler.registerCommands(*commands)
 
-        NEWBOT = this
+        BOT = this
     }
 
     fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)

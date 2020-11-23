@@ -1,10 +1,9 @@
 package com.zp4rker.disbot.console
 
 import com.zp4rker.disbot.API
-import com.zp4rker.disbot.console.default.StopCommand
+import com.zp4rker.disbot.BOT
 import com.zp4rker.disbot.LOGGER
-import com.zp4rker.disbot.NEWBOT
-import net.dv8tion.jda.api.JDA
+import com.zp4rker.disbot.console.default.StopCommand
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.TerminalBuilder
 
@@ -47,7 +46,7 @@ object Console : Thread() {
         isRunning = false
 
         LOGGER.info("Stopping now...")
-        NEWBOT.quit()
+        BOT.quit()
         API.shutdownNow()
         LOGGER.info("Goodbye!")
     }
