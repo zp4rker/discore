@@ -21,18 +21,18 @@ inline fun <reified T: GenericEvent> ISnowflake.on(noinline action: EventListene
     runAction(this@on, it, this, action)
 }
 
-inline fun <reified T: GenericEvent> ISnowflake.on(crossinline predicate: (T) -> Boolean = { true }, noinline action: EventListener.(T) -> Unit) = API.on(predicate) {
+inline fun <reified T: GenericEvent> ISnowflake.on(crossinline predicate: Predicate<T> = { true }, noinline action: EventListener.(T) -> Unit) = API.on(predicate) {
     runAction(this@on, it, this, action)
 }
 
 inline fun <reified T: GenericEvent> ISnowflake.expect(
+        crossinline predicate: Predicate<T> = { true },
         amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
         timeout: Long = 0,
         timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
         crossinline timeoutAction: () -> Unit = {},
         noinline action: EventListener.(T) -> Unit
-) = API.expect(amount, predicate, timeout, timeoutUnit, timeoutAction) {
+) = API.expect(predicate, amount, timeout, timeoutUnit, timeoutAction) {
     runAction(this@expect, it, this, action)
 }
 

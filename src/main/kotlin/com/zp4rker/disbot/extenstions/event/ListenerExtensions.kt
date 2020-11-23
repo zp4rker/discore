@@ -15,6 +15,8 @@ interface ExtendedListener<in T : GenericEvent> : EventListener {
     override fun onEvent(event: GenericEvent)
 }
 
+typealias Predicate<T> = (T) -> Boolean
+
 inline fun <reified T : GenericEvent> listener(crossinline action: EventListener.(T) -> Unit) = object : ExtendedListener<T> {
     override fun onEvent(event: GenericEvent) {
         if (event is T) action(event)
@@ -29,15 +31,15 @@ inline fun <reified T : GenericEvent> JDA.on(crossinline action: EventListener.(
     addEventListener(it)
 }
 
-inline fun <reified T: GenericEvent> JDA.on(crossinline predicate: (T) -> Boolean, crossinline action: EventListener.(T) -> Unit) = on<T> {
+inline fun <reified T: GenericEvent> JDA.on(crossinline predicate: Predicate<T>, crossinline action: EventListener.(T) -> Unit) = on<T> {
     if (predicate(it)) action(it)
 }
 
 val expectationPool: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
 
 inline fun <reified T : GenericEvent> JDA.expect(
+        crossinline predicate: Predicate<T> = { true },
         amount: Int = 1,
-        crossinline predicate: (T) -> Boolean = { true },
         timeout: Long = 0,
         timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
         crossinline timeoutAction: () -> Unit = {},
