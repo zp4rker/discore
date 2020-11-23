@@ -6,7 +6,7 @@
 
     <groupId>com.zp4rker</groupId>
     <artifactId>disbot</artifactId>
-    <version>1.3.3-release</version>
+    <version>1.3.5-release</version>
 
     <properties>
         <kotlin.version>1.4.10</kotlin.version>

@@ -20,28 +20,37 @@ import org.slf4j.LoggerFactory
 class Bot {
 
     var name: String = "Disbot"
-    set(value) {
-        field = value
-        logger = LoggerFactory.getLogger(name)
-    }
+        set(value) {
+            field = value
+            logger = LoggerFactory.getLogger(name)
+        }
 
     var version: String = "1.0.0"
 
-    lateinit var token: String
-    lateinit var prefix: String
+    var token: String = "empty"
+        set(value) {
+            field = value
+            jdaBuilder = JDABuilder.createDefault(value, GatewayIntent.getIntents(intents))
+        }
+    var prefix: String = "/"
 
     var logger: Logger = LoggerFactory.getLogger(name)
 
-    private val cmdHandler = CommandHandler(prefix)
+    private lateinit var cmdHandler: CommandHandler
     var helpCommandEnabled = true
+    var commands: Array<Command> = arrayOf()
 
     var activity: Activity? = null
     var intents: Int = GatewayIntent.DEFAULT
+        set(value) {
+            field = value
+            jdaBuilder = JDABuilder.createDefault(token, GatewayIntent.getIntents(value))
+        }
     var cacheEnabled = false
 
     var quit: () -> Unit = {}
 
-    private val jdaBuilder = JDABuilder.createDefault(token, GatewayIntent.getIntents(intents))
+    private lateinit var jdaBuilder: JDABuilder
 
     fun build() {
         val disbotVersion = MANIFEST.getValue("Disbot-Version")
@@ -62,7 +71,9 @@ class Bot {
             setEventManager(InterfacedEventManager())
         }.build()
 
+        cmdHandler = CommandHandler(prefix)
         if (helpCommandEnabled) cmdHandler.registerHelpCommand()
+        cmdHandler.registerCommands(*commands)
 
         NEWBOT = this
     }
