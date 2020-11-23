@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author zp4rker
@@ -22,6 +24,8 @@ class Bot {
 
     lateinit var token: String
     lateinit var prefix: String
+
+    lateinit var logger: Logger
 
     private val cmdHandler = CommandHandler(prefix)
     var helpCommandEnabled = true
@@ -44,6 +48,7 @@ class Bot {
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()
 
+        logger = LoggerFactory.getLogger(name)
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
