@@ -20,12 +20,17 @@ import org.slf4j.LoggerFactory
 class Bot {
 
     var name: String = "Disbot"
+    set(value) {
+        field = value
+        logger = LoggerFactory.getLogger(name)
+    }
+
     var version: String = "1.0.0"
 
     lateinit var token: String
     lateinit var prefix: String
 
-    lateinit var logger: Logger
+    var logger: Logger = LoggerFactory.getLogger(name)
 
     private val cmdHandler = CommandHandler(prefix)
     var helpCommandEnabled = true
@@ -47,8 +52,6 @@ class Bot {
         LOGGER.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()
-
-        logger = LoggerFactory.getLogger(name)
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
