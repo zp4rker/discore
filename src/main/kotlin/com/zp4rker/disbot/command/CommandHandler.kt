@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
-class CommandHandler(val prefix: String, val commands: MutableMap<String, Command> = mutableMapOf()) {
+class CommandHandler(val prefix: String, val commands: MutableList<Command> = mutableListOf()) {
 
     private val async = Executors.newCachedThreadPool()
 
@@ -26,53 +26,53 @@ class CommandHandler(val prefix: String, val commands: MutableMap<String, Comman
     }
 
     private fun registerCommand(command: Command) {
-        commands[command.aliases[0]] = command
+        commands.add(command)
     }
 
     init {
-        API.on<MessageReceivedEvent> {
-            if (!it.isFromGuild) return@on // no need to handle DMs for now
+        API.on<MessageReceivedEvent> { e ->
+            if (!e.isFromGuild) return@on // no need to handle DMs for now
 
-            val member = it.member ?: return@on
+            val member = e.member ?: return@on
 
-            if (!it.message.contentRaw.startsWith(prefix)) return@on
+            if (!e.message.contentRaw.startsWith(prefix)) return@on
 
-            val content = it.message.contentRaw.substring(prefix.length)
+            val content = e.message.contentRaw.substring(prefix.length)
             if (commands.none { content.startsWith(content) }) return@on
 
-            val command = commands.entries.find { content.startsWith(it.key) }?.value ?: return@on
+            val command = commands.find { it.aliases.any { a -> content.startsWith(a) } } ?: return@on
             val label = command.aliases.find { content.startsWith(it) }!!
             if (command.permission != Permission.MESSAGE_READ && !member.hasPermission(command.permission)) {
-                sendPermissionError(it.message)
+                sendPermissionError(e.message)
                 return@on
             } else if (command.roles.isNotEmpty()) {
                 if (!member.hasPermission(Permission.ADMINISTRATOR) && member.roles.none { command.roles.contains(it.idLong) }) {
-                    sendPermissionError(it.message)
+                    sendPermissionError(e.message)
                     return@on
                 }
             }
 
             val args = content.substring(label.length).trimStart().split(" ").dropWhile { it == "" }
             if (command.maxArgs > 0 && command.maxArgs < args.size) {
-                sendArgumentError(it.message, command)
+                sendArgumentError(e.message, command)
                 return@on
             } else if (command.minArgs > 0 && command.minArgs > args.size) {
-                sendArgumentError(it.message, command)
+                sendArgumentError(e.message, command)
                 return@on
-            } else if (command.mentionedMembers > 0 && command.mentionedMembers != it.message.mentionedMembers.size) {
-                sendArgumentError(it.message, command)
+            } else if (command.mentionedMembers > 0 && command.mentionedMembers != e.message.mentionedMembers.size) {
+                sendArgumentError(e.message, command)
                 return@on
-            } else if (command.mentionedRoles > 0 && command.mentionedRoles != it.message.mentionedRoles.size) {
-                sendArgumentError(it.message, command)
+            } else if (command.mentionedRoles > 0 && command.mentionedRoles != e.message.mentionedRoles.size) {
+                sendArgumentError(e.message, command)
                 return@on
-            } else if (command.mentionedChannels > 0 && command.mentionedChannels != it.message.mentionedChannels.size) {
-                sendArgumentError(it.message, command)
+            } else if (command.mentionedChannels > 0 && command.mentionedChannels != e.message.mentionedChannels.size) {
+                sendArgumentError(e.message, command)
                 return@on
             }
 
-            if (command.autoDelete) it.message.delete().queue()
+            if (command.autoDelete) e.message.delete().queue()
 
-            async.submit { command.handle(args.toTypedArray(), it.message, it.message.textChannel) }
+            async.submit { command.handle(args.toTypedArray(), e.message, e.message.textChannel) }
         }
     }
 
