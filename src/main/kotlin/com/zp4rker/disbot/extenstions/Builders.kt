@@ -4,6 +4,7 @@ import com.zp4rker.disbot.HIDDEN_EMBED_COLOUR
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import org.json.JSONObject
+import java.awt.Color
 import java.time.temporal.TemporalAccessor
 
 /**
@@ -53,9 +54,15 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
         title.url?.let { builder.setTitle(title.text, title.url) } ?: builder.setTitle(title.text)
     }
 
-    var colour: Int = HIDDEN_EMBED_COLOUR
+    var colour: String = HIDDEN_EMBED_COLOUR
         set(value) {
-            builder.setColor(value)
+            builder.setColor(Color.decode(value))
+            field = value
+        }
+
+    var color: String = colour
+        set(value) {
+            colour = value
             field = value
         }
 
@@ -105,7 +112,7 @@ fun title(titleBuilder: KEmbedBuilder.EmbedTitle.() -> Unit) = KEmbedBuilder.Emb
 
 fun embed(
         author: KEmbedBuilder.EmbedAuthor? = null,
-        colour: Int = HIDDEN_EMBED_COLOUR,
+        colour: String = HIDDEN_EMBED_COLOUR,
         description: String? = null,
         footer: KEmbedBuilder.EmbedFooter? = null,
         image: String? = null,
@@ -116,7 +123,7 @@ fun embed(
         builder: KEmbedBuilder.() -> Unit = {}
 ) = EmbedBuilder().run {
     author?.let { setAuthor(author.name, author.url, author.iconUrl) }
-    setColor(colour)
+    setColor(Color.decode(colour))
     setDescription(description)
     footer?.let { setFooter(footer.text, footer.iconUrl) }
     setImage(image)

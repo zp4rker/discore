@@ -18,6 +18,6 @@ val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSour
 
 val LOGGER: Logger = LoggerFactory.getLogger("Disbot")
 
-const val HIDDEN_EMBED_COLOUR = 0x002f3136
+const val HIDDEN_EMBED_COLOUR = "#2f3136"
 
 fun getManifest(url: URL): Attributes = with(URL("jar:${url.toExternalForm()}!/").openConnection() as JarURLConnection) { mainAttributes }
