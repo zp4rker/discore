@@ -54,15 +54,9 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
         title.url?.let { builder.setTitle(title.text, title.url) } ?: builder.setTitle(title.text)
     }
 
-    var colour: String = HIDDEN_EMBED_COLOUR
+    var color: String = HIDDEN_EMBED_COLOUR
         set(value) {
             builder.setColor(Color.decode(value))
-            field = value
-        }
-
-    var color: String = colour
-        set(value) {
-            colour = value
             field = value
         }
 
@@ -112,7 +106,7 @@ fun title(titleBuilder: KEmbedBuilder.EmbedTitle.() -> Unit) = KEmbedBuilder.Emb
 
 fun embed(
         author: KEmbedBuilder.EmbedAuthor? = null,
-        colour: String = HIDDEN_EMBED_COLOUR,
+        color: String = HIDDEN_EMBED_COLOUR,
         description: String? = null,
         footer: KEmbedBuilder.EmbedFooter? = null,
         image: String? = null,
@@ -123,7 +117,7 @@ fun embed(
         builder: KEmbedBuilder.() -> Unit = {}
 ) = EmbedBuilder().run {
     author?.let { setAuthor(author.name, author.url, author.iconUrl) }
-    setColor(Color.decode(colour))
+    setColor(Color.decode(color))
     setDescription(description)
     footer?.let { setFooter(footer.text, footer.iconUrl) }
     setImage(image)
