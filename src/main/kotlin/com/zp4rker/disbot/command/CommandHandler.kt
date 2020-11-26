@@ -81,7 +81,10 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
             title {
                 text = "Invalid arguments"
             }
+
             description = "You didn't provide the correct arguments, please try again. Correct usage: `${command.usage}`"
+
+            color = "#ec644b"
         }
 
         sendError(message, embed)
@@ -91,8 +94,11 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
         val embed = embed {
             title {
                 text = "Invalid permissions"
-                description = "Sorry, but you don't have permission to run that command."
             }
+
+            description = "Sorry, but you don't have permission to run that command."
+
+            color = "#ec644b"
         }
 
         sendError(message, embed)
