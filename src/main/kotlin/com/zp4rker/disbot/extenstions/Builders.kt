@@ -34,23 +34,23 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
             var url: String? = null
     )
 
-    inline fun field(fieldBuilder: EmbedField.() -> Unit) {
-        val field = EmbedField().also(fieldBuilder)
+    inline fun field(name: String = EmbedBuilder.ZERO_WIDTH_SPACE, value: String = EmbedBuilder.ZERO_WIDTH_SPACE, inline: Boolean = true, fieldBuilder: EmbedField.() -> Unit) {
+        val field = EmbedField(name, value, inline).also(fieldBuilder)
         builder.addField(field.name, field.value, field.inline)
     }
 
-    inline fun author(authorBuilder: EmbedAuthor.() -> Unit) {
-        val author = EmbedAuthor().also(authorBuilder)
+    inline fun author(name: String? = null, url: String? = null, iconUrl: String? = null, authorBuilder: EmbedAuthor.() -> Unit) {
+        val author = EmbedAuthor(name, url, iconUrl).also(authorBuilder)
         builder.setAuthor(author.name, author.url, author.iconUrl)
     }
 
-    inline fun footer(footerBuilder: EmbedFooter.() -> Unit) {
-        val footer = EmbedFooter().also(footerBuilder)
+    inline fun footer(text: String? = null, iconUrl: String? = null, footerBuilder: EmbedFooter.() -> Unit) {
+        val footer = EmbedFooter(text, iconUrl).also(footerBuilder)
         builder.setFooter(footer.text, footer.iconUrl)
     }
 
-    inline fun title(titleBuilder: EmbedTitle.() -> Unit) {
-        val title = EmbedTitle().also(titleBuilder)
+    inline fun title(text: String = "Title", url: String? = null, titleBuilder: EmbedTitle.() -> Unit) {
+        val title = EmbedTitle(text, url).also(titleBuilder)
         title.url?.let { builder.setTitle(title.text, title.url) } ?: builder.setTitle(title.text)
     }
 
@@ -81,18 +81,6 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
     var timestamp: TemporalAccessor? = null
         set(value) {
             builder.setTimestamp(value)
-            field = value
-        }
-
-    var title: String? = null
-        set(value) {
-            builder.setTitle(title, url)
-            field = value
-        }
-
-    var url: String? = null
-        set(value) {
-            builder.setTitle(title, url)
             field = value
         }
 
