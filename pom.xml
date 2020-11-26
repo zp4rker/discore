@@ -6,7 +6,7 @@
 
     <groupId>com.zp4rker</groupId>
     <artifactId>disbot</artifactId>
-    <version>1.3.11-release</version>
+    <version>1.3.12-release</version>
 
     <properties>
         <kotlin.version>1.4.20</kotlin.version>
@@ -126,17 +126,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <JDA-Version>${jda.version}</JDA-Version>
-                            <Disbot-Version>${project.version}</Disbot-Version>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.github</groupId>
