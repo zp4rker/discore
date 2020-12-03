@@ -5,7 +5,9 @@ import com.zp4rker.disbot.BOT
 import com.zp4rker.disbot.LOGGER
 import com.zp4rker.disbot.console.default.StopCommand
 import org.jline.reader.LineReaderBuilder
+import org.jline.reader.UserInterruptException
 import org.jline.terminal.TerminalBuilder
+import kotlin.system.exitProcess
 
 /**
  * @author zp4rker
@@ -19,10 +21,19 @@ object Console : Thread() {
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
-            LOGGER.error("Encountered an exception!", exception)
+            if (exception is UserInterruptException) {
+                shutdown()
+            } else {
+                LOGGER.error("Encountered an exception!", exception)
+            }
         }
 
         // shutdown hook
+        Runtime.getRuntime().addShutdownHook(object : Thread() {
+            override fun run() {
+                shutdown()
+            }
+        })
     }
 
     private var isRunning = false
@@ -49,6 +60,8 @@ object Console : Thread() {
         BOT.quit()
         API.shutdownNow()
         LOGGER.info("Goodbye!")
+
+        Runtime.getRuntime().halt(0)
     }
 
 }

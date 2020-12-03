@@ -13,11 +13,8 @@ import java.util.jar.Attributes;
 public class Main {
 
     public static void main(String[] args) throws URISyntaxException {
-        System.out.print("Loading libraries... ");
         DepLoader.loadDeps(() -> {
             try {
-                System.out.println("Succesfully loaded libraries.");
-
                 Attributes mf = getManifest();
                 String botMain = mf.getValue("Bot-Main");
 

@@ -36,9 +36,9 @@ public class DepLoader {
         for (String dep : allDeps) {
             async.submit(() -> {
                 try {
-                    downloadFile(root, dep);
-                } catch (IOException | URISyntaxException ignored) {} finally {
-                    counter.increment();
+                    downloadFile(root, dep, counter);
+                } catch (IOException | URISyntaxException | InterruptedException e) {
+                    e.printStackTrace();
                 }
             });
         }
@@ -74,19 +74,21 @@ public class DepLoader {
         return lines;
     }
 
-    private static void downloadFile(File root, String path) throws IOException, URISyntaxException {
+    private static void downloadFile(File root, String path, DepCounter counter) throws IOException, URISyntaxException, InterruptedException {
         File file = new File(root, "lib" + path.substring(path.lastIndexOf("/")));
 
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-        if (file.exists()) return;
-        else file.createNewFile();
+        if (file.exists()) {
+            extractFile(root, file, counter);
+            return;
+        } else file.createNewFile();
 
         URL url = new URL(path);
         Files.copy(url.openStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        extractFile(root, file);
+        extractFile(root, file, counter);
     }
 
-    private static void extractFile(File root, File file) throws IOException {
+    private static void extractFile(File root, File file, DepCounter counter) throws IOException {
         File libDir = new File(root, "lib");
 
         byte[] buffer = new byte[256 * 1024];
@@ -97,10 +99,14 @@ public class DepLoader {
                 JarEntry entry = entries.nextElement();
                 File f = new File(libDir, entry.getName());
 
+                if (entry.getName().startsWith("META-INF")) continue;
+
                 if (entry.isDirectory()) {
                     f.mkdirs();
                     continue;
                 }
+
+                if (f.exists()) continue;
 
                 try (InputStream is = jar.getInputStream(entry); FileOutputStream os = new FileOutputStream(f)) {
                     for (int r; (r = is.read(buffer)) > 0; ) {
@@ -109,6 +115,7 @@ public class DepLoader {
                 }
             }
         }
+        counter.increment();
     }
 
 }
