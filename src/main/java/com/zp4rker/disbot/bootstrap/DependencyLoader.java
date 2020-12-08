@@ -119,6 +119,8 @@ public class DependencyLoader {
     private static List<String> readLines(InputStream is) {
         List<String> list = new ArrayList<>();
 
+        if (is == null) return list;
+
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 

@@ -34,6 +34,8 @@ public class PomParser {
 
         List<Dependency> depList = new ArrayList<>();
 
+        if (location == null) return depList;
+
         InputStream is = location.openStream();
         if (is.available() < 1) throw new IOException("Empty stream!");
 

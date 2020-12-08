@@ -6,7 +6,7 @@
 
     <groupId>com.zp4rker</groupId>
     <artifactId>disbot</artifactId>
-    <version>1.5.1-release</version>
+    <version>1.5.2-release</version>
 
     <properties>
         <github.global.server>github</github.global.server>
