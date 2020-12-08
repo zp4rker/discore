@@ -1,9 +1,13 @@
 package com.zp4rker.disbot.bootstrap;
 
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * @author zp4rker
  */
-public class DepCounter {
+public class DownloadCounter {
 
     private int count = 0;
     private final int size;
@@ -12,7 +16,9 @@ public class DepCounter {
 
     private final Runnable onComplete;
 
-    public DepCounter(int size, Runnable onComplete) {
+    private volatile boolean incrementing = false;
+
+    public DownloadCounter(int size, Runnable onComplete) {
         this.size = size;
         this.onComplete = onComplete;
         string = "Loading libraries... " + count + "/" + size;
@@ -21,6 +27,10 @@ public class DepCounter {
 
     public void increment() {
         count++;
+
+        while (incrementing) /* wait */;
+
+        incrementing = true;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             sb.append("\b");
@@ -35,6 +45,7 @@ public class DepCounter {
             System.out.println("Succesfully loaded libraries.");
             onComplete.run();
         }
+        incrementing = false;
     }
 
 }
