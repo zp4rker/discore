@@ -58,7 +58,8 @@ class Bot {
 
         LOGGER.separator()
         LOGGER.info("Starting $name v$version")
-        LOGGER.info("Powered by Disbot v${disbotVersion}, created by zp4rker")
+        LOGGER.info("Powered by Disbot v${disbotVersion}")
+        LOGGER.info("Created by zp4rker#3333")
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()
 

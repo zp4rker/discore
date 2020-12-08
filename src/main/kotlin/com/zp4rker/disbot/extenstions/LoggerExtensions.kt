@@ -7,5 +7,5 @@ import org.slf4j.Logger
  */
 
 fun Logger.separator() {
-    info("=".repeat(30))
+    info("=".repeat(40))
 }
