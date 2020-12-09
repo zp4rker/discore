@@ -1,6 +1,6 @@
 package com.zp4rker.dsc.core.extenstions.event
 
-import com.zp4rker.disbot.API
+import com.zp4rker.dsc.core.API
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.hooks.EventListener

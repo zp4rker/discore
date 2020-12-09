@@ -1,7 +1,7 @@
 package com.zp4rker.dsc.core.extenstions.event
 
-import com.zp4rker.disbot.API
-import com.zp4rker.disbot.LOGGER
+import com.zp4rker.dsc.core.API
+import com.zp4rker.dsc.core.LOGGER
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.channel.text.GenericTextChannelEvent

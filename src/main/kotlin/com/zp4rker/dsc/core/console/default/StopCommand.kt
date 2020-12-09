@@ -1,7 +1,7 @@
 package com.zp4rker.dsc.core.console.default
 
-import com.zp4rker.disbot.console.Console
-import com.zp4rker.disbot.console.ConsoleCommand
+import com.zp4rker.dsc.core.console.Console
+import com.zp4rker.dsc.core.console.ConsoleCommand
 
 /**
  * @author zp4rker

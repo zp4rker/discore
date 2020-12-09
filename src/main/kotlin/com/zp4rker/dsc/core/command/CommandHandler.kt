@@ -1,8 +1,8 @@
 package com.zp4rker.dsc.core.command
 
-import com.zp4rker.disbot.API
-import com.zp4rker.disbot.extenstions.embed
-import com.zp4rker.disbot.extenstions.event.on
+import com.zp4rker.dsc.core.API
+import com.zp4rker.dsc.core.extenstions.embed
+import com.zp4rker.dsc.core.extenstions.event.on
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed

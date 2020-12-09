@@ -1,9 +1,9 @@
 package com.zp4rker.dsc.core
 
-import com.zp4rker.disbot.command.Command
-import com.zp4rker.disbot.command.CommandHandler
-import com.zp4rker.disbot.console.Console
-import com.zp4rker.disbot.extenstions.separator
+import com.zp4rker.dsc.core.command.Command
+import com.zp4rker.dsc.core.command.CommandHandler
+import com.zp4rker.dsc.core.console.Console
+import com.zp4rker.dsc.core.extenstions.separator
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.EventListener

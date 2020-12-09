@@ -1,6 +1,6 @@
 package com.zp4rker.dsc.core.extenstions
 
-import com.zp4rker.disbot.HIDDEN_EMBED_COLOUR
+import com.zp4rker.dsc.core.HIDDEN_EMBED_COLOUR
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import org.json.JSONObject

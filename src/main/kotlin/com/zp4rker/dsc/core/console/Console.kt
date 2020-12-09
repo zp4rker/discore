@@ -1,9 +1,9 @@
 package com.zp4rker.dsc.core.console
 
-import com.zp4rker.disbot.API
-import com.zp4rker.disbot.BOT
-import com.zp4rker.disbot.LOGGER
-import com.zp4rker.disbot.console.default.StopCommand
+import com.zp4rker.dsc.core.API
+import com.zp4rker.dsc.core.BOT
+import com.zp4rker.dsc.core.LOGGER
+import com.zp4rker.dsc.core.console.default.StopCommand
 import org.jline.reader.LineReaderBuilder
 import org.jline.reader.UserInterruptException
 import org.jline.terminal.TerminalBuilder
