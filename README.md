@@ -1,6 +1,6 @@
 <div style="text-align: center;">
 
-# `disbot-core`
+# `discore`
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/zp4rker/disbot?style=flat)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zp4rker/disbot?label=current+version&style=flat)
