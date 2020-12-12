@@ -1,9 +1,14 @@
 package com.zp4rker.discore.bootstrap;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 /**
  * @author zp4rker
  */
-public class DownloadCounter {
+public class DownloadCounter extends Thread {
+
+    private BlockingQueue<String> queue = new LinkedBlockingQueue<>();
 
     private int count = 0;
     private final int size;
@@ -11,8 +16,6 @@ public class DownloadCounter {
     private String string;
 
     private final Runnable onComplete;
-
-    private volatile boolean incrementing = false;
 
     public DownloadCounter(int size, Runnable onComplete) {
         this.size = size;
@@ -24,24 +27,34 @@ public class DownloadCounter {
     public void increment() {
         count++;
 
-        while (incrementing) /* wait */ ;
-
-        incrementing = true;
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < string.length(); i++) {
-            sb.append("\b");
-        }
+        sb.append("\b".repeat(string.length()));
         string = "Loading libraries... " + count + "/" + size;
         if (count < size) {
             sb.append(string);
-            System.out.print(sb.toString());
+            queue.offer(sb.toString());
         } else {
             sb.append(string);
-            System.out.println(sb.toString());
-            System.out.println("Succesfully loaded libraries.");
-            onComplete.run();
+            queue.offer(sb.toString());
+            queue.offer("end");
         }
-        incrementing = false;
     }
 
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                String s = queue.take();
+                if (s.equals("end")) {
+                    System.out.println();
+                    System.out.println("Successfully loaded libraries.");
+                    break;
+                } else {
+                    System.out.print(s);
+                }
+            }
+
+            onComplete.run();
+        } catch (InterruptedException ignored) {}
+    }
 }

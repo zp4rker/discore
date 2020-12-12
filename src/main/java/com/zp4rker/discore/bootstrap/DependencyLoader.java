@@ -36,6 +36,7 @@ public class DependencyLoader {
         writeCache(allDeps);
 
         DownloadCounter counter = new DownloadCounter(allDeps.size(), onComplete);
+        counter.start();
 
         for (Dependency dep : allDeps) {
             async.submit(() -> PomParser.downloadDep(dep, counter, root));
