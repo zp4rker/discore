@@ -37,8 +37,8 @@ class Bot {
     var logger: Logger = LoggerFactory.getLogger(name)
 
     private lateinit var cmdHandler: CommandHandler
-    var helpCommandEnabled = true
-    var commands: Array<Command> = arrayOf()
+    var helpCommandEnabled = false
+    var commands: List<Command> = listOf()
 
     var activity: Activity? = null
     var intents: Int = GatewayIntent.DEFAULT
@@ -46,7 +46,7 @@ class Bot {
             field = value
             jdaBuilder = JDABuilder.createDefault(token, GatewayIntent.getIntents(value))
         }
-    var cacheEnabled = false
+    var cache: List<CacheFlag> = listOf()
 
     var quit: () -> Unit = {}
 
@@ -58,7 +58,7 @@ class Bot {
 
         LOGGER.separator()
         LOGGER.info("Starting $name v$version")
-        LOGGER.info("Powered by Disbot v${disbotVersion}")
+        LOGGER.info("Powered by Discore v${disbotVersion}")
         LOGGER.info("Created by zp4rker#3333")
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()
@@ -66,7 +66,7 @@ class Bot {
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
 
-            if (cacheEnabled) enableCache(CacheFlag.values().toList())
+            if (cache.isNotEmpty()) enableCache(cache)
             else disableCache(CacheFlag.values().toList())
 
             setEventManager(InterfacedEventManager())
@@ -74,7 +74,7 @@ class Bot {
 
         cmdHandler = CommandHandler(prefix)
         if (helpCommandEnabled) cmdHandler.registerHelpCommand()
-        cmdHandler.registerCommands(*commands)
+        cmdHandler.registerCommands(*commands.toTypedArray())
 
         BOT = this
     }
