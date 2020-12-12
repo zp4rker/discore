@@ -3,6 +3,7 @@ package com.zp4rker.discore.command
 import com.zp4rker.discore.API
 import com.zp4rker.discore.extenstions.embed
 import com.zp4rker.discore.extenstions.event.on
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
-class CommandHandler(val prefix: String, val commands: MutableList<Command> = mutableListOf()) {
+class CommandHandler(val prefix: String, val commands: MutableList<Command> = mutableListOf(), val jda: JDA = API) {
 
     private val async = Executors.newCachedThreadPool()
 
@@ -30,7 +31,7 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
     }
 
     init {
-        API.on<MessageReceivedEvent> { e ->
+        jda.on<MessageReceivedEvent> { e ->
             if (!e.isFromGuild) return@on // no need to handle DMs for now
 
             val member = e.member ?: return@on
