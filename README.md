@@ -123,10 +123,10 @@ A simple, structured and clean way to build the JDA instance. Below are the curr
 | `token`               | String            | `"empty"`                 | The Discord bot token, used to authenticate the bot. **Required**
 | `prefix`              | String            | `"/"`                     | The prefix for the [command handler](#command-handler).
 | `helpCommandEnabled`  | Boolean           | `true`                    | Whether or not the default help command should be registered.
-| `commands`            | Array\<Command>   | `arrayOf()`               | The list of commands to register on startup.
+| `commands`            | List\<Command>    | `listOf()`                | The list of commands to register on startup.
 | `activity`            | Activity          | `null`                    | The activity/status of the bot.
 | `intents`             | Int               | `GatewayIntent.DEFAULT`   | The gateway intents the bot should start with.
-| `cacheEnabled`        | Boolean           | `false`                   | Whether or not cache should be enabled.
+| `cache`               | List\<CacheFlag>  | `listOf()`                | Whether or not cache should be enabled.
 | `quit`                | () -> Unit        | `{}`                      | The function to run when the bot is quitting.
 
 ```kotlin
