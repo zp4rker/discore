@@ -2,10 +2,10 @@
 
 # `discore`
 
-![GitHub last commit](https://img.shields.io/github/last-commit/zp4rker/disbot?style=flat)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zp4rker/disbot?label=current+version&style=flat)
-![GitHub](https://img.shields.io/github/license/zp4rker/disbot?style=flat)
-![Lines of code](https://img.shields.io/tokei/lines/github/zp4rker/disbot?style=flat)
+![GitHub last commit](https://img.shields.io/github/last-commit/zp4rker/discore?style=flat)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/zp4rker/discore?label=current+version&style=flat)
+![GitHub](https://img.shields.io/github/license/zp4rker/discore?style=flat)
+![Lines of code](https://img.shields.io/tokei/lines/github/zp4rker/discore?style=flat)
 [![Discord Badge](https://discordapp.com/api/guilds/647312158832721934/widget.png)](https://zp4rker.com/discord)
 
 </div>
@@ -118,7 +118,7 @@ A simple, structured and clean way to build the JDA instance. Below are the curr
 
 | Name                  | Type              | Default                   | Description
 | ---                   | ---               | ---                       | ---
-| `name`                | String            | `"Disbot"`                | The name of the bot, used for the default logger.
+| `name`                | String            | `"Discore"`               | The name of the bot, used for the default logger.
 | `version`             | String            | `"1.0.0"`                 | The bot's version, used in log outputs.
 | `token`               | String            | `"empty"`                 | The Discord bot token, used to authenticate the bot. **Required**
 | `prefix`              | String            | `"/"`                     | The prefix for the [command handler](#command-handler).

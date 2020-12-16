@@ -16,7 +16,7 @@ lateinit var BOT: Bot
 
 val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSource.location)
 
-val LOGGER: Logger = LoggerFactory.getLogger("Disbot")
+val LOGGER: Logger = LoggerFactory.getLogger("Discore")
 
 const val HIDDEN_EMBED_COLOUR = "#2f3136"
 

@@ -1,6 +1,6 @@
 package com.zp4rker.discore.console
 
-import org.slf4j.LoggerFactory
+import com.zp4rker.discore.LOGGER
 
 /**
  * @author zp4rker
@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory
  */
 object ConsoleCommandHandler {
 
-    private val logger = LoggerFactory.getLogger("Disbot")
-
     private val commands: MutableMap<String, ConsoleCommand> = mutableMapOf()
 
     fun handleCommand(command: String): Boolean {
-        logger.debug("Ran command: $command")
+        LOGGER.debug("Ran command: $command")
 
         if (commands.containsKey(command)) {
             commands[command]?.handleCommand(command)

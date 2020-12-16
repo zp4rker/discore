@@ -36,7 +36,7 @@ object Console : Thread() {
     }
 
     private var isRunning = false
-    private val reader = LineReaderBuilder.builder().appName("Disbot").terminal(TerminalBuilder.terminal()).build()
+    private val reader = LineReaderBuilder.builder().appName("Discore").terminal(TerminalBuilder.terminal()).build()
 
     override fun run() {
         var command: String? = reader.readLine()?.toLowerCase()

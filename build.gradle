@@ -1,12 +1,13 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    /*id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.21'*/
     id 'maven'
     id 'signing'
 }
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '1.0.1-release'
+version '1.0.2-release'
 
 repositories {
     mavenCentral()
@@ -16,6 +17,9 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "net.dv8tion:JDA:4.2.0_222"
+
+    /*compile "org.jetbrains.kotlin:kotlin-serialization"
+    compile "com.charleskorn.kaml:kaml:0.26.0"*/
 
     compile "com.github.jezza:toml:1.2"
     compile "org.json:json:20190722"

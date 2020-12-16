@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory
 
 class Bot {
 
-    var name: String = "Disbot"
+    var name: String = "Discore"
         set(value) {
             field = value
             logger = LoggerFactory.getLogger(name)
@@ -53,12 +53,12 @@ class Bot {
     private lateinit var jdaBuilder: JDABuilder
 
     fun build() {
-        val disbotVersion = MANIFEST.getValue("Disbot-Version")
+        val discoreVersion = MANIFEST.getValue("Discore-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
         LOGGER.separator()
         LOGGER.info("Starting $name v$version")
-        LOGGER.info("Powered by Discore v${disbotVersion}")
+        LOGGER.info("Powered by Discore v${discoreVersion}")
         LOGGER.info("Created by zp4rker#3333")
         LOGGER.info("Utilising JDA v${jdaVersion}")
         LOGGER.separator()

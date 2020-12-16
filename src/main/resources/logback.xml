@@ -1,5 +1,5 @@
 <configuration>
-    <contextName>disbot</contextName>
+    <contextName>discore</contextName>
 
     <conversionRule conversionWord="lm" converterClass="logback.LogConverter" />
     <turboFilter class="logback.LogInterceptor" />
