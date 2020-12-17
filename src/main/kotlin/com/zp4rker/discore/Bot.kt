@@ -30,7 +30,7 @@ class Bot {
     var token: String = "empty"
         set(value) {
             field = value
-            jdaBuilder = JDABuilder.createDefault(value, GatewayIntent.getIntents(intents))
+            jdaBuilder = JDABuilder.create(value, GatewayIntent.getIntents(intents))
         }
     var prefix: String = "/"
 
@@ -44,7 +44,7 @@ class Bot {
     var intents: Int = GatewayIntent.DEFAULT
         set(value) {
             field = value
-            jdaBuilder = JDABuilder.createDefault(token, GatewayIntent.getIntents(value))
+            jdaBuilder = JDABuilder.create(token, GatewayIntent.getIntents(value))
         }
     var cache: List<CacheFlag> = listOf()
 
