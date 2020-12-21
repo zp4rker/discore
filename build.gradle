@@ -1,13 +1,13 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.21'
-    /*id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.21'*/
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.21'
     id 'maven'
     id 'signing'
 }
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '1.0.4-release'
+version '1.1.0-release'
 
 repositories {
     mavenCentral()
@@ -18,16 +18,18 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "net.dv8tion:JDA:4.2.0_222"
 
-    /*compile "org.jetbrains.kotlin:kotlin-serialization"
-    compile "com.charleskorn.kaml:kaml:0.26.0"*/
-
-    compile "com.github.jezza:toml:1.2"
-    compile "org.json:json:20190722"
     compile "ch.qos.logback:logback-classic:1.2.3"
+
     compile "org.jline:jline-terminal:3.16.0"
     compile "org.jline:jline-reader:3.16.0"
     compile "org.jline:jline-terminal-jansi:3.16.0"
     compile "org.fusesource.jansi:jansi:1.18"
+
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+    compile "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
+    compile "com.charleskorn.kaml:kaml:0.26.0"
+
+    compile "com.vdurmont:emoji-java:5.1.1"
 }
 
 compileJava {

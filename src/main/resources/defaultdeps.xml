@@ -14,20 +14,6 @@
             <version>1.4.21</version>
             <scope>compile</scope>
         </dependency>
-        <!-- toml -->
-        <dependency>
-            <groupId>com.github.jezza</groupId>
-            <artifactId>toml</artifactId>
-            <version>1.2</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20190722</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- jda -->
         <dependency>
             <groupId>net.dv8tion</groupId>
@@ -35,6 +21,7 @@
             <version>4.2.0_222</version>
             <scope>compile</scope>
         </dependency>
+
         <!-- logback -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -42,6 +29,7 @@
             <version>1.2.3</version>
             <scope>compile</scope>
         </dependency>
+
         <!-- jline -->
         <dependency>
             <groupId>org.jline</groupId>
@@ -67,6 +55,32 @@
             <artifactId>jansi</artifactId>
             <version>1.18</version>
             <scope>compile</scope>
+        </dependency>
+
+        <!-- kotlin serialization -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-core</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- kotlin json serialization -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-json</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <!-- kaml -->
+        <dependency>
+            <groupId>com.charleskorn.kaml</groupId>
+            <artifactId>kaml</artifactId>
+            <version>0.26.0</version>
+        </dependency>
+
+        <!-- emoji-java -->
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>5.1.1</version>
         </dependency>
     </dependencies>
 </root>
