@@ -7,7 +7,7 @@ plugins {
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '1.1.0-release'
+version '1.1.1-release'
 
 repositories {
     mavenCentral()
@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "net.dv8tion:JDA:4.2.0_222"
+    compile "net.dv8tion:JDA:4.2.0_223"
 
     compile "ch.qos.logback:logback-classic:1.2.3"
 
