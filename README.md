@@ -8,9 +8,9 @@
 ![Lines of code](https://img.shields.io/tokei/lines/github/zp4rker/discore?style=flat)
 [![Discord Badge](https://discordapp.com/api/guilds/647312158832721934/widget.png)](https://zp4rker.com/discord)
 
-</div>
-
 A Discord bot core built upon JDA, written in Kotlin.
+
+</div>
 
 # Current features
 
