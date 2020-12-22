@@ -1,5 +1,6 @@
 package com.zp4rker.discore.bootstrap;
 
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class DownloadCounter extends Thread {
 
-    private BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
 
     private int count = 0;
     private final int size;
@@ -28,7 +29,7 @@ public class DownloadCounter extends Thread {
         count++;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("\b".repeat(string.length()));
+        sb.append(new String(new char[string.length()]).replace("\0", "\b"));
         string = "Loading libraries... " + count + "/" + size;
         if (count < size) {
             sb.append(string);
