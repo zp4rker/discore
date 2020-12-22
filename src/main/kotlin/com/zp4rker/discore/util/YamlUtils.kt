@@ -18,8 +18,9 @@ inline fun <reified T> loadYamlOrDefault(file: File): T {
     if (file.length() > 0) return Yaml.default.decodeFromString(file.readText())
 
     if (!file.exists()) file.createNewFile()
+
     with(Bot::class.java.getResource("/${file.name}")) {
-        if (!File(toURI()).exists()) return T::class.java.getConstructor().newInstance()
+        if (!File(toURI()).exists()) return T::class.java.getConstructor().newInstance().also { file.writeText(Yaml.default.encode(it)) }
         file.writeText(readText())
         return Yaml.default.decodeFromString(file.readText())
     }
