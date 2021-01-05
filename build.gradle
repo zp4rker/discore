@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "net.dv8tion:JDA:4.2.0_223"
+    compile "net.dv8tion:JDA:4.2.0_225"
 
     compile "ch.qos.logback:logback-classic:1.2.3"
 
