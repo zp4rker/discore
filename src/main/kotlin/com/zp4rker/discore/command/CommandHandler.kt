@@ -38,11 +38,11 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
 
             if (!e.message.contentRaw.startsWith(prefix)) return@on
 
-            val content = e.message.contentRaw.substring(prefix.length)
-            if (commands.none { content.startsWith(content) }) return@on
+            val content = e.message.contentRaw.substring(prefix.length).let { if (it.contains(" ")) it.substring(0, it.indexOf(" ")) else it }
+            if (commands.none { it.aliases.any { a -> content.equals(a, true) } }) return@on
 
-            val command = commands.find { it.aliases.any { a -> content.startsWith(a) } } ?: return@on
-            val label = command.aliases.find { content.startsWith(it) }!!
+            val command = commands.find { it.aliases.any { a -> content.equals(a, true) } } ?: return@on
+            val label = command.aliases.find { content.equals(it, true) }!!
             if (command.permission != Permission.MESSAGE_READ && !member.hasPermission(command.permission)) {
                 sendPermissionError(e.message)
                 return@on
@@ -53,7 +53,7 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 }
             }
 
-            val args = content.substring(label.length).trimStart().split(" ").dropWhile { it == "" }
+            val args = e.message.contentRaw.substring((prefix + label).length).trimStart().split(" ").dropWhile { it == "" }
             if (command.maxArgs > 0 && command.maxArgs < args.size) {
                 sendArgumentError(e.message, command)
                 return@on
