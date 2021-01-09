@@ -7,12 +7,12 @@ import java.util.List;
  * @author zp4rker
  */
 public class Dependency {
-    String groupId;
-    String artifactId;
-    String version;
-    String scope;
+    final String groupId;
+    final String artifactId;
+    final String version;
+    final String scope;
 
-    List<Dependency> subDeps = new ArrayList<>();
+    final List<Dependency> subDeps = new ArrayList<>();
 
     public Dependency(String groupId, String artifactId, String version, String scope) {
         this.groupId = groupId;

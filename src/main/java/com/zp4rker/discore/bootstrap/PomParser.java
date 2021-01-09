@@ -26,7 +26,7 @@ public class PomParser {
 
     private static final List<String> repos = new ArrayList<>();
 
-    public static List<Dependency> parsePom(URL location) throws InterruptedException, IOException, SAXException, ParserConfigurationException {
+    public static List<Dependency> parsePom(URL location, String type) throws InterruptedException, IOException, SAXException, ParserConfigurationException {
         if (!repos.contains("https://repo1.maven.org/maven2")) repos.add("https://repo1.maven.org/maven2");
 
         List<Callable<Boolean>> taskList = new ArrayList<>();
@@ -68,6 +68,12 @@ public class PomParser {
         if (depsNode != null) {
             Element depsElement = (Element) depsNode;
             NodeList deps = depsElement.getElementsByTagName("dependency");
+
+            ParseProgress prog = null;
+            if (!type.equals("sub")) {
+                prog = new ParseProgress(deps.getLength(), type);
+                prog.start();
+            }
             for (int i = 0; i < deps.getLength(); i++) {
                 Node depNode = deps.item(i);
                 NodeList children = depNode.getChildNodes();
@@ -114,11 +120,14 @@ public class PomParser {
                 Dependency dep = new Dependency(groupId, artifactId, version, scope);
                 depList.add(dep);
 
-                taskList.add(new ParseTask(repos, dep));
+                taskList.add(new ParseTask(repos, dep, prog));
             }
+
+            if (prog != null) prog.increment();
         }
 
         if (!taskList.isEmpty()) DependencyLoader.async.invokeAll(taskList);
+
 
         return depList;
     }
@@ -154,13 +163,13 @@ public class PomParser {
         if (!searchRoot) {
             NodeList matches = root.getElementsByTagName(key);
 
-            if (matches.getLength() < 1) return searchParents(key, root.getElementsByTagName("parent").item(0).getChildNodes(), searchRoot);
+            if (matches.getLength() < 1) return searchParents(key, root.getElementsByTagName("parent").item(0).getChildNodes(), false);
 
             match = matches.item(0).getFirstChild().getNodeValue();
         } else {
             Node nodeMatch = getChildByTag(root, key);
 
-            if (nodeMatch == null) return searchParents(key, root.getElementsByTagName("parent").item(0).getChildNodes(), searchRoot);
+            if (nodeMatch == null) return searchParents(key, root.getElementsByTagName("parent").item(0).getChildNodes(), true);
 
             match = nodeMatch.getFirstChild().getNodeValue();
         }

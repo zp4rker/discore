@@ -26,11 +26,10 @@ public class DependencyLoader {
     static void loadDeps(Runnable onComplete) throws URISyntaxException, InterruptedException, ParserConfigurationException, SAXException, IOException {
         File root = new File(DependencyLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
 
-        System.out.println("Analysing dependencies...");
         List<Dependency> allDeps = checkCache();
         if (allDeps.isEmpty()) {
-            List<Dependency> defaultDeps = PomParser.parsePom(Main.class.getResource("/defaultdeps.xml"));
-            List<Dependency> botDeps = PomParser.parsePom(Main.class.getResource("/botdeps.xml"));
+            List<Dependency> defaultDeps = PomParser.parsePom(Main.class.getResource("/defaultdeps.xml"), "core");
+            List<Dependency> botDeps = PomParser.parsePom(Main.class.getResource("/botdeps.xml"), "bot");
             allDeps = recurseDeps(defaultDeps, botDeps);
         }
         writeCache(allDeps);
@@ -147,7 +146,7 @@ public class DependencyLoader {
         return filtered;
     }
 
-    public static void downloadFile(File root, String path, DownloadCounter counter) throws IOException {
+    public static void downloadFile(File root, String path, DownloadCounter counter) throws IOException, InterruptedException {
         File file = new File(root, "lib" + path.substring(path.lastIndexOf("/")));
 
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();

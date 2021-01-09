@@ -1,11 +1,11 @@
 <configuration>
     <contextName>discore</contextName>
 
-    <conversionRule conversionWord="lm" converterClass="logback.LogConverter" />
-    <turboFilter class="logback.LogInterceptor" />
+    <conversionRule conversionWord="lm" converterClass="logback.LogConverter"/>
+    <turboFilter class="logback.LogInterceptor"/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <filter class="logback.DenyLog" />
+        <filter class="logback.DenyLog"/>
 
         <file>logs/latest.log</file>
         <append>false</append>
@@ -15,7 +15,7 @@
     </appender>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="logback.DenyLog" />
+        <filter class="logback.DenyLog"/>
 
         <encoder>
             <pattern>%lm%n</pattern>
@@ -31,8 +31,8 @@
     </appender>
 
     <root>
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
-        <appender-ref ref="DEBUG" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="DEBUG"/>
     </root>
 </configuration>

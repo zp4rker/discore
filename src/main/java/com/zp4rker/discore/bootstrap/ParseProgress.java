@@ -1,43 +1,44 @@
 package com.zp4rker.discore.bootstrap;
 
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author zp4rker
  */
-public class DownloadCounter extends Thread {
+public class ParseProgress extends Thread {
 
     private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
 
-    private final int size;
-    private final Runnable onComplete;
-    private int count = 0;
+    private final float size;
+    private float count = 0;
     private String string;
 
-    public DownloadCounter(int size, Runnable onComplete) {
-        this.size = size;
-        this.onComplete = onComplete;
-        System.out.print("Loading dependencies... ");
-        string = count + "/" + size;
-        System.out.print(string);
+    public ParseProgress(int size, String title) {
+        this.size = size + 1;
+        if (this.size == 0) string = "100%";
+        else string = "0%";
+        System.out.print("Validating " + title + " dependencies... " + string);
     }
 
     public void increment() {
         count++;
 
-        String s = count + "/" + size;
-        if (count < size) {
+        int percent = Math.round(count / size * 100);
+        String s = percent + "%";
+
+        if (!string.equals(s)) {
             queue.offer(s);
-        } else {
-            queue.offer(s);
+        }
+
+        if (count >= size) {
             queue.offer("end");
         }
     }
 
     @Override
     public void run() {
+        if (size == 0) return;
         try {
             String s;
             while (!(s = queue.take()).equals("end")) {
@@ -47,10 +48,8 @@ public class DownloadCounter extends Thread {
             }
 
             System.out.println();
-            System.out.println("Successfully loaded dependencies.");
-
-            onComplete.run();
         } catch (InterruptedException ignored) {
         }
     }
+
 }

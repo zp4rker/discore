@@ -16,7 +16,7 @@ import java.util.jar.Attributes;
  */
 public class Main {
 
-    public static void main(String[] args) throws URISyntaxException, ParserConfigurationException, SAXException, IOException, InterruptedException, ExecutionException {
+    public static void main(String[] args) throws URISyntaxException, ParserConfigurationException, SAXException, IOException, InterruptedException {
         DependencyLoader.loadDeps(() -> {
             try {
                 Attributes mf = getManifest();

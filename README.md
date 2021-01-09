@@ -16,7 +16,8 @@ A Discord bot core built upon JDA, written in Kotlin.
 
 ## Embed Constructor
 
-A simpler, cleaner way to create a `MessageEmbed`. The embed constructor has two forms: the [inline](#inline-constructor) form, and the [structured](#structured-constructor) form. The embed constructor consists of multiple components, all of which are optional. They are as follows:
+A simpler, cleaner way to create a `MessageEmbed`. The embed constructor has two forms: the [inline](#inline-constructor) form, and the [structured](#structured-constructor) form. The embed constructor consists of multiple components, all of which
+are optional. They are as follows:
 
 | Name          | Type              | Example
 | ---           | ---               | ---
@@ -148,7 +149,9 @@ bot {
 }
 ```
 
-Invoking the bot constructor returns an instance of the `Bot` class, which has two methods to register commands or event listeners: `addCommands(vararg commands: Command)` & `addEventListeners(vararg listeners: EventListener)`. When using the bot constructor, the [`IEventManager`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8tion/jda/api/hooks/IEventManager.html) is set to [`InterfacedEventManager()`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8tion/jda/api/hooks/InterfacedEventManager.html). Using the bot constructor also initialises the following constants:
+Invoking the bot constructor returns an instance of the `Bot` class, which has two methods to register commands or event listeners: `addCommands(vararg commands: Command)` & `addEventListeners(vararg listeners: EventListener)`. When using the bot
+constructor, the [`IEventManager`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8tion/jda/api/hooks/IEventManager.html) is set
+to [`InterfacedEventManager()`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8tion/jda/api/hooks/InterfacedEventManager.html). Using the bot constructor also initialises the following constants:
 
 | Name                  | Class
 | ---                   | ---
