@@ -155,7 +155,7 @@ public class DependencyLoader {
         return filtered;
     }
 
-    public static void downloadFile(File root, String path, DownloadCounter counter) throws IOException, InterruptedException {
+    public static void downloadFile(File root, String path, DownloadCounter counter) throws IOException {
         File file = new File(root, "lib" + path.substring(path.lastIndexOf("/")));
 
         if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
