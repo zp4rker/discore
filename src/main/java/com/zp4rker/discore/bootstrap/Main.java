@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
 import java.util.jar.Attributes;
 
 /**
@@ -16,9 +15,13 @@ import java.util.jar.Attributes;
  */
 public class Main {
 
+    public static boolean starting = true;
+
     public static void main(String[] args) throws URISyntaxException, ParserConfigurationException, SAXException, IOException, InterruptedException {
         DependencyLoader.loadDeps(() -> {
             try {
+                starting = false;
+
                 Attributes mf = getManifest();
                 String botMain = mf.getValue("Bot-Main");
 

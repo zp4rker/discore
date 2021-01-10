@@ -8,11 +8,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -40,6 +39,16 @@ public class DependencyLoader {
         for (Dependency dep : allDeps) {
             async.submit(() -> PomParser.downloadDep(dep, counter, root));
         }
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (Main.starting) {
+                    System.out.println("Dependencies took too long to load! Shutting down.");
+                    System.exit(0);
+                }
+            }
+        }, TimeUnit.MINUTES.toMillis(2));
     }
 
     @SafeVarargs
