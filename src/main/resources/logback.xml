@@ -6,9 +6,29 @@
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <filter class="logback.DenyLog"/>
-
         <file>logs/latest.log</file>
         <append>false</append>
+
+        <!--<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <totalSizeCap>10MB</totalSizeCap>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>-->
+
+        <encoder>
+            <pattern>[%d{HH:mm:ss} %level]: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="logback.DenyLog"/>
+        <file>logs/daily.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/daily.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="logback.StartupBasedTriggeringPolicy"/>
+        </rollingPolicy>
+
         <encoder>
             <pattern>[%d{HH:mm:ss} %level]: %msg%n</pattern>
         </encoder>
@@ -34,5 +54,6 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="DEBUG"/>
+        <appender-ref ref="ROLLING_FILE"/>
     </root>
 </configuration>
