@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.turbo.TurboFilter
 import ch.qos.logback.core.spi.FilterReply
+import org.fusesource.jansi.Ansi.ansi
 import org.slf4j.LoggerFactory
 import org.slf4j.Marker
 
@@ -15,13 +16,13 @@ import org.slf4j.Marker
 class LogInterceptor : TurboFilter() {
 
     override fun decide(marker: Marker?, logger: Logger, level: Level, msg: String?, objects: Array<Any>?, t: Throwable?): FilterReply {
+        val message = msg ?: "null"
+
         if (!logger.name.contains(".")) return FilterReply.ACCEPT
 
         val newLogger = if (logger.name.startsWith("net.dv8tion.jda")) {
             LoggerFactory.getLogger("JDA")
         } else LoggerFactory.getLogger(logger.name.substringAfterLast(".").toUpperCase())
-
-        val message = msg ?: "null"
 
         when (level) {
             Level.INFO -> objects?.let { newLogger.info(message, it) } ?: t?.let { newLogger.info(message, it) } ?: newLogger.info(message)

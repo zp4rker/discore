@@ -1,5 +1,6 @@
 package com.zp4rker.discore.bootstrap;
 
+import org.fusesource.jansi.AnsiConsole;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,6 +28,8 @@ public class Main {
 
                 Class<?> mainClass = Class.forName(botMain);
                 Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
+
+                AnsiConsole.systemInstall();
 
                 mainMethod.invoke(null, (Object) args);
             } catch (Exception e) {
