@@ -15,3 +15,15 @@ fun Logger.separator() {
 fun Logger.info(ansi: Ansi) {
     info(ansi.toString())
 }
+
+fun Logger.s(msg: Any?) {
+    info(ansi().fgBrightGreen().bold().a("${(msg ?: "null")}").reset())
+}
+
+fun Logger.w(msg: Any?) {
+    info(ansi().fgYellow().bold().a("${msg ?: "null"}").reset())
+}
+
+fun Logger.e(msg: Any?) {
+    info(ansi().fgBrightRed().bold().a("${msg ?: "null"}").reset())
+}
