@@ -26,9 +26,6 @@ import org.fusesource.jansi.Ansi
 class Bot {
 
     var name: String = "Discore"
-        set(value) {
-            field = value
-        }
 
     var version: String = Bot::class.java.`package`.implementationVersion
 

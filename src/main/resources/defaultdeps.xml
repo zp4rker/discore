@@ -51,12 +51,6 @@
             <artifactId>kotlinx-serialization-core</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <!-- kotlin json serialization -->
-        <dependency>
-            <groupId>org.jetbrains.kotlinx</groupId>
-            <artifactId>kotlinx-serialization-json</artifactId>
-            <version>1.0.1</version>
-        </dependency>
         <!-- kaml -->
         <dependency>
             <groupId>com.charleskorn.kaml</groupId>
