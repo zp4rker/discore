@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.jar.Attributes;
 
 /**
@@ -19,8 +20,13 @@ import java.util.jar.Attributes;
 public class Main {
 
     public static boolean starting = true;
+    public static boolean debug = false;
 
     public static void main(String[] args) throws URISyntaxException, ParserConfigurationException, SAXException, IOException, InterruptedException {
+
+        if (Arrays.stream(args).anyMatch(s -> s.equalsIgnoreCase("-debug"))) {
+            debug = true;
+        }
         DependencyLoader.loadDeps(() -> {
             try {
                 starting = false;

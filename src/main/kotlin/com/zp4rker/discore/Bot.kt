@@ -3,20 +3,21 @@ package com.zp4rker.discore
 import com.zp4rker.discore.command.Command
 import com.zp4rker.discore.command.CommandHandler
 import com.zp4rker.discore.console.Console
+import com.zp4rker.discore.console.info
 import com.zp4rker.discore.console.log
-import com.zp4rker.discore.console.separator
+import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
 import io.leego.banana.Font
 import io.leego.banana.Layout
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.fusesource.jansi.Ansi
 
 /**
  * @author zp4rker
@@ -27,7 +28,6 @@ class Bot {
     var name: String = "Discore"
         set(value) {
             field = value
-            logger = LoggerFactory.getLogger(name)
         }
 
     var version: String = Bot::class.java.`package`.implementationVersion
@@ -40,8 +40,6 @@ class Bot {
             jdaBuilder = JDABuilder.create(value, GatewayIntent.getIntents(intents))
         }
     var prefix: String = "/"
-
-    var logger: Logger = LoggerFactory.getLogger(name)
 
     private lateinit var cmdHandler: CommandHandler
     var helpCommandEnabled = false
@@ -60,11 +58,15 @@ class Bot {
     private lateinit var jdaBuilder: JDABuilder
 
     fun build() {
+        log("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
+        log(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
+
         val discoreVersion = MANIFEST.getValue("Discore-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
-        log("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
-        log(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
+        LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$discoreVersion"))
+        LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v$jdaVersion"))
+        log()
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
@@ -80,6 +82,16 @@ class Bot {
         cmdHandler.registerCommands(*commands.toTypedArray())
 
         BOT = this
+
+        API.on<ReadyEvent> {
+            val self = API.selfUser
+            LOGGER.info("Authenticated as ${self.asTag}")
+            LOGGER.info("${API.guilds.size} total guild(s)")
+            LOGGER.info("${API.textChannels.size} total textchannel(s)")
+            LOGGER.info("${API.roles.size} total role(s)")
+            LOGGER.info("${API.users.size} total user(s)")
+            log()
+        }
     }
 
     fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)

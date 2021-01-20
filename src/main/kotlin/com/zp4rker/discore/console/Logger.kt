@@ -1,6 +1,7 @@
 package com.zp4rker.discore.console
 
 import org.fusesource.jansi.Ansi
+import org.slf4j.Logger
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -37,3 +38,5 @@ fun log(output: Any? = "") {
 fun separator() {
     log(Ansi.ansi().fgBrightBlack().a("=".repeat(50)).reset())
 }
+
+fun Logger.info(ansi: Ansi) = info(ansi.toString())
