@@ -1,9 +1,11 @@
 package com.zp4rker.discore.bootstrap;
 
+import com.zp4rker.discore.util.FileUtilsKt;
 import org.fusesource.jansi.AnsiConsole;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.JarURLConnection;
@@ -29,7 +31,8 @@ public class Main {
                 Class<?> mainClass = Class.forName(botMain);
                 Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
 
-                AnsiConsole.systemInstall();
+                if (AnsiConsole.isInstalled()) AnsiConsole.systemInstall();
+                FileUtilsKt.datedArchive(new File("logs/log.txt"), true);
 
                 mainMethod.invoke(null, (Object) args);
             } catch (Exception e) {

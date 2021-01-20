@@ -4,8 +4,8 @@ import ch.qos.logback.classic.Level
 import ch.qos.logback.classic.Logger
 import ch.qos.logback.classic.turbo.TurboFilter
 import ch.qos.logback.core.spi.FilterReply
-import org.fusesource.jansi.Ansi.ansi
-import org.slf4j.LoggerFactory
+import com.zp4rker.discore.console.log
+import org.fusesource.jansi.Ansi
 import org.slf4j.Marker
 
 /**
@@ -15,25 +15,60 @@ import org.slf4j.Marker
  */
 class LogInterceptor : TurboFilter() {
 
-    override fun decide(marker: Marker?, logger: Logger, level: Level, msg: String?, objects: Array<Any>?, t: Throwable?): FilterReply {
-        val message = msg ?: "null"
+    override fun decide(marker: Marker?, logger: Logger?, level: Level?, format: String?, params: Array<Any>?, t: Throwable?): FilterReply {
+        logger ?: return FilterReply.DENY
 
-        if (!logger.name.contains(".")) return FilterReply.ACCEPT
+        if (level == Level.TRACE || level == Level.DEBUG) return FilterReply.DENY
 
-        val newLogger = if (logger.name.startsWith("net.dv8tion.jda")) {
-            LoggerFactory.getLogger("JDA")
-        } else LoggerFactory.getLogger(logger.name.substringAfterLast(".").toUpperCase())
-
-        when (level) {
-            Level.INFO -> objects?.let { newLogger.info(message, it) } ?: t?.let { newLogger.info(message, it) } ?: newLogger.info(message)
-            //Level.DEBUG -> objects?.let { newLogger.debug(msg, it) } ?: t?.let { newLogger.debug(msg, it) } ?: newLogger.debug(msg)
-            Level.ERROR -> objects?.let { newLogger.error(message, it) } ?: t?.let { newLogger.error(message, it) } ?: newLogger.error(message)
-            Level.WARN -> objects?.let { newLogger.warn(message, it) } ?: t?.let { newLogger.warn(message, it) } ?: newLogger.warn(message)
-            //Level.TRACE -> objects?.let { newLogger.trace(msg, it) } ?: t?.let { newLogger.trace(msg, it) } ?: newLogger.trace(msg)
+        val nameRaw = logger.name.run { split(".").getOrElse(2) { this } }.run {
+            when {
+                length > 7 -> "${this.substring(0..4)}.."
+                length < 4 -> "$this\t"
+                else -> this
+            }
         }
-        if (level != Level.TRACE && level != Level.DEBUG) return FilterReply.DENY
+        val lvl = level ?: Level.INFO
+        val message = format?.run {
+            if (params == null) {
+                this
+            } else {
+                this.let {
+                    var s = it
+                    for (param in params) {
+                        s = s.replaceFirst("{}", param.toString())
+                    }
+                    s
+                }
+            }
+        } ?: "No message"
 
-        return FilterReply.ACCEPT
+        with(Ansi.ansi()) {
+            reset()
+
+            fgBrightBlack()
+            a("$nameRaw\t")
+
+            when (lvl) {
+                Level.INFO -> fgBrightGreen()
+                Level.WARN -> fgBrightYellow()
+                Level.ERROR -> fgBrightRed()
+                else -> fgBlack()
+            }
+            a(lvl.levelStr)
+
+            reset()
+            a("\t$message")
+
+            if (t != null) {
+                a("\n${t.stackTraceToString()}")
+            }
+
+            log(this)
+
+            if (message == "Finished Loading!") log()
+        }
+
+        return FilterReply.DENY
     }
 
 }
