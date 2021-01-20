@@ -3,7 +3,7 @@ package com.zp4rker.discore.console
 import com.zp4rker.discore.API
 import com.zp4rker.discore.BOT
 import com.zp4rker.discore.LOGGER
-import com.zp4rker.discore.console.default.GuildsCommand
+import com.zp4rker.discore.console.default.GuildCommand
 import com.zp4rker.discore.console.default.StopCommand
 
 /**
@@ -15,7 +15,7 @@ object Console : Thread() {
     init {
         // default commands
         ConsoleCommandHandler.registerCommand("stop", StopCommand, "bye", "shutdown")
-        ConsoleCommandHandler.registerCommand("guilds", GuildsCommand)
+        ConsoleCommandHandler.registerCommand("guild", GuildCommand, "guilds")
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->

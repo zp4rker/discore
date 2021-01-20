@@ -9,7 +9,7 @@ import com.zp4rker.discore.console.ConsoleCommand
  * Default stop/shutdown command.
  */
 object StopCommand : ConsoleCommand {
-    override fun handleCommand(command: String, args: Array<String>) {
+    override fun handleCommand(command: String, params: Array<String>) {
         Console.shutdown()
     }
 }
