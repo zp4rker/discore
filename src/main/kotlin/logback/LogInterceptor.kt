@@ -18,7 +18,7 @@ class LogInterceptor : TurboFilter() {
     override fun decide(marker: Marker?, logger: Logger?, level: Level?, format: String?, params: Array<Any>?, t: Throwable?): FilterReply {
         logger ?: return FilterReply.DENY
 
-        if (level == Level.TRACE || level == Level.DEBUG) return FilterReply.DENY
+        if (level == Level.TRACE) return FilterReply.DENY
 
         val nameRaw = logger.name.run { split(".").getOrElse(2) { this } }.run {
             when {
@@ -63,7 +63,7 @@ class LogInterceptor : TurboFilter() {
                 a("\n${t.stackTraceToString()}")
             }
 
-            log(this)
+            log(this, lvl == Level.DEBUG)
 
             if (message == "Finished Loading!") log()
         }

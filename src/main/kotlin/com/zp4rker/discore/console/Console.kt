@@ -4,9 +4,6 @@ import com.zp4rker.discore.API
 import com.zp4rker.discore.BOT
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.console.default.StopCommand
-import org.jline.reader.LineReaderBuilder
-import org.jline.reader.UserInterruptException
-import org.jline.terminal.TerminalBuilder
 
 /**
  * @author zp4rker
@@ -20,11 +17,7 @@ object Console : Thread() {
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
-            if (exception is UserInterruptException) {
-                shutdown()
-            } else {
-                LOGGER.error("Encountered an exception!", exception)
-            }
+            LOGGER.error("Encountered an exception!", exception)
         }
 
         // shutdown hook
@@ -36,14 +29,13 @@ object Console : Thread() {
     }
 
     private var isRunning = false
-    private val reader = LineReaderBuilder.builder().appName("Discore").terminal(TerminalBuilder.terminal()).build()
 
     override fun run() {
-        var command: String? = reader.readLine()?.toLowerCase()
-        while (command != null && isRunning) {
-            if (!ConsoleCommandHandler.handleCommand(command)) LOGGER.warn("Unkown command. Type \"help\" for help.")
+        var command: String = System.console().readLine().toLowerCase()
+        while (isRunning) {
+            if (!ConsoleCommandHandler.handleCommand(command)) LOGGER.warn("Unkown command \"$command\" - Type \"help\" for help.")
 
-            if (isRunning) command = reader.readLine()?.toLowerCase()
+            if (isRunning) command = System.console().readLine().toLowerCase()
         }
     }
 

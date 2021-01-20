@@ -1,6 +1,7 @@
 package com.zp4rker.discore.console
 
 import com.zp4rker.discore.LOGGER
+import org.fusesource.jansi.Ansi
 
 /**
  * @author zp4rker
@@ -12,7 +13,8 @@ object ConsoleCommandHandler {
     private val commands: MutableMap<String, ConsoleCommand> = mutableMapOf()
 
     fun handleCommand(command: String): Boolean {
-        LOGGER.debug("Ran command: $command")
+        print(Ansi.ansi().cursorUpLine().eraseLine(Ansi.Erase.FORWARD).reset())
+        LOGGER.debug("Ran command \"$command\"")
 
         if (commands.containsKey(command)) {
             commands[command]?.handleCommand(command)

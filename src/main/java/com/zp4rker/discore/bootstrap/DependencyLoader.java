@@ -44,7 +44,7 @@ public class DependencyLoader {
             @Override
             public void run() {
                 if (Main.starting) {
-                    System.out.println("Dependencies took too long to load!");
+                    System.out.println("\nDependencies took too long to load!");
                     System.exit(0);
                 }
             }
