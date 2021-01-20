@@ -3,7 +3,12 @@ package com.zp4rker.discore
 import com.zp4rker.discore.command.Command
 import com.zp4rker.discore.command.CommandHandler
 import com.zp4rker.discore.console.Console
-import com.zp4rker.discore.extenstions.separator
+import com.zp4rker.discore.console.log
+import com.zp4rker.discore.console.separator
+import com.zp4rker.discore.util.linedName
+import io.leego.banana.BananaUtils
+import io.leego.banana.Font
+import io.leego.banana.Layout
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.hooks.EventListener
@@ -25,7 +30,9 @@ class Bot {
             logger = LoggerFactory.getLogger(name)
         }
 
-    var version: String = "1.0.0"
+    var version: String = Bot::class.java.`package`.implementationVersion
+
+    var author: String = "zp4rker#3333"
 
     var token: String = "empty"
         set(value) {
@@ -56,12 +63,8 @@ class Bot {
         val discoreVersion = MANIFEST.getValue("Discore-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
-        LOGGER.separator()
-        LOGGER.info("Starting $name v$version")
-        LOGGER.info("Powered by Discore v${discoreVersion}")
-        LOGGER.info("Created by zp4rker#3333")
-        LOGGER.info("Utilising JDA v${jdaVersion}")
-        LOGGER.separator()
+        log("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
+        log(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)

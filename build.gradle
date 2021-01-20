@@ -35,6 +35,7 @@ dependencies {
     compile "com.charleskorn.kaml:kaml:0.26.0"
 
     compile "com.vdurmont:emoji-java:5.1.1"
+    compile "io.leego:banana:2.0.0"
 }
 
 compileJava {

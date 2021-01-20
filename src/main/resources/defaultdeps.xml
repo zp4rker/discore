@@ -89,5 +89,12 @@
             <artifactId>emoji-java</artifactId>
             <version>5.1.1</version>
         </dependency>
+
+        <!-- banana -->
+        <dependency>
+            <groupId>io.leego</groupId>
+            <artifactId>banana</artifactId>
+            <version>2.0.0</version>
+        </dependency>
     </dependencies>
 </root>
