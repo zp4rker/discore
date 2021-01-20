@@ -3,6 +3,7 @@ package com.zp4rker.discore.console
 import com.zp4rker.discore.API
 import com.zp4rker.discore.BOT
 import com.zp4rker.discore.LOGGER
+import com.zp4rker.discore.console.default.GuildsCommand
 import com.zp4rker.discore.console.default.StopCommand
 
 /**
@@ -13,7 +14,8 @@ import com.zp4rker.discore.console.default.StopCommand
 object Console : Thread() {
     init {
         // default commands
-        ConsoleCommandHandler.registerCommand("stop", StopCommand(), "bye", "shutdown")
+        ConsoleCommandHandler.registerCommand("stop", StopCommand, "bye", "shutdown")
+        ConsoleCommandHandler.registerCommand("guilds", GuildsCommand)
 
         // error handler
         setDefaultUncaughtExceptionHandler { _, exception ->
@@ -31,11 +33,15 @@ object Console : Thread() {
     private var isRunning = false
 
     override fun run() {
-        var command: String = System.console().readLine().toLowerCase()
+        var input = System.console().readLine().toLowerCase()
         while (isRunning) {
-            if (!ConsoleCommandHandler.handleCommand(command)) LOGGER.warn("Unkown command \"$command\" - Type \"help\" for help.")
+            input.split(" ").let {
+                val command = it[0]
+                val args = it.drop(1).toTypedArray()
+                if (!ConsoleCommandHandler.handleCommand(command, args)) LOGGER.warn("Unkown command \"$command\" - Type \"help\" for help.")
+            }
 
-            if (isRunning) command = System.console().readLine().toLowerCase()
+            if (isRunning) input = System.console().readLine().toLowerCase()
         }
     }
 

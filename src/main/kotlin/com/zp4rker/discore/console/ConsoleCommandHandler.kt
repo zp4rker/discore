@@ -12,12 +12,12 @@ object ConsoleCommandHandler {
 
     private val commands: MutableMap<String, ConsoleCommand> = mutableMapOf()
 
-    fun handleCommand(command: String): Boolean {
+    fun handleCommand(command: String, args: Array<String>): Boolean {
         print(Ansi.ansi().cursorUpLine().eraseLine(Ansi.Erase.FORWARD).reset())
         LOGGER.debug("Ran command \"$command\"")
 
         if (commands.containsKey(command)) {
-            commands[command]?.handleCommand(command)
+            commands[command]?.handleCommand(command, args)
             return true
         }
 
