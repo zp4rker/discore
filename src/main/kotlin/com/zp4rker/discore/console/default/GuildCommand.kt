@@ -16,7 +16,6 @@ object GuildCommand : ConsoleCommand {
         val guilds = API.guilds
         val withIds = params.any { it == "-ids" }
         val args = params.filter { !it.startsWith("-") }
-        val options = params.filter { it.startsWith("-") }
 
         if (args.isEmpty()) {
             listGuilds(guilds, withIds)
@@ -25,38 +24,40 @@ object GuildCommand : ConsoleCommand {
                 API.getGuildById(args[0])
             } else {
                 API.getGuildsByName(args[0], true).getOrNull(0)
-            }
-
-            if (guild == null) {
+            } ?: run {
                 LOGGER.warn("Could not find a guild with that ID or name!")
                 return
             }
 
             if (args.size == 1) {
-                with(LOGGER) {
-                    info("Guild Info")
-                    info("  Name: ${guild.name}")
-                    if (withIds) info("  ID: ${guild.id}")
-                    info("  Owner: ${guild.retrieveOwner().complete().user.asTag}${if (withIds) " (${guild.ownerId})" else ""}")
-                    info("  Birthdate: ${guild.timeCreated.atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"))}")
-                    info("  Boost tier: ${guild.boostTier.toString().replace("_", " ")}")
-                    info("  Total boosts: ${guild.boostCount}")
-                    info("  Categories: ${guild.categories.size}")
-                    info("  Textchannels: ${guild.textChannels.size}")
-                    info("  Voicechannels: ${guild.voiceChannels.size}")
-                    info("  Roles: ${guild.roles.size}")
-                    guild.members.let {
-                        info("  Total members: ${it.size} (${it.count { m -> m.user.isBot }.let { c -> "$c bot${if (c > 1) "s" else ""}" }})")
-                    }
-                    info("  Emotes: ${guild.emotes.size}")
-                }
+                guildInfo(guild, withIds)
             } else {
                 when (args[1].toLowerCase()) {
                     "channels" -> listChannels(guild, withIds)
                     "roles" -> listRoles(guild, withIds)
-                    "members" -> listMembers(guild, withIds)
+                    "members", "users" -> listMembers(guild, withIds)
                 }
             }
+        }
+    }
+
+    private fun guildInfo(guild: Guild, withIds: Boolean) {
+        with(LOGGER) {
+            info("Guild Info")
+            info("  Name: ${guild.name}")
+            if (withIds) info("  ID: ${guild.id}")
+            info("  Owner: ${guild.retrieveOwner().complete().user.asTag}${if (withIds) " (${guild.ownerId})" else ""}")
+            info("  Birthdate: ${guild.timeCreated.atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"))}")
+            info("  Boost tier: ${guild.boostTier.toString().replace("_", " ")}")
+            info("  Total boosts: ${guild.boostCount}")
+            info("  Categories: ${guild.categories.size}")
+            info("  Textchannels: ${guild.textChannels.size}")
+            info("  Voicechannels: ${guild.voiceChannels.size}")
+            info("  Roles: ${guild.roles.size}")
+            guild.members.let {
+                info("  Total members: ${it.size} (${it.count { m -> m.user.isBot }.let { c -> "$c bot${if (c > 1) "s" else ""}" }})")
+            }
+            info("  Emotes: ${guild.emotes.size}")
         }
     }
 
