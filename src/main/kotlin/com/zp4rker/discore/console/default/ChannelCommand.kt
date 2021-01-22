@@ -33,9 +33,12 @@ object ChannelCommand : ConsoleCommand {
         if (args.size == 1) {
             channelInfo(channel, withIds, detailed)
         } else {
-            when (args[0].toLowerCase()) {
+            when (args[1].toLowerCase()) {
                 "permissions", "overrides" -> listPermissions(channel, withIds)
                 "members", "users" -> listMembers(channel, withIds)
+                "message", "msg" -> if (args.size > 2 && channel is TextChannel) {
+                    message(channel, args.drop(2).joinToString(" "))
+                }
             }
         }
     }
@@ -55,9 +58,9 @@ object ChannelCommand : ConsoleCommand {
             if (detailed && channel is TextChannel) {
                 val history = channel.history
                 var count = 0
-                var messages = history.retrievePast(100).complete().also { count++ }
+                var messages = history.retrievePast(100).complete().also { count += it.size }
                 while (messages.size == 100) {
-                    messages = history.retrievePast(100).complete().also { count++ }
+                    messages = history.retrievePast(100).complete().also { count += it.size }
                 }
                 info("  Total messages: $count")
             }
@@ -79,6 +82,12 @@ object ChannelCommand : ConsoleCommand {
             channel.members.forEach {
                 info("- ${if (it.user.isBot) "BOT " else ""}${it.user.asTag}${if (withIds) " (${it.id})" else ""}")
             }
+        }
+    }
+
+    private fun message(channel: TextChannel, message: String) {
+        channel.sendMessage(message).queue {
+            LOGGER.info("Sent message to #${channel.name}: $message")
         }
     }
 }

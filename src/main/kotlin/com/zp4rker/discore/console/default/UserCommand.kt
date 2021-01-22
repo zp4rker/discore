@@ -34,6 +34,12 @@ object UserCommand : ConsoleCommand {
 
         if (args.size == 1) {
             userInfo(user, withIds)
+        } else {
+            when (args[1].toLowerCase()) {
+                "message", "msg" -> if (args.size > 2) {
+                    message(user, args.drop(2).joinToString(" "))
+                }
+            }
         }
     }
 
@@ -42,7 +48,7 @@ object UserCommand : ConsoleCommand {
             info("${if (user.isBot) "Bot" else "User"} Info")
             info("  Username: ${user.asTag}")
             if (withIds) info("  ID: ${user.id}")
-            info("  Birthdata: ${user.timeCreated.atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"))}")
+            info("  Birthdate: ${user.timeCreated.atZoneSameInstant(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm"))}")
             user.flags.let { flags ->
                 if (flags.isNotEmpty()) {
                     info("  Badges:")
@@ -52,6 +58,23 @@ object UserCommand : ConsoleCommand {
                 }
             }
             info("  Mutual guilds: ${user.mutualGuilds.size}")
+        }
+    }
+
+    private fun message(user: User, message: String) {
+        user.openPrivateChannel().submit().handle { pc, _ ->
+            if (pc == null) {
+                LOGGER.warn("Was unable to message that user! They might have DMs disabled.")
+                return@handle
+            }
+
+            pc.sendMessage(message).submit().handle { m, _ ->
+                if (m == null) {
+                    LOGGER.warn("Was unable to message that user! They might have DMs disabled.")
+                } else {
+                    LOGGER.info("Sent message to ${user.asTag}: $message")
+                }
+            }
         }
     }
 }

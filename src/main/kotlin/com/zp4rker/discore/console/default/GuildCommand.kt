@@ -75,7 +75,7 @@ object GuildCommand : ConsoleCommand {
                 info("- ${it.type.name.first()}:${it.name}${if (withIds) " (${it.id})" else ""}")
                 if (it is Category) {
                     it.channels.sortedBy { c -> c.position }.forEach { c ->
-                        info("  - ${c.type.name.first()}:${c.name}${if (withIds) " (${it.id})" else ""}")
+                        info("  - ${c.type.name.first()}:${c.name}${if (withIds) " (${c.id})" else ""}")
                     }
                 }
             }
