@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.hooks.EventListener
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /**
  * @author zp4rker
@@ -65,4 +67,29 @@ inline fun <reified T : GenericEvent> JDA.expect(
     }
 
     return listener
+}
+
+inline fun <reified T : GenericEvent> JDA.expectBlocking(
+    crossinline predicate: Predicate<T> = {true},
+    amount: Int = 1,
+    timeout: Long = 0,
+    timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
+    crossinline timeoutAction: () -> Unit = {},
+    crossinline action: EventListener.(T) -> Unit) {
+    val lock = ReentrantLock()
+    val cond = lock.newCondition()
+    var flag = false
+    val unlock: () -> Unit = {
+        flag = true
+        lock.withLock {
+            cond.signal()
+        }
+    }
+    expect(predicate, amount, timeout, timeoutUnit, { unlock(); timeoutAction() }) {
+        action(it)
+        unlock()
+    }
+    lock.withLock {
+        while (!flag) cond.await()
+    }
 }
