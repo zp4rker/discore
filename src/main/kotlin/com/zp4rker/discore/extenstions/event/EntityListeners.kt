@@ -75,6 +75,8 @@ inline fun <reified T : GenericEvent> runAction(
                 if (event.channel == entity) action(eventListener, event)
             } else if (event is GenericGuildMessageEvent) {
                 if (event.channel == entity) action(eventListener, event)
+            } else if (event is GenericMessageEvent) {
+                if (event.channel == entity) action(eventListener, event)
             } else {
                 LOGGER.warn("Unrecognised event for entity type!")
                 eventListener.unregister()
