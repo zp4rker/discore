@@ -36,6 +36,17 @@ inline fun <reified T : GenericEvent> ISnowflake.expect(
     runAction(this@expect, it, this, action)
 }
 
+inline fun <reified T : GenericEvent> ISnowflake.expectBlocking(
+    crossinline predicate: Predicate<T> = { true },
+    amount: Int = 1,
+    timeout: Long = 0,
+    timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
+    crossinline timeoutAction: () -> Unit = {},
+    noinline action: EventListener.(T) -> Unit
+) = API.expectBlocking(predicate, amount, timeout, timeoutUnit, timeoutAction) {
+    runAction(this@expectBlocking, it, this, action)
+}
+
 inline fun <reified T : GenericEvent> runAction(
     entity: ISnowflake,
     event: T,
@@ -70,7 +81,7 @@ inline fun <reified T : GenericEvent> runAction(
             }
         }
 
-        is TextChannel -> {
+        is MessageChannel -> {
             if (event is GenericTextChannelEvent) {
                 if (event.channel == entity) action(eventListener, event)
             } else if (event is GenericGuildMessageEvent) {
