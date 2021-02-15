@@ -23,7 +23,6 @@ class LogInterceptor : TurboFilter() {
         val nameRaw = logger.name.run { split(".").getOrElse(2) { this } }.run {
             when {
                 length > 7 -> "${this.substring(0..4)}.."
-                length < 4 -> "$this\t"
                 else -> this
             }
         }
@@ -46,7 +45,7 @@ class LogInterceptor : TurboFilter() {
             reset()
 
             fgBrightBlack()
-            a("$nameRaw\t")
+            a(nameRaw.padEnd(8))
 
             when (lvl) {
                 Level.INFO -> fgBrightGreen()
@@ -54,10 +53,10 @@ class LogInterceptor : TurboFilter() {
                 Level.ERROR -> fgBrightRed()
                 else -> fgBlack()
             }
-            a(lvl.levelStr)
+            a(lvl.levelStr.padEnd(8))
 
             reset()
-            a("\t$message")
+            a(message)
 
             if (t != null) {
                 a("\n${t.stackTraceToString()}")
