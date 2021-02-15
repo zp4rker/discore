@@ -20,11 +20,11 @@ import java.util.jar.Attributes;
 public class Main {
 
     public static boolean starting = true;
-    public static boolean debug = false;
+    public static boolean debug = true;
 
     public static void main(String[] args) throws URISyntaxException, ParserConfigurationException, SAXException, IOException, InterruptedException {
-        if (Arrays.stream(args).anyMatch(s -> s.equalsIgnoreCase("-debug"))) {
-            debug = true;
+        if (Arrays.stream(args).anyMatch(s -> s.equalsIgnoreCase("-nodebug"))) {
+            debug = false;
         }
         DependencyLoader.loadDeps(() -> {
             try {
