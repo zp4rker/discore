@@ -158,7 +158,7 @@ to [`InterfacedEventManager()`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8ti
 | `API`                 | JDA
 | `BOT`                 | Bot
 | `MANIFEST`            | Attributes
-| `LOGGER`              | Logger _(not to be confused with the Bot logger)_
+| `LOGGER`              | Logger
 | `HIDDEN_EMBED_COLOUR` | String
 
 ---
