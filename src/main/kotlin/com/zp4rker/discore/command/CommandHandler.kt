@@ -70,6 +70,15 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 sendArgumentError(e.message, command)
                 return@on
             }
+            command.args.forEachIndexed { i, regex ->
+                if (regex != "") {
+                    val arg = args.getOrElse(i) { "" }
+                    if (!Regex(regex).matches(arg)) {
+                        sendArgumentError(e.message, command)
+                        return@on
+                    }
+                }
+            }
 
             if (command.autoDelete) e.message.delete().queue()
 
@@ -83,7 +92,7 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 text = "Invalid arguments"
             }
 
-            description = "You didn't provide the correct arguments, please try again. Correct usage: `${command.usage}`"
+            description = "You didn't provide the correct arguments, please try again. Correct usage: `$prefix${command.usage}`"
 
             color = "#ec644b"
         }
