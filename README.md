@@ -39,14 +39,14 @@ The complex components consist of the following attributes:
 | ---       | ---       | ---                           | ---
 | `name`    | String    | `"zp4rker"`                   | `null`
 | `url`     | String    | `"https://google.com"`        | `null`
-| `iconUrl` | String    | `"https://img.com/avtr.com"`  | `null`
+| `iconUrl` | String    | `"https://img.com/avtr.png"`  | `null`
 
 #### EmbedFooter
 
 | Name      | Type      | Example                       | Default
 | ---       | ---       | ---                           | ---
 | `text`    | String    | `"Created by zp4rker#3333"`   | `null`
-| `iconUrl` | String    | `"https://img.com/avtr.com"`  | `null`
+| `iconUrl` | String    | `"https://img.com/avtr.png"`  | `null`
 
 #### EmbedTitle
 
