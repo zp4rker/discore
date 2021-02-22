@@ -34,11 +34,6 @@ dependencies {
     compile "io.leego:banana:2.0.0"
 }
 
-compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
-}
-
 compileKotlin {
     kotlinOptions.jvmTarget = 1.8
 }

@@ -3,8 +3,8 @@ package com.zp4rker.discore
 import com.zp4rker.discore.command.Command
 import com.zp4rker.discore.command.CommandHandler
 import com.zp4rker.discore.console.Console
-import com.zp4rker.discore.console.blankLine
-import com.zp4rker.discore.console.info
+import com.zp4rker.discore.log.blankLine
+import com.zp4rker.discore.log.info
 import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils

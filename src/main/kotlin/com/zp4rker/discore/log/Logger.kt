@@ -1,4 +1,4 @@
-package com.zp4rker.discore.console
+package com.zp4rker.discore.log
 
 import ch.qos.logback.classic.Level
 import com.zp4rker.discore.BOT
