@@ -20,6 +20,8 @@ class LogInterceptor : TurboFilter() {
 
         if (level == Level.TRACE) return FilterReply.DENY
 
+        if (logger.name.startsWith("discore:")) return FilterReply.ACCEPT
+
         val nameRaw = logger.name.run { split(".").getOrElse(2) { this } }.run {
             when {
                 length > 7 -> "${this.substring(0..4)}.."
@@ -62,9 +64,9 @@ class LogInterceptor : TurboFilter() {
                 a("\n${t.stackTraceToString()}")
             }
 
-            log(this, lvl == Level.DEBUG)
+            log(logger.name, level ?: Level.INFO, this, t, lvl == Level.DEBUG)
 
-            if (message == "Finished Loading!") log()
+            if (message == "Finished Loading!") log(logger.name, level ?: Level.INFO, "")
         }
 
         return FilterReply.DENY

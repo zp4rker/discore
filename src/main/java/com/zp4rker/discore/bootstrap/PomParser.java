@@ -1,5 +1,6 @@
 package com.zp4rker.discore.bootstrap;
 
+import com.sun.tools.classfile.Dependency;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

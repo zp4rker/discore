@@ -4,6 +4,7 @@ import com.zp4rker.discore.API
 import com.zp4rker.discore.BOT
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.console.default.*
+import org.fusesource.jansi.AnsiConsole
 
 /**
  * @author zp4rker
@@ -49,6 +50,9 @@ object Console : Thread() {
 
     override fun start() {
         isRunning = true
+
+        if (!AnsiConsole.isInstalled()) AnsiConsole.systemInstall()
+
         super.start()
     }
 

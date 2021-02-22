@@ -3,8 +3,8 @@ package com.zp4rker.discore
 import com.zp4rker.discore.command.Command
 import com.zp4rker.discore.command.CommandHandler
 import com.zp4rker.discore.console.Console
+import com.zp4rker.discore.console.blankLine
 import com.zp4rker.discore.console.info
-import com.zp4rker.discore.console.log
 import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
@@ -52,18 +52,20 @@ class Bot {
 
     var quit: () -> Unit = {}
 
+    var debug: Boolean = false
+
     private lateinit var jdaBuilder: JDABuilder
 
     fun build() {
-        log("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
-        log(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
+        LOGGER.info("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
+        LOGGER.info(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
 
         val discoreVersion = MANIFEST.getValue("Discore-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
         LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$discoreVersion"))
         LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v$jdaVersion"))
-        log()
+        LOGGER.blankLine()
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
@@ -87,7 +89,7 @@ class Bot {
             LOGGER.info("${API.textChannels.size} total textchannel(s)")
             LOGGER.info("${API.roles.size} total role(s)")
             LOGGER.info("${API.users.size} total user(s)")
-            log()
+            LOGGER.blankLine()
         }
     }
 

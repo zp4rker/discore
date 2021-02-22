@@ -1,5 +1,7 @@
 package com.zp4rker.discore.bootstrap;
 
+import com.sun.tools.classfile.Dependency;
+
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.Callable;

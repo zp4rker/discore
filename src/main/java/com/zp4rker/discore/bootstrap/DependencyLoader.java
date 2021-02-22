@@ -1,5 +1,6 @@
 package com.zp4rker.discore.bootstrap;
 
+import com.sun.tools.classfile.Dependency;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
