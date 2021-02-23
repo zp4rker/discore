@@ -6,6 +6,7 @@ import com.zp4rker.discore.console.Console
 import com.zp4rker.discore.log.blankLine
 import com.zp4rker.discore.log.info
 import com.zp4rker.discore.extenstions.event.on
+import com.zp4rker.discore.log.initLogBackend
 import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
 import io.leego.banana.Font
@@ -52,17 +53,16 @@ class Bot {
 
     var quit: () -> Unit = {}
 
-    var debug: Boolean = false
-
     private lateinit var jdaBuilder: JDABuilder
 
     fun build() {
-        LOGGER.info("\n${BananaUtils.bananaify(linedName(name), Font.BIG_MONEY_NW, Layout.SMUSH_R, Layout.SMUSH_R).trimEnd()}")
-        LOGGER.info(BananaUtils.bananaify("v$version", Font.RECTANGLES).trimEnd() + "\tby $author\n")
+        LOGGER.info("${BananaUtils.bananaify(linedName(name), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
+        LOGGER.blankLine()
 
         val discoreVersion = MANIFEST.getValue("Discore-Version")
         val jdaVersion = MANIFEST.getValue("JDA-Version")
 
+        LOGGER.info("Created by zp4rker#3333")
         LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$discoreVersion"))
         LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v$jdaVersion"))
         LOGGER.blankLine()
@@ -99,6 +99,7 @@ class Bot {
 }
 
 fun bot(builder: Bot.() -> Unit): Bot {
+    initLogBackend()
     Console.start()
     return Bot().also(builder).also { it.build() }
 }

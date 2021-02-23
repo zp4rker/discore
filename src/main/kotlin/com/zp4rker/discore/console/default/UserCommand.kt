@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
  */
 object UserCommand : ConsoleCommand {
     override fun handleCommand(command: String, params: Array<String>) {
-        val options = params.filter { it.startsWith("-") }.map(String::toUpperCase)
+//        val options = params.filter { it.startsWith("-") }.map(String::toUpperCase)
         val args = params.filter { !it.startsWith("-") }
 
         val withIds = args.contains("-ids")

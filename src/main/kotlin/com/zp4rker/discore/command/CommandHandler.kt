@@ -54,13 +54,7 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
             }
 
             val args = e.message.contentRaw.substring((prefix + label).length).trimStart().split(" ").dropWhile { it == "" }
-            if (command.maxArgs > 0 && command.maxArgs < args.size) {
-                sendArgumentError(e.message, command)
-                return@on
-            } else if (command.minArgs > 0 && command.minArgs > args.size) {
-                sendArgumentError(e.message, command)
-                return@on
-            } else if (command.mentionedMembers > 0 && command.mentionedMembers != e.message.mentionedMembers.size) {
+            if (command.mentionedMembers > 0 && command.mentionedMembers != e.message.mentionedMembers.size) {
                 sendArgumentError(e.message, command)
                 return@on
             } else if (command.mentionedRoles > 0 && command.mentionedRoles != e.message.mentionedRoles.size) {
@@ -74,6 +68,11 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 if (regex != "") {
                     val arg = args.getOrElse(i) { "" }
                     if (!Regex(regex).matches(arg)) {
+                        sendArgumentError(e.message, command)
+                        return@on
+                    }
+                } else {
+                    if (args.getOrNull(i) == null) {
                         sendArgumentError(e.message, command)
                         return@on
                     }

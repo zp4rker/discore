@@ -1,57 +1,48 @@
 package com.zp4rker.discore.log
 
-import ch.qos.logback.classic.Level
-import com.zp4rker.discore.BOT
+import com.zp4rker.discore.DEBUG
+import com.zp4rker.discore.LOGGER
+import com.zp4rker.log4kt.Log4KtEventListener
+import com.zp4rker.log4kt.Log4KtLogEvent
+import com.zp4rker.log4kt.Log4KtPrepareLogEvent
 import org.fusesource.jansi.Ansi
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import org.slf4j.event.Level
+import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 /**
  * @author zp4rker
  */
 
-fun log(loggerName: String, lvl: Level, output: Any? = "", error: Throwable? = null, debug: Boolean = false) {
-    if (output?.toString()?.contains("\n") == true) {
-        output.toString().split("\n").forEach { log(loggerName, lvl, it, error, debug) }
-        return
+fun initLogBackend() {
+    Log4KtEventListener.on<Log4KtPrepareLogEvent> {
+        if (it.level != Level.INFO || !(it.msg?.contains("\n") ?: false)) return@on
+
+        it.isCancelled = true
+
+        it.msg?.run { split("\n").forEach { line -> LOGGER.info(line) } }
     }
 
-    if ((debug && BOT.debug) || !debug) {
-        output?.let {
-            when (lvl) {
-                Level.INFO -> LoggerFactory.getLogger("discore:$loggerName").info(it.toString())
-                Level.DEBUG -> LoggerFactory.getLogger("discore:$loggerName").debug(it.toString())
-
-                Level.WARN -> LoggerFactory.getLogger("discore:$loggerName").warn(it.toString())
-                Level.ERROR -> error?.let { e ->
-                    LoggerFactory.getLogger("discore:$loggerName").error(it.toString(), e)
-                } ?: LoggerFactory.getLogger("discore:$loggerName").error(it.toString())
-            }
+    Log4KtEventListener.on<Log4KtLogEvent> {
+        val logFile = File("logs/log.txt").also {
+            if (!it.parentFile.exists()) it.parentFile.mkdirs()
+            if (!it.exists()) it.createNewFile()
         }
+
+        val logOut = it.output?.replace(Regex("\u001B\\[[;\\d]*m"), "") ?: "null"
+        val timestamp = if (logOut != "") {
+            "[${OffsetDateTime.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))}] \t"
+        } else {
+            ""
+        }
+
+        logFile.appendText("$timestamp$logOut\n")
     }
-
-    val logFile = File("logs/log.txt").also {
-        if (!it.parentFile.exists()) it.parentFile.mkdirs()
-        if (!it.exists()) it.createNewFile()
-    }
-
-    val logOut = output?.toString()?.replace(Regex("\u001B\\[[;\\d]*m"), "") ?: "null"
-    val timestamp = if (logOut != "") {
-        "[${OffsetDateTime.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))}] \t"
-    } else {
-        ""
-    }
-
-    logFile.appendText("$timestamp$logOut\n")
-}
-
-fun Logger.separator() {
-    info(Ansi.ansi().fgBrightBlack().a("=".repeat(50)).reset())
 }
 
 fun Logger.blankLine() {

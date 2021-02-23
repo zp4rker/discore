@@ -17,12 +17,10 @@ abstract class Command(
     val permission: Permission = Permission.MESSAGE_READ,
     val roles: Array<Long> = emptyArray(),
 
-    @Deprecated("Will be removed in a later update,  replaced by 'args'.") val maxArgs: Int = 0,
-    @Deprecated("Will be removed in a later update, replaced by 'args'.") val minArgs: Int = 0,
     val mentionedMembers: Int = 0,
     val mentionedRoles: Int = 0,
     val mentionedChannels: Int = 0,
-    val args: Array<String> = Array(max(maxArgs, minArgs)) { "" },
+    val args: Array<String> = arrayOf(),
 
     val autoDelete: Boolean = false
 ) {

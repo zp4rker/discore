@@ -10,7 +10,7 @@ plugins {
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '1.2.4-release'
+version '2.0.0'
 
 repositories {
     mavenCentral()
@@ -23,9 +23,7 @@ dependencies {
 
     compile "net.dv8tion:JDA:4.2.0_227"
 
-    compile "ch.qos.logback:logback-classic:1.2.3"
-
-    compile "org.fusesource.jansi:jansi:2.1.1"
+    compile "com.zp4rker:log4kt:1.1.2"
 
     compile "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
     compile "com.charleskorn.kaml:kaml:0.26.0"
