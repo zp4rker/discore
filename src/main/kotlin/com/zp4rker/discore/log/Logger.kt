@@ -2,6 +2,7 @@ package com.zp4rker.discore.log
 
 import com.zp4rker.discore.DEBUG
 import com.zp4rker.discore.LOGGER
+import com.zp4rker.discore.util.datedArchive
 import com.zp4rker.log4kt.Log4KtEventListener
 import com.zp4rker.log4kt.Log4KtLogEvent
 import com.zp4rker.log4kt.Log4KtPrepareLogEvent
@@ -20,6 +21,8 @@ import org.slf4j.Logger
  */
 
 fun initLogBackend() {
+    datedArchive(File("logs/log.txt"))
+
     Log4KtEventListener.on<Log4KtPrepareLogEvent> {
         if (it.level != Level.INFO || !(it.msg?.contains("\n") ?: false)) return@on
 
