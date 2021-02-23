@@ -9,7 +9,7 @@ import kotlin.math.max
  * @author zp4rker
  */
 abstract class Command(
-    val aliases: Array<String>,
+    var aliases: Array<String>,
     val description: String = "",
     val usage: String = aliases[0],
     val hidden: Boolean = false,

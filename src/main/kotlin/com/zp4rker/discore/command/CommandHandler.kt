@@ -27,7 +27,12 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
     }
 
     private fun registerCommand(command: Command) {
-        commands.add(command)
+        commands.add(command.apply {
+            if (aliases.isEmpty()) {
+                val name = command::class.java.name
+                aliases = arrayOf(if (name.endsWith("Command")) name.dropLast("Command".length).toLowerCase() else name.toLowerCase())
+            }
+        })
     }
 
     init {
