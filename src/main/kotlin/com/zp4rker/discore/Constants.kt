@@ -10,7 +10,6 @@ import java.util.jar.Attributes
 /**
  * @author zp4rker
  */
-
 lateinit var API: JDA
 lateinit var BOT: Bot
 
@@ -21,5 +20,3 @@ val LOGGER: Logger = LoggerFactory.getLogger("discore")
 const val HIDDEN_EMBED_COLOUR = "#2f3136"
 
 val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSource.location)
-
-fun getManifest(url: URL): Attributes = with(URL("jar:${url.toExternalForm()}!/").openConnection() as JarURLConnection) { mainAttributes }

@@ -41,7 +41,7 @@ class Bot {
 
     private lateinit var cmdHandler: CommandHandler
     var helpCommandEnabled = false
-    var commands: List<Command> = listOf()
+    var commands: List<Command> = findCommands()
 
     var activity: Activity? = null
     var intents: Int = GatewayIntent.DEFAULT
