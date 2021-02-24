@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.guild.GenericGuildEvent
 import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent
 import net.dv8tion.jda.api.events.message.GenericMessageEvent
 import net.dv8tion.jda.api.events.message.guild.GenericGuildMessageEvent
+import net.dv8tion.jda.api.events.message.priv.GenericPrivateMessageEvent
 import net.dv8tion.jda.api.events.user.GenericUserEvent
 import net.dv8tion.jda.api.hooks.EventListener
 import java.util.concurrent.TimeUnit
@@ -91,6 +92,12 @@ inline fun <reified T : GenericEvent> runAction(
             } else {
                 LOGGER.warn("Unrecognised event for entity type!")
                 eventListener.unregister()
+            }
+        }
+
+        is PrivateChannel -> {
+            if (event is GenericPrivateMessageEvent) {
+                if (event.channel == entity) action(eventListener, event)
             }
         }
 
