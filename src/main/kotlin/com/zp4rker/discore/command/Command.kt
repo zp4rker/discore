@@ -3,7 +3,6 @@ package com.zp4rker.discore.command
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.TextChannel
-import kotlin.math.max
 
 /**
  * @author zp4rker

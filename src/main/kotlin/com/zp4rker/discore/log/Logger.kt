@@ -1,20 +1,18 @@
 package com.zp4rker.discore.log
 
-import com.zp4rker.discore.DEBUG
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.util.datedArchive
 import com.zp4rker.log4kt.Log4KtEventListener
 import com.zp4rker.log4kt.Log4KtLogEvent
 import com.zp4rker.log4kt.Log4KtPrepareLogEvent
 import org.fusesource.jansi.Ansi
+import org.slf4j.Logger
+import org.slf4j.event.Level
 import java.io.File
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import org.slf4j.event.Level
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
 
 /**
  * @author zp4rker

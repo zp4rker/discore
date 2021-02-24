@@ -3,14 +3,13 @@ package com.zp4rker.discore
 import com.zp4rker.discore.command.Command
 import com.zp4rker.discore.command.CommandHandler
 import com.zp4rker.discore.console.Console
+import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.log.blankLine
 import com.zp4rker.discore.log.info
-import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.log.initLogBackend
 import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
 import io.leego.banana.Font
-import io.leego.banana.Layout
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.events.ReadyEvent
