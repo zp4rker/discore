@@ -1,6 +1,7 @@
 package com.zp4rker.discore.extenstions.event
 
 import com.zp4rker.discore.API
+import com.zp4rker.discore.LOGGER
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.hooks.EventListener
@@ -69,6 +70,7 @@ inline fun <reified T : GenericEvent> JDA.expect(
     return listener
 }
 
+@Deprecated("experimental")
 inline fun <reified T : GenericEvent> JDA.expectBlocking(
     crossinline predicate: Predicate<T> = {true},
     amount: Int = 1,
@@ -92,4 +94,5 @@ inline fun <reified T : GenericEvent> JDA.expectBlocking(
     lock.withLock {
         while (!flag) cond.await()
     }
+    // TODO: Make this more efficient/better
 }

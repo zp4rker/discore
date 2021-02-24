@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
  * @author zp4rker
  */
 
+@Deprecated("experimental")
 fun MessageChannel.awaitMessages(filter: Predicate<Message> = { true }, limit: Int = 1): List<Message> {
     val list = mutableListOf<Message>()
     while (list.size < limit) {
@@ -23,6 +24,7 @@ fun MessageChannel.awaitMessages(filter: Predicate<Message> = { true }, limit: I
     return list
 }
 
+@Deprecated("experimental")
 fun MessageChannel.awaitReactions(filter: Predicate<MessageReaction> = { true }, limit: Int = 1): List<MessageReaction> {
     val list = mutableListOf<MessageReaction>()
     while (list.size < limit) {

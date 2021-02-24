@@ -37,6 +37,7 @@ inline fun <reified T : GenericEvent> ISnowflake.expect(
     runAction(this@expect, it, this, action)
 }
 
+@Deprecated("experimental")
 inline fun <reified T : GenericEvent> ISnowflake.expectBlocking(
     crossinline predicate: Predicate<T> = { true },
     amount: Int = 1,
