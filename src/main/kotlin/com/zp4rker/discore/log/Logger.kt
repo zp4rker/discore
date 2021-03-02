@@ -22,11 +22,15 @@ fun initLogBackend() {
     datedArchive(File("logs/log.txt"))
 
     Log4KtEventListener.on<Log4KtPrepareLogEvent> {
-        if (it.level != Level.INFO || !(it.msg?.contains("\n") ?: false)) return@on
+        if (logger.name == "reflections" && level == Level.INFO) level = Level.DEBUG
+    }
 
-        it.isCancelled = true
+    Log4KtEventListener.on<Log4KtPrepareLogEvent> {
+        if (level != Level.INFO || !(msg?.contains("\n") ?: false)) return@on
 
-        it.msg?.run { split("\n").forEach { line -> LOGGER.info(line) } }
+        isCancelled = true
+
+        msg?.run { split("\n").forEach { line -> LOGGER.info(line) } }
     }
 
     Log4KtEventListener.on<Log4KtLogEvent> {
@@ -35,7 +39,7 @@ fun initLogBackend() {
             if (!it.exists()) it.createNewFile()
         }
 
-        val logOut = it.output?.replace(Regex("\u001B\\[[;\\d]*m"), "") ?: "null"
+        val logOut = output?.replace(Regex("\u001B\\[[;\\d]*m"), "") ?: "null"
         val timestamp = if (logOut != "") {
             "[${OffsetDateTime.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))}] \t"
         } else {
