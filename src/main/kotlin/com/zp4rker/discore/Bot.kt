@@ -40,7 +40,7 @@ class Bot {
 
     private lateinit var cmdHandler: CommandHandler
     var helpCommandEnabled = false
-    var commands: List<Command> = findCommands()
+    var commands: List<Command>
 
     var activity: Activity? = null
     var intents: Int = GatewayIntent.DEFAULT
@@ -53,6 +53,11 @@ class Bot {
     var quit: () -> Unit = {}
 
     private lateinit var jdaBuilder: JDABuilder
+
+    init {
+        initLogBackend()
+        commands = findCommands()
+    }
 
     fun build() {
         LOGGER.info("${BananaUtils.bananaify(linedName(name), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
@@ -98,7 +103,6 @@ class Bot {
 }
 
 fun bot(builder: Bot.() -> Unit): Bot {
-    initLogBackend()
     Console.start()
     return Bot().also(builder).also { it.build() }
 }

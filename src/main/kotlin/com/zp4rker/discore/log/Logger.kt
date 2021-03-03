@@ -22,7 +22,7 @@ fun initLogBackend() {
     datedArchive(File("logs/log.txt"))
 
     Log4KtEventListener.on<Log4KtPrepareLogEvent> {
-        if (logger.name == "reflections" && level == Level.INFO) level = Level.DEBUG
+        if (logger.name == "org.reflections.reflections" && level == Level.INFO) level = Level.DEBUG
     }
 
     Log4KtEventListener.on<Log4KtPrepareLogEvent> {

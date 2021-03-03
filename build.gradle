@@ -23,7 +23,7 @@ dependencies {
 
     compile "net.dv8tion:JDA:4.2.0_227"
 
-    compile "com.zp4rker:log4kt:1.1.5"
+    compile "com.zp4rker:log4kt:1.1.6"
 
     compile "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
     compile "com.charleskorn.kaml:kaml:0.26.0"
@@ -32,6 +32,11 @@ dependencies {
     compile "io.leego:banana:2.0.0"
 
     compile "org.reflections:reflections:0.9.12"
+
+    /*compile "org.jline:jline-terminal:3.19.0"
+    compile "org.jline:jline-terminal-jansi:3.19.0"*/
+    compile "org.jline:jline-reader:3.19.0"
+    /*compile "org.jline:jline-console:3.19.0"*/
 }
 
 compileKotlin {
