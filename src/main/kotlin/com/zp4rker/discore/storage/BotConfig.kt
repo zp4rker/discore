@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class BotConfig(
-    val token: String = "token.here",
-    val prefix: String = "/"
+    val token: String = "insert token here",
+    val prefix: String = "insert prefix here"
 )
