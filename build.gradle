@@ -21,7 +21,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 
-    compile "net.dv8tion:JDA:4.2.0_229"
+    compile "net.dv8tion:JDA:4.2.0_236"
 
     compile "com.zp4rker:log4kt:1.1.6"
 
