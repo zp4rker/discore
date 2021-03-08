@@ -11,8 +11,6 @@ import java.util.jar.Attributes
 lateinit var API: JDA
 lateinit var BOT: Bot
 
-var DEBUG: Boolean = false
-
 val LOGGER: Logger = LoggerFactory.getLogger("discore")
 
 const val HIDDEN_EMBED_COLOUR = "#2f3136"

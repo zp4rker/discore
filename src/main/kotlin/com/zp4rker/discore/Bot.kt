@@ -25,7 +25,7 @@ import org.fusesource.jansi.Ansi
 
 class Bot {
 
-    var name: String = "Discore"
+    var name: String = "discore"
 
     var version: String = Bot::class.java.`package`.implementationVersion
 
@@ -48,11 +48,19 @@ class Bot {
             field = value
             jdaBuilder = JDABuilder.create(token, GatewayIntent.getIntents(value))
         }
-    var cache: List<CacheFlag> = listOf()
 
     var quit: () -> Unit = {}
 
     private lateinit var jdaBuilder: JDABuilder
+
+    fun enableIntents(vararg intents: GatewayIntent) = jdaBuilder.enableIntents(intents.asList())
+    fun disableIntents(vararg intents: GatewayIntent) = jdaBuilder.disableIntents(intents.asList())
+
+    fun enableCache(vararg flags: CacheFlag) = jdaBuilder.enableCache(flags.asList())
+    fun disableCache(vararg flags: CacheFlag) = jdaBuilder.disableCache(flags.asList())
+
+    fun addEventListeners(vararg listeners: EventListener) = jdaBuilder.addEventListeners(*listeners)
+    fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)
 
     init {
         initLogBackend()
@@ -60,7 +68,7 @@ class Bot {
     }
 
     fun build() {
-        LOGGER.info("${BananaUtils.bananaify(linedName(name), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
+        LOGGER.info("${BananaUtils.bananaify(name.toLowerCase(), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
         LOGGER.blankLine()
 
         val discoreVersion = MANIFEST.getValue("Discore-Version")
@@ -73,9 +81,6 @@ class Bot {
 
         API = jdaBuilder.apply {
             if (activity != null) setActivity(activity)
-
-            if (cache.isNotEmpty()) enableCache(cache)
-            else disableCache(CacheFlag.values().toList())
 
             setEventManager(InterfacedEventManager())
         }.build()
@@ -96,9 +101,6 @@ class Bot {
             LOGGER.blankLine()
         }
     }
-
-    fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)
-    fun addEventListeners(vararg listeners: EventListener) = jdaBuilder.addEventListeners(*listeners)
 
 }
 
