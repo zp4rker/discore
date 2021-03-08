@@ -33,6 +33,9 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 val name = command::class.java.name
                 aliases = arrayOf(if (name.endsWith("Command")) name.dropLast("Command".length).toLowerCase() else name.toLowerCase())
             }
+            if (usage.isEmpty()) {
+                usage = aliases.first()
+            }
 
             LOGGER.debug("Registered command '${aliases.first()}' from class: ${this.javaClass.name}")
         })

@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.TextChannel
 abstract class Command(
     var aliases: Array<String> = arrayOf(),
     val description: String = "",
-    val usage: String = aliases[0],
+    var usage: String = "",
     val hidden: Boolean = false,
 
     val permission: Permission = Permission.MESSAGE_READ,
