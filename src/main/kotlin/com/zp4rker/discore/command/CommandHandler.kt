@@ -1,6 +1,7 @@
 package com.zp4rker.discore.command
 
 import com.zp4rker.discore.API
+import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.extenstions.embed
 import com.zp4rker.discore.extenstions.event.on
 import net.dv8tion.jda.api.JDA
@@ -32,6 +33,8 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
                 val name = command::class.java.name
                 aliases = arrayOf(if (name.endsWith("Command")) name.dropLast("Command".length).toLowerCase() else name.toLowerCase())
             }
+
+            LOGGER.debug("Registered command '${aliases.first()}' from class: ${this.javaClass.name}")
         })
     }
 
@@ -86,6 +89,7 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
 
             if (command.autoDelete) e.message.delete().queue()
 
+            LOGGER.debug("Executing '${command.aliases.first()}' command")
             async.submit { command.handle(args.toTypedArray(), e.message, e.message.textChannel) }
         }
     }

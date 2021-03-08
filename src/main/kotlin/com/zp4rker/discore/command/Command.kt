@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.entities.TextChannel
  * @author zp4rker
  */
 abstract class Command(
-    var aliases: Array<String>,
+    var aliases: Array<String> = arrayOf(),
     val description: String = "",
     val usage: String = aliases[0],
     val hidden: Boolean = false,
