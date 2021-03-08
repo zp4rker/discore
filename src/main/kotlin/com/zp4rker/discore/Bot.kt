@@ -34,7 +34,7 @@ class Bot {
     var token: String = "empty"
         set(value) {
             field = value
-            jdaBuilder = JDABuilder.create(value, GatewayIntent.getIntents(intents))
+            jdaBuilder = JDABuilder.createDefault(value)
         }
     var prefix: String = "/"
 
@@ -43,23 +43,11 @@ class Bot {
     var commands: List<Command>
 
     var activity: Activity? = null
-    var intents: Int = GatewayIntent.DEFAULT
-        set(value) {
-            field = value
-            jdaBuilder = JDABuilder.create(token, GatewayIntent.getIntents(value))
-        }
 
     var quit: () -> Unit = {}
 
-    private lateinit var jdaBuilder: JDABuilder
+    lateinit var jdaBuilder: JDABuilder
 
-    fun enableIntents(vararg intents: GatewayIntent) = jdaBuilder.enableIntents(intents.asList())
-    fun disableIntents(vararg intents: GatewayIntent) = jdaBuilder.disableIntents(intents.asList())
-
-    fun enableCache(vararg flags: CacheFlag) = jdaBuilder.enableCache(flags.asList())
-    fun disableCache(vararg flags: CacheFlag) = jdaBuilder.disableCache(flags.asList())
-
-    fun addEventListeners(vararg listeners: EventListener) = jdaBuilder.addEventListeners(*listeners)
     fun addCommands(vararg commands: Command) = cmdHandler.registerCommands(*commands)
 
     init {
