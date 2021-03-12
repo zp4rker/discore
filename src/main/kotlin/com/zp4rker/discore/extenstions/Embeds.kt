@@ -1,6 +1,5 @@
 package com.zp4rker.discore.extenstions
 
-import com.zp4rker.discore.HIDDEN_EMBED_COLOUR
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import org.json.JSONObject
@@ -54,7 +53,7 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
         title.url?.let { builder.setTitle(title.text, title.url) } ?: builder.setTitle(title.text)
     }
 
-    var color: String = HIDDEN_EMBED_COLOUR
+    var color: String = EmbedColor.HIDDEN
         set(value) {
             builder.setColor(Color.decode(value))
             field = value
@@ -87,6 +86,35 @@ class KEmbedBuilder(val builder: EmbedBuilder = EmbedBuilder()) {
     fun build() = builder.build()
 }
 
+@Suppress("unused")
+object EmbedColor {
+    const val HIDDEN = "#2f3136"
+
+    const val GREENBLUE = "#1abc9c"
+    const val DARK_GREENBLUE = "#16a085"
+    const val GREEN = "#2ecc71"
+    const val DARK_GREEN = "#27ae60"
+    const val BLUE = "#3498db"
+    const val DARK_BLUE = "#2980b9"
+    const val PURPLE = "#9b59b6"
+    const val DARK_PURPLE = "#8e44ad"
+    const val NAVY = "#34495e"
+    const val DARK_NAVY = "#2c3e50"
+    const val YELLOW = "#f1c40f"
+    const val LIGHT_ORANGE = "#f39c12"
+    const val ORANGE = "#e67e22"
+    const val DARK_ORANGE = "#d35400"
+    const val RED = "#e74c3c"
+    const val DARK_RED = "#c0392b"
+    const val LIGHT_GREY = "#ecf0f1"
+    const val GREY = "#bdc3c7"
+    const val DARK_GREY = "#95a5a6"
+    const val DARKER_GREY = "#7f8c8d"
+
+    const val WHITE = "#ffffff"
+    const val BLACK = "#000000"
+}
+
 fun field(fieldBuilder: KEmbedBuilder.EmbedField.() -> Unit) = KEmbedBuilder.EmbedField().also(fieldBuilder)
 fun author(authorBuilder: KEmbedBuilder.EmbedAuthor.() -> Unit) = KEmbedBuilder.EmbedAuthor().also(authorBuilder)
 fun footer(footerBuilder: KEmbedBuilder.EmbedFooter.() -> Unit) = KEmbedBuilder.EmbedFooter().also(footerBuilder)
@@ -94,7 +122,7 @@ fun title(titleBuilder: KEmbedBuilder.EmbedTitle.() -> Unit) = KEmbedBuilder.Emb
 
 fun embed(
     author: KEmbedBuilder.EmbedAuthor? = null,
-    color: String = HIDDEN_EMBED_COLOUR,
+    color: String = EmbedColor.HIDDEN,
     description: String? = null,
     footer: KEmbedBuilder.EmbedFooter? = null,
     image: String? = null,
