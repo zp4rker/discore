@@ -11,6 +11,7 @@ import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
 import io.leego.banana.Font
 import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.JDAInfo
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.hooks.EventListener
@@ -60,11 +61,10 @@ class Bot {
         LOGGER.blankLine()
 
         val discoreVersion = MANIFEST.getValue("Discore-Version")
-        val jdaVersion = MANIFEST.getValue("JDA-Version")
 
         LOGGER.info("Created by zp4rker#3333")
         LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$discoreVersion"))
-        LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v$jdaVersion"))
+        LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v${JDAInfo.VERSION}"))
         LOGGER.blankLine()
 
         API = jdaBuilder.apply {
