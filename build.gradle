@@ -10,7 +10,7 @@ plugins {
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '2.1.1'
+version '2.1.2'
 
 repositories {
     mavenCentral()
