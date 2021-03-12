@@ -8,6 +8,8 @@ import java.util.jar.Attributes
 /**
  * @author zp4rker
  */
+const val DISCORE_VERSION = "@VERSION@"
+
 lateinit var API: JDA
 lateinit var BOT: Bot
 

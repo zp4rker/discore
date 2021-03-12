@@ -1,7 +1,6 @@
 package com.zp4rker.discore.extenstions.event
 
 import com.zp4rker.discore.API
-import com.zp4rker.discore.LOGGER
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.hooks.EventListener

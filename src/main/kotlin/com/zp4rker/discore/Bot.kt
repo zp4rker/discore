@@ -7,17 +7,13 @@ import com.zp4rker.discore.extenstions.event.on
 import com.zp4rker.discore.log.blankLine
 import com.zp4rker.discore.log.info
 import com.zp4rker.discore.log.initLogBackend
-import com.zp4rker.discore.util.linedName
 import io.leego.banana.BananaUtils
 import io.leego.banana.Font
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.JDAInfo
 import net.dv8tion.jda.api.entities.Activity
 import net.dv8tion.jda.api.events.ReadyEvent
-import net.dv8tion.jda.api.hooks.EventListener
 import net.dv8tion.jda.api.hooks.InterfacedEventManager
-import net.dv8tion.jda.api.requests.GatewayIntent
-import net.dv8tion.jda.api.utils.cache.CacheFlag
 import org.fusesource.jansi.Ansi
 
 /**
@@ -60,10 +56,8 @@ class Bot {
         LOGGER.info("${BananaUtils.bananaify(name.toLowerCase(), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
         LOGGER.blankLine()
 
-        val discoreVersion = MANIFEST.getValue("Discore-Version")
-
         LOGGER.info("Created by zp4rker#3333")
-        LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$discoreVersion"))
+        LOGGER.info(Ansi.ansi().a("Powered by Discore ").fgBrightYellow().a("v$DISCORE_VERSION"))
         LOGGER.info(Ansi.ansi().a("Built on JDA ").fgBrightYellow().a("v${JDAInfo.VERSION}"))
         LOGGER.blankLine()
 

@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.31'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.31'
@@ -39,11 +41,20 @@ dependencies {
     /*compile "org.jline:jline-console:3.19.0"*/
 }
 
+task filterSources(type: Sync) {
+    from("src/main/kotlin")
+    into("$buildDir/src/main/kotlin")
+    filter(ReplaceTokens, tokens: [VERSION: project.version])
+}
+
 compileKotlin {
     kotlinOptions {
         jvmTarget = 1.8
         useIR = true
     }
+
+    sourceSets.main.kotlin.srcDirs = ["$buildDir/src/main/kotlin"]
+    dependsOn filterSources
 }
 
 task javadocJar(type: Jar) {
