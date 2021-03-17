@@ -42,7 +42,7 @@ object Console : Thread() {
     private var isRunning = false
 
     override fun run() {
-        var input = /*System.console().readLine().toLowerCase()*/rd.readLine(prompt)
+        var input = rd.readLine(prompt)
         while (isRunning) {
             input.split(" ").let {
                 val command = it[0]
@@ -50,7 +50,7 @@ object Console : Thread() {
                 if (!ConsoleCommandHandler.handleCommand(command, args)) LOGGER.warn("Unkown command \"$command\" - Type \"help\" for help.")
             }
 
-            if (isRunning) input = /*System.console().readLine().toLowerCase()*/rd.readLine(prompt)
+            if (isRunning) input = rd.readLine(prompt)
         }
     }
 
