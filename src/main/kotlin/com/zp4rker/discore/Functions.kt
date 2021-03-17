@@ -9,10 +9,10 @@ import java.util.jar.Attributes
 /**
  * @author zp4rker
  */
-fun getManifest(url: URL): Attributes = with(URL("jar:${url.toExternalForm()}!/").openConnection() as JarURLConnection) { mainAttributes }
+fun getMainClass(): Class<*> = Class.forName(Thread.getAllStackTraces().entries.first { it.key.name == "main" }.value.last().className)
 
 fun findCommands(): List<Command> {
-    val pkg = Class.forName(MANIFEST.getValue("Main-Class")).`package`.name
+    val pkg = getMainClass().`package`.name
     val classList = Reflections(pkg).getSubTypesOf(Command::class.java)
     val instanceList = mutableListOf<Command>()
     classList.forEach {

@@ -1,11 +1,12 @@
 package com.zp4rker.discore.extenstions.event
 
 import com.zp4rker.discore.API
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.hooks.EventListener
-import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -37,8 +38,6 @@ inline fun <reified T : GenericEvent> JDA.on(crossinline predicate: Predicate<T>
     if (predicate(it)) action(it)
 }
 
-val expectationPool: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
-
 inline fun <reified T : GenericEvent> JDA.expect(
     crossinline predicate: Predicate<T> = { true },
     amount: Int = 1,
@@ -58,12 +57,13 @@ inline fun <reified T : GenericEvent> JDA.expect(
     }
 
     if (timeout > 0) {
-        expectationPool.schedule({
+        GlobalScope.launch {
+            delay(timeoutUnit.toMillis(timeout))
             if (callCount < amount) {
                 timeoutAction()
                 listener.unregister()
             }
-        }, timeout, timeoutUnit)
+        }
     }
 
     return listener

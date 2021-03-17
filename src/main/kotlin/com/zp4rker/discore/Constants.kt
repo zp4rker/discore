@@ -14,5 +14,3 @@ lateinit var API: JDA
 lateinit var BOT: Bot
 
 val LOGGER: Logger = LoggerFactory.getLogger("discore")
-
-val MANIFEST: Attributes = getManifest(Bot::class.java.protectionDomain.codeSource.location)

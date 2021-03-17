@@ -4,20 +4,19 @@ import com.zp4rker.discore.API
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.extenstions.embed
 import com.zp4rker.discore.extenstions.event.on
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
-import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 /**
  * @author zp4rker
  */
 class CommandHandler(val prefix: String, val commands: MutableList<Command> = mutableListOf(), val jda: JDA = API) {
-
-    private val async = Executors.newCachedThreadPool()
 
     fun registerCommands(vararg commands: Command) {
         commands.forEach { registerCommand(it) }
@@ -93,7 +92,9 @@ class CommandHandler(val prefix: String, val commands: MutableList<Command> = mu
             if (command.autoDelete) e.message.delete().queue()
 
             LOGGER.debug("Executing '${command.aliases.first()}' command")
-            async.submit { command.handle(args.toTypedArray(), e.message, e.message.textChannel) }
+            GlobalScope.launch {
+                command.handle(args.toTypedArray(), e.message, e.message.textChannel)
+            }
         }
     }
 
