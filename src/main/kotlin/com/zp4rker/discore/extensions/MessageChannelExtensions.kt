@@ -1,35 +1,67 @@
 package com.zp4rker.discore.extensions
 
 import com.zp4rker.discore.Predicate
+import com.zp4rker.discore.event.unregister
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.entities.MessageReaction
 import net.dv8tion.jda.api.entities.SelfUser
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
+import java.util.concurrent.CompletableFuture
 
 /**
  * @author zp4rker
  */
-
-@Deprecated("experimental")
-fun MessageChannel.awaitMessages(filter: Predicate<Message> = { true }, limit: Int = 1): List<Message> {
+fun MessageChannel.collectMessages(filter: Predicate<Message> = { true }, limit: Int): CompletableFuture<List<Message>> {
+    val future = CompletableFuture<List<Message>>()
     val list = mutableListOf<Message>()
-    while (list.size < limit) {
-        this.expectBlocking<MessageReceivedEvent> {
-            if (filter(it.message) && it.author !is SelfUser) list.add(it.message)
+    on<MessageReceivedEvent> {
+        if (filter(it.message) && it.author !is SelfUser) {
+            list.add(it.message)
+        }
+
+        if (list.size == limit) {
+            future.complete(list)
+            unregister()
         }
     }
-    return list
+    return future
 }
 
-@Deprecated("experimental")
-fun MessageChannel.awaitReactions(filter: Predicate<MessageReaction> = { true }, limit: Int = 1): List<MessageReaction> {
-    val list = mutableListOf<MessageReaction>()
-    while (list.size < limit) {
-        this.expectBlocking<MessageReactionAddEvent> {
-            if (filter(it.reaction) && it.user !is SelfUser) list.add(it.reaction)
+fun MessageChannel.nextMessage(filter: Predicate<Message> = { true }): CompletableFuture<Message> {
+    val future = CompletableFuture<Message>()
+    on<MessageReceivedEvent> {
+        if (filter(it.message) && it.author !is SelfUser) {
+            future.complete(it.message)
+            unregister()
         }
     }
-    return list
+    return future
+}
+
+fun MessageChannel.collectReactions(filter: Predicate<MessageReactionAddEvent> = { true }, limit: Int): CompletableFuture<List<MessageReaction>> {
+    val future = CompletableFuture<List<MessageReaction>>()
+    val list = mutableListOf<MessageReaction>()
+    on<MessageReactionAddEvent> {
+        if (filter(it) && it.user !is SelfUser) {
+            list.add(it.reaction)
+        }
+
+        if (list.size == limit) {
+            future.complete(list)
+            unregister()
+        }
+    }
+    return future
+}
+
+fun MessageChannel.nextReaction(filter: Predicate<MessageReactionAddEvent> = { true }): CompletableFuture<MessageReaction> {
+    val future = CompletableFuture<MessageReaction>()
+    on<MessageReactionAddEvent> {
+        if (filter(it) && it.user !is SelfUser) {
+            future.complete(it.reaction)
+        }
+    }
+    return future
 }

@@ -70,7 +70,6 @@ inline fun <reified T : GenericEvent> JDA.expect(
     return listener
 }
 
-@Deprecated("experimental")
 inline fun <reified T : GenericEvent> JDA.expectBlocking(
     crossinline predicate: Predicate<T> = {true},
     amount: Int = 1,
@@ -94,5 +93,4 @@ inline fun <reified T : GenericEvent> JDA.expectBlocking(
     lock.withLock {
         while (!flag) cond.await()
     }
-    // TODO: Make this more efficient/better
 }
