@@ -1,17 +1,12 @@
-package com.zp4rker.discore.extenstions
+package com.zp4rker.discore.extensions
 
-import com.zp4rker.discore.API
-import com.zp4rker.discore.extenstions.event.Predicate
-import com.zp4rker.discore.extenstions.event.expectBlocking
-import com.zp4rker.discore.extenstions.event.on
-import com.zp4rker.discore.extenstions.event.unregister
+import com.zp4rker.discore.Predicate
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageChannel
 import net.dv8tion.jda.api.entities.MessageReaction
 import net.dv8tion.jda.api.entities.SelfUser
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
-import java.util.concurrent.CompletableFuture
 
 /**
  * @author zp4rker

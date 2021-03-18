@@ -1,6 +1,6 @@
 package com.zp4rker.discore.storage
 
-import com.zp4rker.discore.extenstions.embed
+import com.zp4rker.discore.extensions.embed
 import com.zp4rker.discore.util.unicodify
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

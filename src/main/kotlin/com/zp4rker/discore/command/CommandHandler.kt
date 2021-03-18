@@ -2,8 +2,8 @@ package com.zp4rker.discore.command
 
 import com.zp4rker.discore.API
 import com.zp4rker.discore.LOGGER
-import com.zp4rker.discore.extenstions.embed
-import com.zp4rker.discore.extenstions.event.on
+import com.zp4rker.discore.extensions.embed
+import com.zp4rker.discore.event.on
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.JDA

@@ -2,9 +2,6 @@ package com.zp4rker.discore
 
 import com.zp4rker.discore.command.Command
 import org.reflections.Reflections
-import java.net.JarURLConnection
-import java.net.URL
-import java.util.jar.Attributes
 
 /**
  * @author zp4rker

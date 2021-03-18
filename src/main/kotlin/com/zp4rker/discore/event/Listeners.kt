@@ -1,6 +1,7 @@
-package com.zp4rker.discore.extenstions.event
+package com.zp4rker.discore.event
 
 import com.zp4rker.discore.API
+import com.zp4rker.discore.Predicate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,11 +19,11 @@ interface ExtendedListener<in T : GenericEvent> : EventListener {
     override fun onEvent(event: GenericEvent)
 }
 
-typealias Predicate<T> = (T) -> Boolean
-
 inline fun <reified T : GenericEvent> listener(crossinline action: EventListener.(T) -> Unit) = object : ExtendedListener<T> {
     override fun onEvent(event: GenericEvent) {
-        if (event is T) action(event)
+        GlobalScope.launch {
+            if (event is T) action(event)
+        }
     }
 }
 

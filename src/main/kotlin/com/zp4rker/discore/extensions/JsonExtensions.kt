@@ -1,4 +1,4 @@
-package com.zp4rker.discore.extenstions
+package com.zp4rker.discore.extensions
 
 import org.json.JSONObject
 

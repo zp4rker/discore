@@ -1,4 +1,4 @@
-package com.zp4rker.discore.extenstions
+package com.zp4rker.discore.extensions
 
 import net.dv8tion.jda.api.entities.Member
 import net.dv8tion.jda.api.entities.Role

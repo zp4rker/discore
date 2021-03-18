@@ -1,7 +1,9 @@
-package com.zp4rker.discore.extenstions.event
+package com.zp4rker.discore.extensions
 
 import com.zp4rker.discore.API
 import com.zp4rker.discore.LOGGER
+import com.zp4rker.discore.Predicate
+import com.zp4rker.discore.event.*
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.channel.text.GenericTextChannelEvent
