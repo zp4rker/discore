@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
  */
 object RoleCommand : ConsoleCommand {
     override fun handleCommand(command: String, params: Array<String>) {
-        val options = params.filter { it.startsWith("-") }.map { it.toLowerCase() }
+        val options = params.filter { it.startsWith("-") }.map { it.lowercase() }
         val args = params.filter { !it.startsWith("-") }
 
         val withIds = options.contains("-ids")
@@ -32,7 +32,7 @@ object RoleCommand : ConsoleCommand {
         if (args.size == 1) {
             roleInfo(role,  withIds, detailed)
         } else {
-            when (args[1].toLowerCase()) {
+            when (args[1].lowercase()) {
                 "members", "users" -> listMembers(role, withIds)
             }
         }

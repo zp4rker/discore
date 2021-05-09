@@ -35,7 +35,7 @@ object UserCommand : ConsoleCommand {
         if (args.size == 1) {
             userInfo(user, withIds)
         } else {
-            when (args[1].toLowerCase()) {
+            when (args[1].lowercase()) {
                 "message", "msg" -> if (args.size > 2) {
                     message(user, args.drop(2).joinToString(" "))
                 }

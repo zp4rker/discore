@@ -1,8 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.31'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.0'
 
     id 'maven'
     id 'signing'
@@ -12,7 +12,7 @@ plugins {
 
 group 'com.zp4rker'
 archivesBaseName = project.name
-version '2.3.0'
+version '2.4.0'
 
 repositories {
     mavenCentral()
@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.5.0"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
 
     compile "net.dv8tion:JDA:4.2.0_240"

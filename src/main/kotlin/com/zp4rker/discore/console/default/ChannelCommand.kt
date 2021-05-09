@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
  */
 object ChannelCommand : ConsoleCommand {
     override fun handleCommand(command: String, params: Array<String>) {
-        val options = params.filter { it.startsWith("-") }.map { it.toLowerCase() }
+        val options = params.filter { it.startsWith("-") }.map { it.lowercase() }
         val args = params.filter { !it.startsWith("-") }
 
         val withIds = options.any { it == "-ids" }
@@ -33,7 +33,7 @@ object ChannelCommand : ConsoleCommand {
         if (args.size == 1) {
             channelInfo(channel, withIds, detailed)
         } else {
-            when (args[1].toLowerCase()) {
+            when (args[1].lowercase()) {
                 "permissions", "overrides" -> listPermissions(channel, withIds)
                 "members", "users" -> listMembers(channel, withIds)
                 "message", "msg" -> if (args.size > 2 && channel is TextChannel) {

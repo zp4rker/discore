@@ -32,7 +32,7 @@ object GuildCommand : ConsoleCommand {
             if (args.size == 1) {
                 guildInfo(guild, withIds)
             } else {
-                when (args[1].toLowerCase()) {
+                when (args[1].lowercase()) {
                     "channels" -> listChannels(guild, withIds)
                     "roles" -> listRoles(guild, withIds)
                     "members", "users" -> listMembers(guild, withIds)

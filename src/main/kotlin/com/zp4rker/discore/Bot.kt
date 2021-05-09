@@ -53,7 +53,7 @@ class Bot {
     }
 
     fun build() {
-        LOGGER.info("${BananaUtils.bananaify(name.toLowerCase(), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
+        LOGGER.info("${BananaUtils.bananaify(name.lowercase(), Font.RECTANGLES).trimEnd()}${" ".repeat(4)}v$version")
         LOGGER.blankLine()
 
         LOGGER.info("Created by zp4rker#3333")
