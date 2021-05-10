@@ -13,8 +13,7 @@ plugins {
 }
 
 group = "com.zp4rker"
-val archivesBaseName = project.name
-version = "2.4.0-test"
+version = "2.4.1"
 
 repositories {
     mavenCentral()
@@ -42,14 +41,17 @@ dependencies {
 }
 
 tasks.create<Sync>("filterSources") {
-    from("src/main/kotlin")
-    into("$buildDir/src/main/kotlin")
+    from("src/main/kotlin") {
+        include("com/zp4rker/discore/Constants.kt")
+    }
+    into("$buildDir/generated-sources")
     filter(ReplaceTokens::class, mapOf("tokens" to mapOf("VERSION" to project.version)))
+    kotlin.sourceSets["main"].kotlin.exclude("com/zp4rker/discore/Constants.kt")
 }
 
 tasks.compileKotlin {
     dependsOn("filterSources")
-    kotlin.sourceSets["main"].kotlin.setSrcDirs(listOf("$buildDir/src/main/kotlin"))
+    source(listOf("$buildDir/generated-sources"))
 }
 
 tasks.create<Jar>("javadocJar") {
