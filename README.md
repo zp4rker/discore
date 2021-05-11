@@ -24,7 +24,7 @@ are optional. They are as follows:
 | `author`      | EmbedAuthor       | [See below](#embedauthor)
 | `color`       | String            | `"#2f3136"`
 | `description` | String            | `"Total stats"`
-| `dooter`      | EmbedFooter       | [See below](#embedfooter)
+| `footer`      | EmbedFooter       | [See below](#embedfooter)
 | `image`       | String            | `"https://img.com/img.png"`
 | `thumbnail`   | String            | `"https://img.com/img2.jpg"`
 | `timestamp`   | TemporalAccessor  | `Instant.now()`
@@ -157,8 +157,7 @@ to [`InterfacedEventManager()`](https://ci.dv8tion.net/job/JDA/javadoc/net/dv8ti
 | ---                   | ---
 | `API`                 | JDA
 | `BOT`                 | Bot
-| `MANIFEST`            | Attributes
 | `LOGGER`              | Logger
-| `HIDDEN_EMBED_COLOUR` | String
+| `DISCORE_VERSION`     | String
 
 ---
