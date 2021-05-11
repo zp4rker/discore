@@ -91,12 +91,6 @@ tasks.named<Upload>("uploadArchives") {
                 }
 
                 pom.project {
-                    setProperty("name", "Discore")
-                    setProperty("artifactId", "discore")
-                    setProperty("packaging", "jar")
-                    setProperty("description", "A Discord bot core built upon JDA, written in Kotlin.")
-                    setProperty("url", "https://github.com/zp4rker/discore")
-
                     withGroovyBuilder {
                         "name"("Discore")
                         "artifactId"("discore")
