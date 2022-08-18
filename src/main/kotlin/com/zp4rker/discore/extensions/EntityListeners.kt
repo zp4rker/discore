@@ -4,6 +4,7 @@ import com.zp4rker.discore.API
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.Predicate
 import com.zp4rker.discore.event.*
+import kotlinx.coroutines.DelicateCoroutinesApi
 import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.GenericEvent
 import net.dv8tion.jda.api.events.channel.text.GenericTextChannelEvent
@@ -20,12 +21,18 @@ import java.util.concurrent.TimeUnit
  * @author zp4rker
  */
 
-inline fun <reified T : GenericEvent> ISnowflake.on(noinline action: EventListener.(T) -> Unit) = API.on<T> {
-    runAction(this@on, it, this, action)
+inline fun <reified T : GenericEvent> ISnowflake.on(noinline action: EventListener.(T) -> Unit) {
+    val entity = this
+    API.on<T> {
+        runAction(entity, it, this, action)
+    }
 }
 
-inline fun <reified T : GenericEvent> ISnowflake.on(crossinline predicate: Predicate<T> = { true }, noinline action: EventListener.(T) -> Unit) = API.on(predicate) {
-    runAction(this@on, it, this, action)
+inline fun <reified T : GenericEvent> ISnowflake.on(crossinline predicate: Predicate<T> = { true }, noinline action: EventListener.(T) -> Unit) {
+    val entity = this
+    API.on(predicate) {
+        runAction(entity, it, this, action)
+    }
 }
 
 inline fun <reified T : GenericEvent> ISnowflake.expect(
@@ -35,11 +42,14 @@ inline fun <reified T : GenericEvent> ISnowflake.expect(
     timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
     crossinline timeoutAction: () -> Unit = {},
     noinline action: EventListener.(T) -> Unit
-) = API.expect(predicate, amount, timeout, timeoutUnit, timeoutAction) {
-    runAction(this@expect, it, this, action)
+) {
+    val entity = this
+    API.expect(predicate, amount, timeout, timeoutUnit, timeoutAction) {
+        runAction(entity, it, this, action)
+    }
 }
 
-@Deprecated("experimental")
+@DelicateCoroutinesApi
 inline fun <reified T : GenericEvent> ISnowflake.expectBlocking(
     crossinline predicate: Predicate<T> = { true },
     amount: Int = 1,
@@ -47,8 +57,11 @@ inline fun <reified T : GenericEvent> ISnowflake.expectBlocking(
     timeoutUnit: TimeUnit = TimeUnit.MILLISECONDS,
     crossinline timeoutAction: () -> Unit = {},
     noinline action: EventListener.(T) -> Unit
-) = API.expectBlocking(predicate, amount, timeout, timeoutUnit, timeoutAction) {
-    runAction(this@expectBlocking, it, this, action)
+) {
+    val entity = this
+    API.expectBlocking(predicate, amount, timeout, timeoutUnit, timeoutAction) {
+        runAction(entity, it, this, action)
+    }
 }
 
 inline fun <reified T : GenericEvent> runAction(

@@ -4,6 +4,7 @@ import com.zp4rker.discore.API
 import com.zp4rker.discore.LOGGER
 import com.zp4rker.discore.extensions.embed
 import com.zp4rker.discore.event.on
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.JDA
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeUnit
 /**
  * @author zp4rker
  */
+@OptIn(DelicateCoroutinesApi::class)
 class CommandHandler(val prefix: String, val commands: MutableList<Command> = mutableListOf(), val jda: JDA = API) {
 
     fun registerCommands(vararg commands: Command) {

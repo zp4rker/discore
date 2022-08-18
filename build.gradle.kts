@@ -36,7 +36,8 @@ dependencies {
     implementation("io.leego:banana:2.1.0")
 
     implementation("org.reflections:reflections:0.10.2")
-    
+
+    implementation("org.fusesource.jansi:jansi:2.4.0")
     implementation("org.jline:jline-reader:3.19.0")
 }
 
@@ -70,6 +71,9 @@ artifacts {
 }
 
 signing {
+    setRequired {
+        gradle.taskGraph.allTasks.any { it is PublishToMavenRepository }
+    }
     sign(configurations["archives"])
 }
 

@@ -1,7 +1,10 @@
+@file:OptIn(DelicateCoroutinesApi::class)
+
 package com.zp4rker.discore.event
 
 import com.zp4rker.discore.API
 import com.zp4rker.discore.Predicate
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
