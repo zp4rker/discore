@@ -1,8 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
 
     id("com.github.johnrengelman.shadow") version "6.1.0"
 
@@ -23,19 +23,19 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     implementation("net.dv8tion:JDA:4.2.0_240")
 
-    implementation("com.zp4rker:log4kt:1.1.6")
+    implementation("com.zp4rker:log4kt:1.1.8")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
-    implementation("com.charleskorn.kaml:kaml:0.26.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.3")
+    implementation("com.charleskorn.kaml:kaml:0.46.0")
 
     implementation("com.vdurmont:emoji-java:5.1.1")
-    implementation("io.leego:banana:2.0.0")
+    implementation("io.leego:banana:2.1.0")
 
-    implementation("org.reflections:reflections:0.9.12")
+    implementation("org.reflections:reflections:0.10.2")
     
     implementation("org.jline:jline-reader:3.19.0")
 }
